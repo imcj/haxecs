@@ -1,0 +1,155 @@
+<DOMDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" currentTimeline="1" xflVersion="2.2" creatorInfo="Adobe Flash Professional CS6" platform="Macintosh" versionInfo="Saved by Adobe Flash Macintosh 12.0 build 481" majorVersion="12" buildNumber="481" nextSceneIdentifier="3" playOptionsPlayLoop="false" playOptionsPlayPages="false" playOptionsPlayFrameActions="false" autoSaveEnabled="true" autoSaveHasPrompted="true">
+     <folders>
+          <DOMFolderItem name="untitled folder 1" itemID="52974532-000001ef" isExpanded="true"/>
+          <DOMFolderItem name="untitled folder 2" itemID="5297453f-000001f3"/>
+     </folders>
+     <media>
+          <DOMBitmapItem name="Bitmap 1.png" itemID="52974c39-000000bb" linkageExportForAS="true" linkageClassName="Bitmap1" sourceExternalFilepath="./LIBRARY/Bitmap 1.png" sourceLastImported="1385646933" sourcePlatform="macintosh" externalFileSize="125" allowSmoothing="true" useImportedJPEGData="false" compressionType="lossless" originalCompressionType="lossless" quality="50" href="Bitmap 1.png" bitmapDataHRef="M 1 1385641892.dat" frameRight="1220" frameBottom="660"/>
+          <DOMBitmapItem name="Bitmap 2" itemID="52975795-0000041d" sourceExternalFilepath="./LIBRARY/Bitmap 2" sourceLastImported="1385649858" sourcePlatform="macintosh" externalFileSize="609358" originalCompressionType="lossless" quality="50" href="Bitmap 2" bitmapDataHRef="M 2 1385649858.dat" frameRight="38400" frameBottom="11000"/>
+     </media>
+     <symbols>
+          <Include href="Symbol 1.xml" itemIcon="1" loadImmediate="false" itemID="5296e4ac-00000090" lastModified="1385649867"/>
+          <Include href="Symbol 2.xml" loadImmediate="false" itemID="529737dc-000000d7" lastModified="1385641948"/>
+          <Include href="Symbol 3.xml" itemID="529757d6-0000041f" lastModified="1385650134"/>
+          <Include href="Tween 1.xml" itemIcon="1" loadImmediate="false" itemID="5297458f-000001fb" lastModified="1385645455"/>
+          <Include href="Tween 2.xml" itemIcon="1" loadImmediate="false" itemID="5297458f-000001fd" lastModified="1385645455"/>
+          <Include href="untitled folder 1/Symbol 3.xml" loadImmediate="false" itemID="52974532-000001ed" lastModified="1385645456"/>
+     </symbols>
+     <timelines>
+          <DOMTimeline name="Scene 1">
+               <layers>
+                    <DOMLayer name="Layer 4" color="#FF4FFF">
+                         <frames>
+                              <DOMFrame index="0" duration="20" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 2" centerPoint3DX="240.5" centerPoint3DY="272.5">
+                                             <matrix>
+                                                  <Matrix tx="210" ty="256"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point x="30.5" y="16.5"/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                        <DOMSymbolInstance libraryItemName="untitled folder 1/Symbol 3" centerPoint3DX="106.5" centerPoint3DY="178">
+                                             <matrix>
+                                                  <Matrix tx="33.5" ty="148"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point x="73" y="30"/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                        <DOMBitmapInstance libraryItemName="Bitmap 1.png">
+                                             <matrix>
+                                                  <Matrix tx="239.5" ty="59.5"/>
+                                             </matrix>
+                                        </DOMBitmapInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#FF800A">
+                         <frames>
+                              <DOMFrame index="0" duration="20" keyMode="9728">
+                                   <elements>
+                                        <DOMBitmapInstance libraryItemName="Bitmap 1.png">
+                                             <matrix>
+                                                  <Matrix tx="14.5" ty="98.5"/>
+                                             </matrix>
+                                        </DOMBitmapInstance>
+                                        <DOMSymbolInstance libraryItemName="Symbol 2" centerPoint3DX="210" centerPoint3DY="256">
+                                             <matrix>
+                                                  <Matrix tx="179.5" ty="239.5"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point x="30.5" y="16.5"/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                        <DOMSymbolInstance libraryItemName="Symbol 2" centerPoint3DX="162.5" centerPoint3DY="266.5">
+                                             <matrix>
+                                                  <Matrix tx="132" ty="250"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point x="30.5" y="16.5"/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 1" color="#4FFF4F" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" duration="19" tweenType="motion" motionTweenSnap="true" keyMode="22017">
+                                   <Actionscript>
+                                        <script><![CDATA[(new Bitmap1()).say();]]></script>
+                                   </Actionscript>
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 1" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="20" ty="24"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point x="30" y="17.5"/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="19" name="Label1" labelType="name" keyMode="9728">
+                                   <Actionscript>
+                                        <script><![CDATA[stop();]]></script>
+                                   </Actionscript>
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 1" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="169" ty="24"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point x="30" y="17.5"/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+          <DOMTimeline name="Scene 2">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#4FFF4F" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 1" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="270" ty="95.5"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point x="30" y="17.5"/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timelines>
+     <PrinterSettings platform="macintosh"/>
+     <publishHistory>
+          <PublishItem publishSize="1670" publishTime="1385647310"/>
+          <PublishItem publishSize="1680" publishTime="1385647262"/>
+          <PublishItem publishSize="1379" publishTime="1385647224"/>
+          <PublishItem publishSize="985" publishTime="1385647219"/>
+          <PublishItem publishSize="1387" publishTime="1385647211"/>
+          <PublishItem publishSize="1369" publishTime="1385647197"/>
+          <PublishItem publishSize="1369" publishTime="1385647179"/>
+          <PublishItem publishSize="985" publishTime="1385647163"/>
+          <PublishItem publishSize="986" publishTime="1385647115"/>
+          <PublishItem publishSize="968" publishTime="1385647030"/>
+          <PublishItem publishSize="1121" publishTime="1385643782"/>
+          <PublishItem publishSize="828" publishTime="1385643771"/>
+          <PublishItem publishSize="816" publishTime="1385643095"/>
+          <PublishItem publishSize="815" publishTime="1385643085"/>
+          <PublishItem publishSize="814" publishTime="1385643081"/>
+          <PublishItem publishSize="809" publishTime="1385643054"/>
+     </publishHistory>
+</DOMDocument>

@@ -1,0 +1,15 @@
+{
+    "name": "haxecs",
+    "license": "MIT",
+    "classPath": "src",
+    "tags": [],
+    "description": "",
+    "contributors": ["imcj"],
+    "releasenote": "",
+    "version": "0.0.1",
+    "url": "http://github.com/imcj/haxecs",
+    "dependencies": 
+    {
+        "logging": ""
+    }
+}

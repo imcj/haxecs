@@ -1,0 +1,4 @@
+-main Sample1
+-neko run.n
+-cp ../../src/
+-cmd neko run.n
