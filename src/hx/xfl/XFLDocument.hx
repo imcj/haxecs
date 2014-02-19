@@ -11,9 +11,12 @@ class XFLDocument extends DOMDocument
     public var buildNumber:Int;
     public var creatorInfo:String;
     public var currentTimeline:Int;
+    public var filetypeGUID:String;
     public var majorVersion:Int;
+    public var minorVersion:Int;
     public var media:Array<DOMBitmapItem>;
     public var nextSceneIdentifier:Int;
+    public var objectsSnapTo:Bool;
     public var platform:String;
     public var playOptionsPlayFrameActions:Bool;
     public var playOptionsPlayLoop:Bool;
@@ -39,9 +42,12 @@ class XFLDocument extends DOMDocument
         buildNumber = 0;
         creatorInfo = "Adobe Flash Professional CS6";
         currentTimeline = 0;
+        filetypeGUID = "";
         majorVersion = 12;
+        minorVersion = 1;
         media = [];
         nextSceneIdentifier = 1;
+        objectsSnapTo = false;
         platform = "Macintosh";
         playOptionsPlayFrameActions = false;
         playOptionsPlayLoop = false;
