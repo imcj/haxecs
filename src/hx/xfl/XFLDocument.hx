@@ -5,6 +5,7 @@ import hx.xfl.assembler.XFLDocumentAssembler;
 class XFLDocument extends DOMDocument
 {
     var mapMedia:Map<String, DOMBitmapItem>;
+	var mapSymbol:Map<String, DOMSymbolItem>;
 
     public var autoSaveEnabled:Bool;
     public var autoSaveHasPrompted:Bool;
@@ -15,6 +16,7 @@ class XFLDocument extends DOMDocument
     public var majorVersion:Int;
     public var minorVersion:Int;
     public var media:Array<DOMBitmapItem>;
+	public var symbol:Array<DOMSymbolItem>;
     public var nextSceneIdentifier:Int;
     public var objectsSnapTo:Bool;
     public var platform:String;
@@ -46,6 +48,7 @@ class XFLDocument extends DOMDocument
         majorVersion = 12;
         minorVersion = 1;
         media = [];
+		symbol = [];
         nextSceneIdentifier = 1;
         objectsSnapTo = false;
         platform = "Macintosh";
@@ -61,6 +64,7 @@ class XFLDocument extends DOMDocument
         height = 0;
 
         mapMedia = new Map();
+		mapSymbol = new Map();
         mapTimeLines = new Map();
     }
 
@@ -80,6 +84,23 @@ class XFLDocument extends DOMDocument
     {
         return media.iterator();
     }
+	
+	public function addSymbol(symbolItem:DOMSymbolItem):XFLDocument
+	{
+		symbol.push(symbolItem);
+		mapSymbol.set(symbolItem.href, symbolItem);
+		return this;
+	}
+	
+	public function getSymbol(href:String):DOMSymbolItem
+	{
+		return mapSymbol.get(href);
+	}
+	
+	public function getSymbolIterator():Iterator<DOMSymbolItem>
+	{
+		return symbol.iterator();
+	}
 
     public function addTimeLine(timeline:DOMTimeLine):XFLDocument
     {

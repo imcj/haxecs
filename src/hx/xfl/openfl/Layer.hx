@@ -3,6 +3,7 @@ package hx.xfl.openfl;
 import hx.xfl.DOMLayer;
 import hx.xfl.DOMBitmapInstance;
 import flash.display.Sprite;
+import hx.xfl.DOMSymbolInstance;
 
 class Layer extends Sprite
 {
@@ -21,6 +22,10 @@ class Layer extends Sprite
                     var instance = cast(element, DOMBitmapInstance);
                     addChild(new BitmapInstance(instance));
                 }
+				else if (Std.is(element, DOMSymbolInstance)) {
+					var instance = cast(element, DOMSymbolInstance);
+					addChild(new ButtonInstance(instance));
+				}
             }
         }
     }

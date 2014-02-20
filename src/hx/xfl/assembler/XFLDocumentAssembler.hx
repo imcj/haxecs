@@ -36,6 +36,16 @@ class XFLDocumentAssembler extends XFLBaseAssembler
             document.addMedia(bitmapItem);
         }
     }
+	
+	function parseSymbol(document, data:Xml):Void 
+	{
+		var symbolItem;
+		for (element in data.elements()) {
+			symbolItem = new DOMSymbolItem();
+			fillProperty(symbolItem, element);
+            document.addSymbol(symbolItem);
+		}
+	}
 
     public function parse(data:Xml):XFLDocument
     {
@@ -48,7 +58,7 @@ class XFLDocumentAssembler extends XFLBaseAssembler
             } else if ("media" == element.nodeName) {
                 parseMedia(document, element);
             } else if ("symbols" == element.nodeName) {
-
+				parseSymbol(document, element);
             } else if ("timelines" == element.nodeName) {
                 for (timeLine in assemblerTimeLine.parse(element))
                     document.addTimeLine(timeLine);
