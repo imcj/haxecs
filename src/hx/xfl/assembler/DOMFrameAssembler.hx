@@ -19,14 +19,20 @@ class DOMFrameAssembler extends XFLBaseAssembler
     {
         var frames = [];
         var frame;
+        var assembler:IDOMElementAssembler;
+
         for (element in data.elements()) {
             frame = new DOMFrame();
             fillProperty(frame, element);
             frames.push(frame);
 
             for (dom_element in element.firstElement().elements()) {
-                frame.addElement(
-                    assemblers.get(dom_element.nodeName).parse(dom_element));
+                assembler = assemblers.get(dom_element.nodeName);
+                if (null == assembler)
+                    continue;
+                    // throw dom_element.nodeName + 
+                    //       " is not support element type.";
+                frame.addElement(assembler.parse(dom_element));
             }
         }
 
