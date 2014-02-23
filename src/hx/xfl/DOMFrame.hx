@@ -15,7 +15,7 @@ class DOMFrame
     public function new()
     {
         layer = null;
-        duration = -1;
+        duration = 1;
         tweenType = null;
         motionTweenSnap = false;
         index = -1;

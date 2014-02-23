@@ -84,23 +84,23 @@ class XFLDocument extends DOMDocument
     {
         return media.iterator();
     }
-	
-	public function addSymbol(symbolItem:DOMSymbolItem):XFLDocument
-	{
-		symbol.push(symbolItem);
-		mapSymbol.set(symbolItem.href, symbolItem);
-		return this;
-	}
-	
-	public function getSymbol(href:String):DOMSymbolItem
-	{
-		return mapSymbol.get(href);
-	}
-	
-	public function getSymbolIterator():Iterator<DOMSymbolItem>
-	{
-		return symbol.iterator();
-	}
+
+    public function addSymbol(symbolItem:DOMSymbolItem):XFLDocument
+    {
+        symbol.push(symbolItem);
+        mapSymbol.set(symbolItem.href, symbolItem);
+        return this;
+    }
+
+    public function getSymbol(href:String):DOMSymbolItem
+    {
+        return mapSymbol.get(href);
+    }
+
+    public function getSymbolIterator():Iterator<DOMSymbolItem>
+    {
+        return symbol.iterator();
+    }
 
     public function addTimeLine(timeline:DOMTimeLine):XFLDocument
     {

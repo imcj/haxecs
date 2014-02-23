@@ -14,14 +14,14 @@ class XFLBaseAssembler
             if (~/xmlns:?/.match(attribute))
                 continue;
             
-			if (~/lastModified/.match(attribute))
-				continue;
-				
-			if (~/isSelected/.match(attribute))
-				continue;
-				
-			if (~/selected/.match(attribute))
-				continue;
+            if (~/lastModified/.match(attribute))
+                continue;
+
+            if (~/isSelected/.match(attribute))
+            continue;
+
+            if (~/selected/.match(attribute))
+                continue;
             // attribute = attribute.replace("\n", "");
             // attribute = attribute.replace("\r", "");
             // trace(Type.getInstanceFields(Type.getClass(object)));

@@ -17,10 +17,10 @@ class DOMSymbolInstanceAssembler extends XFLBaseAssembler
         var matrix:Matrix = new Matrix();
         var matrix_a:String, matrix_b:String, matrix_c:String, matrix_d:String,
             matrix_tx:String, matrix_ty:String;
-			
-		symbolInstance.matrix = matrix;
 
-		for (element in data.elements()) {
+        symbolInstance.matrix = matrix;
+
+        for (element in data.elements()) {
             if ("matrix" == element.nodeName) {
                 matrix_a  = element.firstElement().get('a');
                 matrix_b  = element.firstElement().get('b');
@@ -49,7 +49,7 @@ class DOMSymbolInstanceAssembler extends XFLBaseAssembler
 
             }
         }
-		
+
         return symbolInstance;
     }
 }

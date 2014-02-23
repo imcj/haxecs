@@ -9,6 +9,7 @@ class DOMLayer
     public var isSelected:Bool;
     public var name:String;
     public var frames:Array<DOMFrame>;
+    public var totalFrames:Int;
 
     public function new()
     {
@@ -19,6 +20,7 @@ class DOMLayer
         isSelected = false;
         name = null;
         frames = [];
+        totalFrames = 0;
     }
 
     public function addFrame(frame:DOMFrame):DOMLayer
