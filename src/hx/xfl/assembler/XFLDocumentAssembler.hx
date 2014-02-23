@@ -1,5 +1,6 @@
 package hx.xfl.assembler;
 
+import hx.Assets;
 import hx.xfl.XFLDocument;
 import hx.xfl.DOMFolderItem;
 
@@ -37,20 +38,31 @@ class XFLDocumentAssembler extends XFLBaseAssembler
         }
     }
 
-    function parseSymbol(document, data:Xml):Void 
+    function parseSymbol(document:XFLDocument, data:Xml):Void 
     {
         var symbolItem;
         for (element in data.elements()) {
             symbolItem = new DOMSymbolItem();
-            fillProperty(symbolItem, element);
+            var file = document.dir + "/LIBRARY/" + element.get("href");
+            var text = Assets.getText(file);
+            var symbolXml = Xml.parse(text).firstChild();
+            fillProperty(symbolItem, symbolXml);
+            for (timeline in symbolXml.elements()) {
+                if ("timeline" == timeline.nodeName) {
+                    symbolItem.timeline = assemblerTimeLine.parse(timeline)[0];
+                    symbolItem.timeline.document = document;
+                }
+            }
+            
             document.addSymbol(symbolItem);
         }
     }
 
-    public function parse(data:Xml):XFLDocument
+    public function parse(data:Xml, path:String):XFLDocument
     {
         var document:XFLDocument = new XFLDocument();
         fillProperty(document, data.firstChild());
+        document.dir = path;
 
         for (element in data.firstChild().elements()) {
             if ("folders" == element.nodeName) {

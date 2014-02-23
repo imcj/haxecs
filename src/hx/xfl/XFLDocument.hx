@@ -5,7 +5,7 @@ import hx.xfl.assembler.XFLDocumentAssembler;
 class XFLDocument extends DOMDocument
 {
     var mapMedia:Map<String, DOMBitmapItem>;
-	var mapSymbol:Map<String, DOMSymbolItem>;
+    var mapSymbol:Map<String, DOMSymbolItem>;
 
     public var autoSaveEnabled:Bool;
     public var autoSaveHasPrompted:Bool;
@@ -16,7 +16,7 @@ class XFLDocument extends DOMDocument
     public var majorVersion:Int;
     public var minorVersion:Int;
     public var media:Array<DOMBitmapItem>;
-	public var symbol:Array<DOMSymbolItem>;
+    public var symbol:Array<DOMSymbolItem>;
     public var nextSceneIdentifier:Int;
     public var objectsSnapTo:Bool;
     public var platform:String;
@@ -48,7 +48,7 @@ class XFLDocument extends DOMDocument
         majorVersion = 12;
         minorVersion = 1;
         media = [];
-		symbol = [];
+        symbol = [];
         nextSceneIdentifier = 1;
         objectsSnapTo = false;
         platform = "Macintosh";
@@ -64,7 +64,7 @@ class XFLDocument extends DOMDocument
         height = 0;
 
         mapMedia = new Map();
-		mapSymbol = new Map();
+        mapSymbol = new Map();
         mapTimeLines = new Map();
     }
 
@@ -88,7 +88,7 @@ class XFLDocument extends DOMDocument
     public function addSymbol(symbolItem:DOMSymbolItem):XFLDocument
     {
         symbol.push(symbolItem);
-        mapSymbol.set(symbolItem.href, symbolItem);
+        mapSymbol.set(symbolItem.name, symbolItem);
         return this;
     }
 
@@ -177,8 +177,7 @@ class XFLDocument extends DOMDocument
     {
         var text = hx.Assets.getText(path + "/DOMDocument.xml");
         var document = XFLDocumentAssembler.instance.parse(
-            Xml.parse(text));
-        document.dir = path;
+            Xml.parse(text), path);
 
         return document;
     }
