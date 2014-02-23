@@ -13,12 +13,15 @@ import hx.xfl.XFLDocument;
  * ...
  * @author Sunshine
  */
-class ButtonInstance extends Sprite
+class ButtonInstance extends SimpleButton
 {
     var dom:DOMSymbolInstance;
+    var layers:Array<Layer>;
 
     public function new(dom:DOMSymbolInstance) 
     {
+        layers = [];
+
         this.dom = dom;
         var document = dom.frame.layer.timeLine.document;
         var file:DOMSymbolItem = 
@@ -41,18 +44,26 @@ class ButtonInstance extends Sprite
         for (timeline in symbol_timeline) {
             symbol_document.addTimeLine(timeline);
         }
-
+        var up = new Sprite();
+        var down = new Sprite();
+        var over = new Sprite();
         for (timeline in symbol_document.getTimeLinesIterator()) {
             for (dom in timeline.layers) {
                 var layer = new Layer(dom);
-                addChild(layer);
+                layer.gotoFrame(0);
+                up.addChild(layer);
+                var layer = new Layer(dom);
+                layer.gotoFrame(1);
+                over.addChild(layer);
+                var layer = new Layer(dom);
+                layer.gotoFrame(2);
+                down.addChild(layer);
             }
         }
 
         this.x = dom.matrix.tx;
         this.y = dom.matrix.ty;
         
-        super();
+        super(up, over, down, up);
     }
-
 }

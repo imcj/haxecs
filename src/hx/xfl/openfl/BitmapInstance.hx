@@ -20,6 +20,8 @@ class BitmapInstance extends Bitmap
         var name = file.sourceExternalFilepath;
         if ("./" == name.substr(0, 2))
             name = name.substr(2);
+        if ("+" == name.substr(0, 1))
+            name = name.substr(1);
         var bmd = openfl.Assets.getBitmapData(
             hx.Path.join(document.dir, [name]));
 

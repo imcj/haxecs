@@ -21,7 +21,8 @@ class Layer extends Sprite
         this.totalFrames = dom.totalFrames;
     }
 
-    public function gotoFrame(index:Int):Void {
+    public function gotoFrame(index:Int):Void
+    {
         if (index >= dom.totalFrames || index < 0)
             return;
         for (frame in dom.getFramesIterator()) {
@@ -31,8 +32,10 @@ class Layer extends Sprite
             }
         }
     }
-    
-    function displayFrame(frame:DOMFrame) {
+
+    function displayFrame(frame:DOMFrame):Void
+    {
+        freeChildren();
         for (element in frame.getElementsIterator()) {
             if (Std.is(element, DOMBitmapInstance)) {
                 var instance = cast(element, DOMBitmapInstance);
@@ -43,5 +46,10 @@ class Layer extends Sprite
                 addChild(new ButtonInstance(instance));
             }
         }
+    }
+
+    function freeChildren():Void
+    {
+        this.removeChildren();
     }
 }
