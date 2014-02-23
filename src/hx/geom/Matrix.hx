@@ -9,13 +9,18 @@ class Matrix
     public var tx:Float;
     public var ty:Float;
 
-    public function new(a=0, b=0, c=0, d=0, tx=0, ty=0)
+    public function new(a=1, b=0, c=0, d=1, tx=0, ty=0)
     {
         this.a = a;
-        this.a = b;
+        this.b = b;
         this.c = c;
         this.d = d;
         this.tx = tx;
         this.ty = ty;
+    }
+
+    public function toFlashMatrix():flash.geom.Matrix
+    {
+        return new flash.geom.Matrix(a, b, c, d, tx, ty);
     }
 }

@@ -3,6 +3,7 @@ package hx.xfl.openfl;
 import flash.display.DisplayObject;
 import flash.display.SimpleButton;
 import flash.display.Sprite;
+import flash.geom.Matrix;
 import hx.xfl.assembler.DOMTimeLineAssembler;
 import hx.xfl.DOMSymbolInstance;
 import hx.xfl.DOMSymbolItem;
@@ -61,8 +62,7 @@ class ButtonInstance extends SimpleButton
             }
         }
 
-        this.x = dom.matrix.tx;
-        this.y = dom.matrix.ty;
+        this.transform.matrix = dom.matrix.toFlashMatrix();
         
         super(up, over, down, up);
     }

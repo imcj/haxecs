@@ -27,7 +27,6 @@ class BitmapInstance extends Bitmap
 
         super(bmd, PixelSnapping.AUTO, true);
 
-        x = dom.matrix.tx;
-        y = dom.matrix.ty;
+        this.transform.matrix = dom.matrix.toFlashMatrix();
     }
 }
