@@ -1,5 +1,6 @@
 package hx.xfl.openfl;
 
+import flash.events.Event;
 import hx.xfl.DOMLayer;
 import hx.xfl.DOMFrame;
 import hx.xfl.DOMBitmapInstance;
@@ -10,6 +11,7 @@ class Layer extends Sprite
 {
     var dom:DOMLayer;
 
+    public var currentFrame:Int;
     public var totalFrames:Int;
 
     public function new(dom:DOMLayer)
@@ -19,9 +21,45 @@ class Layer extends Sprite
 
         this.dom = dom;
         this.totalFrames = dom.totalFrames;
+
+        currentFrame = 0;
+        play();
     }
 
-    public function gotoFrame(index:Int):Void
+    function onFrame(e:Event):Void 
+    {
+        if (currentFrame < totalFrames-1) 
+        {
+            currentFrame = currentFrame + 1;
+            gotoFrame(currentFrame);
+        }
+    }
+
+    public function play():Void 
+    {
+        gotoAndPlay(currentFrame);
+    }
+
+    public function stop():Void 
+    {
+        gotoAndStop(currentFrame);
+    }
+
+    public function gotoAndPlay(index:Int):Void 
+    {
+        currentFrame = index;
+        gotoFrame(currentFrame);
+        this.addEventListener(Event.ENTER_FRAME, onFrame);
+    }
+
+    public function gotoAndStop(index:Int):Void 
+    {
+        currentFrame = index;
+        gotoFrame(currentFrame);
+        this.removeEventListener(Event.ENTER_FRAME, onFrame);
+    }
+
+    function gotoFrame(index:Int):Void
     {
         if (index >= dom.totalFrames || index < 0)
             return;

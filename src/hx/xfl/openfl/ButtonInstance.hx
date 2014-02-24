@@ -29,15 +29,15 @@ class ButtonInstance extends SimpleButton
         var downState = new Sprite();
         for (dom in file.timeline.layers) {
             var layer = new Layer(dom);
-            layer.gotoFrame(0);
+            layer.gotoAndStop(0);
             upState.addChild(layer);
             
             var layer = new Layer(dom);
-            layer.gotoFrame(1);
+            layer.gotoAndStop(1);
             overState.addChild(layer);
 
             var layer = new Layer(dom);
-            layer.gotoFrame(2);
+            layer.gotoAndStop(2);
             downState.addChild(layer);
         }
 
