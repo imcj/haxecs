@@ -6,7 +6,7 @@ class DOMTimeLine
     public var name:String;
     public var layers:Array<DOMLayer>;
     public var mapLayers:Map<String, DOMLayer>;
-	public var currentFrame:Int;
+    public var currentFrame:Int;
     
     public function new()
     {

@@ -6,17 +6,17 @@ package hx.xfl;
  */
 class DOMSymbolItem
 {
-	public var href:String;
-	public var itemIcon:Int;
-	public var itemID:Int;
-	public var loadImmediate:Bool;
+    public var name:String;
+    public var itemID:String;
+    public var symbolType:String;
+    public var timeline:DOMTimeLine;
 
-	public function new() 
-	{
-		href = null;
-		itemIcon = 0;
-		itemID = 0;
-		loadImmediate = false;
-	}
-	
+    public function new() 
+    {
+        name = null;
+        itemID = null;
+        symbolType = null;
+        timeline = null;
+    }
+
 }

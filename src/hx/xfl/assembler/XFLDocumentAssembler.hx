@@ -1,5 +1,6 @@
 package hx.xfl.assembler;
 
+import hx.Assets;
 import hx.xfl.XFLDocument;
 import hx.xfl.DOMFolderItem;
 
@@ -36,21 +37,32 @@ class XFLDocumentAssembler extends XFLBaseAssembler
             document.addMedia(bitmapItem);
         }
     }
-	
-	function parseSymbol(document, data:Xml):Void 
-	{
-		var symbolItem;
-		for (element in data.elements()) {
-			symbolItem = new DOMSymbolItem();
-			fillProperty(symbolItem, element);
-            document.addSymbol(symbolItem);
-		}
-	}
 
-    public function parse(data:Xml):XFLDocument
+    function parseSymbol(document:XFLDocument, data:Xml):Void 
+    {
+        var symbolItem;
+        for (element in data.elements()) {
+            symbolItem = new DOMSymbolItem();
+            var file = document.dir + "/LIBRARY/" + element.get("href");
+            var text = Assets.getText(file);
+            var symbolXml = Xml.parse(text).firstChild();
+            fillProperty(symbolItem, symbolXml);
+            for (timeline in symbolXml.elements()) {
+                if ("timeline" == timeline.nodeName) {
+                    symbolItem.timeline = assemblerTimeLine.parse(timeline)[0];
+                    symbolItem.timeline.document = document;
+                }
+            }
+            
+            document.addSymbol(symbolItem);
+        }
+    }
+
+    public function parse(data:Xml, path:String):XFLDocument
     {
         var document:XFLDocument = new XFLDocument();
         fillProperty(document, data.firstChild());
+        document.dir = path;
 
         for (element in data.firstChild().elements()) {
             if ("folders" == element.nodeName) {
@@ -58,7 +70,7 @@ class XFLDocumentAssembler extends XFLBaseAssembler
             } else if ("media" == element.nodeName) {
                 parseMedia(document, element);
             } else if ("symbols" == element.nodeName) {
-				parseSymbol(document, element);
+                parseSymbol(document, element);
             } else if ("timelines" == element.nodeName) {
                 for (timeLine in assemblerTimeLine.parse(element))
                     document.addTimeLine(timeLine);
