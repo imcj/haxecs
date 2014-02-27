@@ -6,6 +6,8 @@ Haxecs是社区驱动开发支持的，我希望该项目能帮助程序解决�
 
 openfl可以运行在Windows, Mac, Linux, iOS, Android, BlackBerry, Tizen, Flash, HTML5等平台上，兼容flash api。
 
+![screen](http://gzdev.qiniudn.com/screen_haxecs.png)
+
 ### 依赖
 
 - haxe 3.0
@@ -20,6 +22,8 @@ openfl可以运行在Windows, Mac, Linux, iOS, Android, BlackBerry, Tizen, Flash
 # 开始
 
 在线演示，请点击下面的链接：
+
+显示openfl logo的示例
 
 - http://imcj.github.io/haxecs/example/haxecs-openfl-logo/
 
