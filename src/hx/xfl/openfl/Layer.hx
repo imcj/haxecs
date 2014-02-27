@@ -7,6 +7,8 @@ import hx.xfl.DOMBitmapInstance;
 import flash.display.Sprite;
 import hx.xfl.DOMSymbolInstance;
 
+import flash.errors.RangeError;
+
 class Layer extends Sprite
 {
     var dom:DOMLayer;
@@ -86,8 +88,33 @@ class Layer extends Sprite
         }
     }
 
+
+    // TODO
+    //
+    // 下面的removeChildren是从openfl-native中拷贝过来的，在openfl-html5项目中api缺少
+    // removeChidlren方法。
+    // 把removeChildren方法移到openfl-html5项目中并pr。
+    public function removeChildren (beginIndex:Int = 0, endIndex:Int = 0x7fffffff):Void {
+
+        if (endIndex == 0x7fffffff) endIndex = __children.length;
+        if (endIndex < beginIndex) throw new RangeError("removeChildren : endIndex must not be less than beginIndex");
+        if (beginIndex < 0) throw new RangeError("removeChildren : beginIndex out of bounds " + beginIndex);
+        if (endIndex > __children.length) throw new RangeError("removeChildren : endIndex out of bounds " + endIndex + "/" + __children.length);
+
+        var numRemovals = endIndex - beginIndex;
+        while (numRemovals >= 0) {
+            removeChildAt(beginIndex);
+            numRemovals --;
+        }
+    }   
+
     function freeChildren():Void
     {
-        this.removeChildren();
+        try {
+            removeChildren();
+        } catch (e:Dynamic) {
+            // TODO
+            // removeChildren
+        }
     }
 }
