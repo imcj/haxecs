@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<meta title="HaxecsOpenflLogo" package="hx.xfl.example" version="1.0.0" company="Haxecs" />
+	<app main="Main" path="build" file="HaxecsOpenflLogo" />
+	
+	<source path="src" />
+	<source path="../../src/" />
+	
+	<haxelib name="openfl" />
+	
+	<assets path="Assets" rename="assets" exclude="openfl.svg" />
+	<icon path="Assets/openfl.svg" />
+	
+</project>
