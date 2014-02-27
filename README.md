@@ -21,6 +21,8 @@ openfl可以运行在Windows, Mac, Linux, iOS, Android, BlackBerry, Tizen, Flash
 
 在线演示，请点击下面的链接：
 
+- http://imcj.github.io/haxecs/example/haxecs-openfl-logo/
+
 
 # 状态
 
