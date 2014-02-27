@@ -158,6 +158,10 @@ class XFLDocument extends DOMDocument
         return openFromAsset(path);
         #end
 
+        #if js
+        return openFromAsset(path);
+        #end
+
         #if (neko || cpp)
         if (!sys.FileSystem.exists(path))
             throw new hx.xfl.exception.IOError(

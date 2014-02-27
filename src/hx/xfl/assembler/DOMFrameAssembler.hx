@@ -13,6 +13,7 @@ class DOMFrameAssembler extends XFLBaseAssembler
         assemblers = new Map();
         assemblers.set("DOMSymbolInstance", new DOMSymbolInstanceAssembler());
         assemblers.set("DOMBitmapInstance", new DOMBitmapInstanceAssembler());
+        assemblers.set("DOMStaticText", new DOMTextAssembler());
     }
 
     public function parse(data:Xml):Array<DOMFrame>

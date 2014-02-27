@@ -80,10 +80,12 @@ class Layer extends Sprite
             if (Std.is(element, DOMBitmapInstance)) {
                 var instance = cast(element, DOMBitmapInstance);
                 addChild(new BitmapInstance(instance));
-            }
-            else if (Std.is(element, DOMSymbolInstance)) {
+            } else if (Std.is(element, DOMSymbolInstance)) {
                 var instance = cast(element, DOMSymbolInstance);
                 addChild(new ButtonInstance(instance));
+            } else if (Std.is(element, DOMText)) {
+                var instance = cast(element, DOMText);
+                addChild(new TextInstance(instance));
             }
         }
     }
@@ -94,6 +96,7 @@ class Layer extends Sprite
     // 下面的removeChildren是从openfl-native中拷贝过来的，在openfl-html5项目中api缺少
     // removeChidlren方法。
     // 把removeChildren方法移到openfl-html5项目中并pr。
+    #if html5
     public function removeChildren (beginIndex:Int = 0, endIndex:Int = 0x7fffffff):Void {
 
         if (endIndex == 0x7fffffff) endIndex = __children.length;
@@ -107,6 +110,7 @@ class Layer extends Sprite
             numRemovals --;
         }
     }   
+    #end
 
     function freeChildren():Void
     {

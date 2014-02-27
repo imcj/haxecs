@@ -8,9 +8,19 @@ class XFLBaseAssembler
     {
     }
 
-    public function fillProperty<T>(object:T, data:Xml)
+    public function fillProperty<T>(object:T, data:Xml,
+        ignoreProperty:Array<String>=null)
     {
+        var ignorePropertyMap:Map<String, Bool> = null;
+        if (null != ignoreProperty) {
+            ignorePropertyMap = new Map();
+
+            for (propertyName in ignoreProperty)
+                ignorePropertyMap.set(propertyName, true);
+        }
         for (attribute in data.attributes()) {
+            if (ignorePropertyMap != null && ignorePropertyMap.get(attribute))
+                continue;
             if (~/xmlns:?/.match(attribute))
                 continue;
             

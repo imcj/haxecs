@@ -41,8 +41,7 @@ class ButtonInstance extends SimpleButton
             downState.addChild(layer);
         }
 
-        this.transform.matrix = dom.matrix.toFlashMatrix();
-        
         super(upState, overState, downState, upState);
+        this.transform.matrix = dom.matrix.toFlashMatrix();
     }
 }
