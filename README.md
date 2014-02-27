@@ -31,6 +31,11 @@ openfl可以运行在Windows, Mac, Linux, iOS, Android, BlackBerry, Tizen, Flash
 
 ## 开发
 
+### TODO
+
+- 画一个矩形 #2
+- 最简单的动画 #3
+
 你可以查看我们的贡献成员列表：
 
 - https://github.com/imcj/haxecs/graphs/contributors
