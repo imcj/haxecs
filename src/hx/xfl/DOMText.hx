@@ -1,6 +1,6 @@
 package hx.xfl;
 
-class DOMText extends DOMElement implements IDOMElement
+class DOMText extends DOMElement
 {
     public var autoExpand:Bool;
     public var isSelectable:Bool;

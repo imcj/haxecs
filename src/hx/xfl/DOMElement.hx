@@ -4,6 +4,7 @@ import hx.geom.Matrix;
 
 class DOMElement implements IDOMElement
 {
+    public var name:String;
     public var frame:DOMFrame;
     public var libraryItemName(default, default):String;
     public var matrix(default, default):Matrix;

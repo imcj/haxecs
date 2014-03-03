@@ -23,7 +23,7 @@ class BitmapInstance extends Bitmap
         if ("+" == name.substr(0, 1))
             name = name.substr(1);
         var bmd = openfl.Assets.getBitmapData(
-            hx.Path.join(document.dir, [name]));
+            hx.Path.abspath(hx.Path.join(document.dir, [name])));
 
         super(bmd, PixelSnapping.AUTO, true);
 
