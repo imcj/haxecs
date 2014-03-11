@@ -92,9 +92,9 @@ class XFLDocument extends DOMDocument
         return this;
     }
 
-    public function getSymbol(href:String):DOMSymbolItem
+    public function getSymbol(name:String):DOMSymbolItem
     {
-        return mapSymbol.get(href);
+        return mapSymbol.get(name);
     }
 
     public function getSymbolIterator():Iterator<DOMSymbolItem>
@@ -138,7 +138,7 @@ class XFLDocument extends DOMDocument
                 'No such file or directory: \'$xfl_file\'');
 
         var document = XFLDocumentAssembler.instance.parse(
-            Xml.parse(sys.io.File.getContent(xfl_file)));
+            Xml.parse(sys.io.File.getContent(xfl_file)), path);
         document.dir = path;
 
         return document;
@@ -163,15 +163,19 @@ class XFLDocument extends DOMDocument
         #end
 
         #if (neko || cpp)
-        if (!sys.FileSystem.exists(path))
+        /*
+         * FIXME
+
+        if (!sys.FileSystem.exists(absolute))
             throw new hx.xfl.exception.IOError(
                 'No such file or directory: \'$path\'');
 
-        if (sys.FileSystem.isDirectory(path)) {
+        if (sys.FileSystem.isDirectory(absolute)) {
             return openDirectory(path);
         } else {
             return openFile(path);
-        }
+        }*/
+        return openFromAsset(path);
         #end
 
         return null;

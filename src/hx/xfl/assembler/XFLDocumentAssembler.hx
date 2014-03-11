@@ -46,12 +46,15 @@ class XFLDocumentAssembler extends XFLBaseAssembler
             var file = document.dir + "/LIBRARY/" + element.get("href");
             var text = Assets.getText(file);
             var symbolXml = Xml.parse(text).firstChild();
+
             fillProperty(symbolItem, symbolXml);
             for (timeline in symbolXml.elements()) {
                 if ("timeline" == timeline.nodeName) {
                     symbolItem.timeline = assemblerTimeLine.parse(timeline)[0];
                     symbolItem.timeline.document = document;
-                }
+                }/* else if ("include" == timeline.nodeName.toLowerCase()) {
+
+                }*/
             }
             
             document.addSymbol(symbolItem);

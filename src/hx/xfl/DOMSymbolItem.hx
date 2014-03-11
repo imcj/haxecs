@@ -15,7 +15,7 @@ class DOMSymbolItem
     {
         name = null;
         itemID = null;
-        symbolType = null;
+        symbolType = "movie clip";
         timeline = null;
     }
 
