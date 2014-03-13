@@ -2,10 +2,15 @@ package hx.xfl.assembler;
 
 using StringTools;
 
+import hx.xfl.XFLDocument;
+
 class XFLBaseAssembler
 {
-    public function new()
+    var document:XFLDocument;
+
+    public function new(document)
     {
+        this.document = document;
     }
 
     public function fillProperty<T>(object:T, data:Xml,

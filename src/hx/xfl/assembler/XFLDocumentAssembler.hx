@@ -8,14 +8,10 @@ class XFLDocumentAssembler extends XFLBaseAssembler
 {
     public var assemblerTimeLine:DOMTimeLineAssembler;
 
-    static var _instance:XFLDocumentAssembler;
-    static public var instance(get, null):XFLDocumentAssembler;
-
     public function new()
     {
-        super();
-
-        assemblerTimeLine = DOMTimeLineAssembler.instance;
+        super(new XFLDocument());
+        assemblerTimeLine = new DOMTimeLineAssembler(document);
     }
 
     function parseFolders(data:Xml):Array<DOMFolderItem>
@@ -48,10 +44,15 @@ class XFLDocumentAssembler extends XFLBaseAssembler
             var symbolXml = Xml.parse(text).firstChild();
 
             fillProperty(symbolItem, symbolXml);
+
+            document.library.items.push(symbolItem);
+
             for (timeline in symbolXml.elements()) {
                 if ("timeline" == timeline.nodeName) {
                     symbolItem.timeline = assemblerTimeLine.parse(timeline)[0];
                     symbolItem.timeline.document = document;
+
+
                 }/* else if ("include" == timeline.nodeName.toLowerCase()) {
 
                 }*/
@@ -63,7 +64,6 @@ class XFLDocumentAssembler extends XFLBaseAssembler
 
     public function parse(data:Xml, path:String):XFLDocument
     {
-        var document:XFLDocument = new XFLDocument();
         fillProperty(document, data.firstChild());
         document.dir = path;
 
@@ -85,13 +85,5 @@ class XFLDocumentAssembler extends XFLBaseAssembler
         }
 
         return document;
-    }
-
-    static function get_instance():XFLDocumentAssembler
-    {
-        if (null == _instance)
-            _instance = new XFLDocumentAssembler();
-
-        return _instance;
     }
 }

@@ -8,12 +8,9 @@ using StringTools;
 class DOMTextAssembler extends DOMElementAssembler
                        implements IDOMElementAssembler
 {
-    static var _instance:DOMTextAssembler;
-    static public var instance(get, null):DOMTextAssembler;
-
-    public function new()
+    public function new(document)
     {
-        super();
+        super(document);
     }
 
     override public function parse(data:Xml):IDOMElement
@@ -61,12 +58,5 @@ class DOMTextAssembler extends DOMElementAssembler
             node.get("fillColor").replace("#", "0x"));
 
         return attrs;
-    }
-
-    static function get_instance():DOMTextAssembler
-    {
-        if (null == _instance)
-            _instance = new DOMTextAssembler();
-        return _instance;
     }
 }

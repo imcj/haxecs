@@ -2,16 +2,13 @@ package hx.xfl.assembler;
 
 class DOMLayerAssembler extends XFLBaseAssembler
 {
-    static var _instance:DOMLayerAssembler;
-    static public var instance(get, null):DOMLayerAssembler;
-
     var frameAssembler:DOMFrameAssembler;
 
-    public function new()
+    public function new(document)
     {
-        super();
+        super(document);
 
-        frameAssembler = DOMFrameAssembler.instance;
+        frameAssembler = new DOMFrameAssembler(document);
     }
 
     public function parse(data:Xml):Array<DOMLayer>
@@ -30,13 +27,5 @@ class DOMLayerAssembler extends XFLBaseAssembler
         }
 
         return layers;
-    }
-
-    static function get_instance():DOMLayerAssembler
-    {
-        if (null == _instance)
-            _instance = new DOMLayerAssembler();
-
-        return _instance;
     }
 }

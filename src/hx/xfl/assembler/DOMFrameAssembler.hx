@@ -2,18 +2,23 @@ package hx.xfl.assembler;
 
 class DOMFrameAssembler extends XFLBaseAssembler
 {
-    static var _instance:DOMFrameAssembler;
-    static public var instance(get, null):DOMFrameAssembler;
-
     var assemblers:Map<String, IDOMElementAssembler>;
 
-    public function new()
+    public function new(document)
     {
-        super();
+        super(document);
         assemblers = new Map();
-        assemblers.set("DOMSymbolInstance", new DOMSymbolInstanceAssembler());
-        assemblers.set("DOMBitmapInstance", new DOMBitmapInstanceAssembler());
-        assemblers.set("DOMStaticText", new DOMTextAssembler());
+
+        var text_assembler = new DOMTextAssembler(document);
+
+        assemblers.set("DOMSymbolInstance",
+            new DOMSymbolInstanceAssembler(document));
+        assemblers.set("DOMBitmapInstance", 
+            new DOMBitmapInstanceAssembler(document));
+
+        assemblers.set("DOMStaticText", text_assembler);
+        assemblers.set("DOMInputText", text_assembler);
+        assemblers.set("DOMDynamicText", text_assembler);
     }
 
     public function parse(data:Xml):Array<DOMFrame>
@@ -38,13 +43,5 @@ class DOMFrameAssembler extends XFLBaseAssembler
         }
 
         return frames;
-    }
-
-    static function get_instance():DOMFrameAssembler
-    {
-        if (null == _instance)
-            _instance = new DOMFrameAssembler();
-
-        return _instance;
     }
 }

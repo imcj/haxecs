@@ -76,26 +76,38 @@ class MovieClip extends Sprite
         var frame;
         for (layer in domTimeLine.getLayersIterator(false)) {
             frame = layer.getFrameAt(currentFrame);
-            trace(frame);
             for (element in frame.getElementsIterator()) {
                 if (Std.is(element, DOMBitmapInstance)) {
                     var instance = cast(element, DOMBitmapInstance);
-                    addChild(new BitmapInstance(instance));
+                    var displayObject = new BitmapInstance(instance);
+                    
+                    if (null != instance.name)
+                        displayObject.name = instance.name;
+                    addChild(displayObject);
                 } else if (Std.is(element, DOMSymbolInstance)) {
                     var instance = cast(element, DOMSymbolInstance);
                     // TODO
                     // set child name
-                    trace(instance);
                     if ("movie clip" == instance.symbolType ||
                         "" == instance.symbolType) {
-                        trace(instance.libraryItem);
-                        addChild(new MovieClip(instance.libraryItem.timeline));
+                        var displayObject = 
+                            new MovieClip(instance.libraryItem.timeline);
+                        displayObject.transform.matrix = instance.matrix.toFlashMatrix();
+                        if (null != instance.name)
+                            displayObject.name = instance.name;
+                        addChild(displayObject);
                     } else if ("button" == instance.symbolType) {
-                        addChild(new ButtonInstance(instance));
+                        var displayObject = new ButtonInstance(instance);
+                        if (null != instance.name)
+                            displayObject.name = instance.name;
+                        addChild(displayObject);
                     }
                 } else if (Std.is(element, DOMText)) {
                     var instance = cast(element, DOMText);
-                    addChild(new TextInstance(instance));
+                    var displayObject = new TextInstance(instance);
+                    if (null != instance.name)
+                        displayObject.name = instance.name;
+                    addChild(displayObject);
                 }
             }
         }

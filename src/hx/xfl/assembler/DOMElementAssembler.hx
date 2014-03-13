@@ -4,11 +4,11 @@ import hx.geom.Matrix;
 import hx.xfl.DOMBitmapInstance;
 
 class DOMElementAssembler extends XFLBaseAssembler
-                                 implements IDOMElementAssembler
+                                  implements IDOMElementAssembler
 {
-    public function new()
+    public function new(document)
     {
-        super();
+        super(document);
     }
 
     public function parse(data:Xml):IDOMElement

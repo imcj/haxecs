@@ -30,6 +30,7 @@ class XFLDocument extends DOMDocument
     public var width:Float;
     public var height:Float;
     public var xflVersion:Float;
+    public var library:DOMLibrary;
 
     public var dir:String;
 
@@ -66,6 +67,8 @@ class XFLDocument extends DOMDocument
         mapMedia = new Map();
         mapSymbol = new Map();
         mapTimeLines = new Map();
+        
+        library = new DOMLibrary();
     }
 
     public function addMedia(bitmapItem:DOMBitmapItem):XFLDocument
@@ -184,7 +187,7 @@ class XFLDocument extends DOMDocument
     static public function openFromAsset(path:String):XFLDocument
     {
         var text = hx.Assets.getText(path + "/DOMDocument.xml");
-        var document = XFLDocumentAssembler.instance.parse(
+        var document = new XFLDocumentAssembler().parse(
             Xml.parse(text), path);
 
         return document;
