@@ -1,6 +1,6 @@
 package hx.xfl;
 
-class DOMBitmapItem
+class DOMBitmapItem extends DOMItem
 {
     public var allowSmoothing:Bool;
     public var characterId:Int;
@@ -8,7 +8,6 @@ class DOMBitmapItem
     public var frameRight:Int;
     public var frameBottom:Int;
     public var id:Int;
-    public var name:String;
     public var itemID:String;
     public var quality:Int;
     public var originalCompressionType:String;
@@ -24,9 +23,10 @@ class DOMBitmapItem
 
     public function new()
     {
+        super();
+        
         id = 0;
         characterId = 0;
-        name = null;
         itemID = null;
         sourceExternalFilepath = null;
         sourceLastImported = null;

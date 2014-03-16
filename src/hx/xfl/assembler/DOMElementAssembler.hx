@@ -4,7 +4,7 @@ import hx.geom.Matrix;
 import hx.xfl.DOMBitmapInstance;
 
 class DOMElementAssembler extends XFLBaseAssembler
-                                  implements IDOMElementAssembler
+                          implements IDOMElementAssembler
 {
     public function new(document)
     {
@@ -14,7 +14,7 @@ class DOMElementAssembler extends XFLBaseAssembler
     public function parse(data:Xml):IDOMElement
     {
         var element:IDOMElement = createElement();
-        fillProperty(element, data);
+        fillProperty(element, data, ["libraryItemName"]);
 
         for (elementNode in data.elements()) {
             parse_matrix(elementNode, element);

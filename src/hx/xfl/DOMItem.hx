@@ -6,6 +6,5 @@ class DOMItem
 
     public function new()
     {
-        
     }
 }

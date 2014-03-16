@@ -140,7 +140,7 @@ class XFLDocument extends DOMDocument
             throw new hx.xfl.exception.IOError(
                 'No such file or directory: \'$xfl_file\'');
 
-        var document = XFLDocumentAssembler.instance.parse(
+        var document = new XFLDocumentAssembler().parse(
             Xml.parse(sys.io.File.getContent(xfl_file)), path);
         document.dir = path;
 

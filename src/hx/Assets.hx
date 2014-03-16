@@ -16,7 +16,7 @@ class Assets
     static public function getBitmap(name:String):Bitmap
     {
         var bitmap:Bitmap;
-        bitmap = new Bitmap(openfl.Assets.getBitmapData(name),
+        bitmap = new Bitmap(hx.xfl.openfl.Assets.getBitmapData(name),
                 PixelSnapping.AUTO, true);
 
         if (null != hook)

@@ -90,8 +90,14 @@ class MovieClip extends Sprite
                     // set child name
                     if ("movie clip" == instance.symbolType ||
                         "" == instance.symbolType) {
-                        var displayObject = 
-                            new MovieClip(instance.libraryItem.timeline);
+
+                        var item = cast(instance.libraryItem, DOMSymbolItem);
+
+                        if (!Std.is(item, DOMSymbolItem)) {
+                            throw '现在我还不清楚是不是只能是SymbolItem';
+                        }
+
+                        var displayObject = new MovieClip(item.timeline);
                         displayObject.transform.matrix = instance.matrix.toFlashMatrix();
                         if (null != instance.name)
                             displayObject.name = instance.name;

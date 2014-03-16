@@ -14,8 +14,11 @@ class DOMSymbolInstanceAssembler extends DOMElementAssembler
     override public function parse(data:Xml):IDOMElement
     {
         var instance = cast(super.parse(data), DOMSymbolInstance);
-        var i = document.library.findItemIndex(data.get("libraryItemName"));
-        instance.libraryItem = cast(document.library.items[i], DOMSymbolItem);
+        if (data.exists("libraryItemName")) {
+            var i = document.library.findItemIndex(data.get("libraryItemName"));
+            instance.libraryItem = cast(document.library.items[i],
+                DOMSymbolItem);
+        }
 
         return instance;
     }

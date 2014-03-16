@@ -7,7 +7,7 @@ class DOMInstance extends DOMElement
 {
     // symbol bitmap embeded\ video linked\ video video compiled\ clip
     public var instanceType:String;
-    public var libraryItem:DOMSymbolItem;
+    public var libraryItem:DOMItem;
 
     public function new()
     {

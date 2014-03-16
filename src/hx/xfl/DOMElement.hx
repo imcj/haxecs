@@ -6,7 +6,6 @@ class DOMElement implements IDOMElement
 {
     public var name:String;
     public var frame:DOMFrame;
-    public var libraryItemName(default, default):String;
     public var matrix(default, default):Matrix;
     public var centerPoint3DX(default, default):Float;
     public var centerPoint3DY(default, default):Float;
@@ -16,7 +15,6 @@ class DOMElement implements IDOMElement
     public function new()
     {
         frame = null;
-        libraryItemName = null;
         matrix = new Matrix();
         centerPoint3DX = -1;
         centerPoint3DY = -1;

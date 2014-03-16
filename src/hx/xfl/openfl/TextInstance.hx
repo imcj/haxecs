@@ -15,7 +15,7 @@ import flash.text.TextFormatAlign;
 
 class TextInstance extends TextField
 {
-    var dom:DOMText;
+    public var dom:DOMText;
 
     public function new(dom:DOMText) 
     {

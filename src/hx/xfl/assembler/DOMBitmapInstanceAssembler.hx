@@ -3,7 +3,7 @@ package hx.xfl.assembler;
 import hx.geom.Matrix;
 import hx.xfl.DOMBitmapInstance;
 
-class DOMBitmapInstanceAssembler extends DOMElementAssembler
+class DOMBitmapInstanceAssembler extends DOMInstanceAssembler
                                  implements IDOMElementAssembler
 {
     public function new(document)
@@ -11,15 +11,17 @@ class DOMBitmapInstanceAssembler extends DOMElementAssembler
         super(document);
     }
 
-    // override public function parse(data:Xml):DOMBitmapInstance
-    // {
-    //     var element = super.parse(data);
+    override public function parse(data:Xml):DOMBitmapInstance
+    {
+        var element = cast(super.parse(data), DOMBitmapInstance);
 
-    //     for (element in data.elements()) {
-    //     }
+        if (data.exists("libraryItemName")) {
+            var library_item_name = data.get("libraryItemName");
+            element.libraryItem = document.getMedia(library_item_name);
+        }
 
-    //     return cast(element, DOMBitmapInstance);
-    // }
+        return element;
+    }
 
     override public function createElement():IDOMElement
     {
