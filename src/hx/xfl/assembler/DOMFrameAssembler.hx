@@ -15,6 +15,8 @@ class DOMFrameAssembler extends XFLBaseAssembler
             new DOMSymbolInstanceAssembler(document));
         assemblers.set("DOMBitmapInstance", 
             new DOMBitmapInstanceAssembler(document));
+        assemblers.set("DOMShape",
+            new DOMShapeAssembler(document));
 
         assemblers.set("DOMStaticText", text_assembler);
         assemblers.set("DOMInputText", text_assembler);

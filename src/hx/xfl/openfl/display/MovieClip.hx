@@ -21,6 +21,12 @@ class MovieClip extends Sprite
         super();
         name = '';
         this.domTimeLine = domTimeLine;
+        this.totalFrames = 0;
+        for (layer in domTimeLine.layers) {
+            if (this.totalFrames < layer.totalFrames) {
+                this.totalFrames = layer.totalFrames;
+            }
+        }
 
         currentFrame = 0;
         play();
@@ -65,7 +71,6 @@ class MovieClip extends Sprite
             return;
 
         // TODO
-
         displayFrame();
     }
 
@@ -76,6 +81,7 @@ class MovieClip extends Sprite
         var frame;
         for (layer in domTimeLine.getLayersIterator(false)) {
             frame = layer.getFrameAt(currentFrame);
+            if (frame == null) continue;
             for (element in frame.getElementsIterator()) {
                 if (Std.is(element, DOMBitmapInstance)) {
                     var instance = cast(element, DOMBitmapInstance);
@@ -86,6 +92,26 @@ class MovieClip extends Sprite
                     addChild(displayObject);
                 } else if (Std.is(element, DOMSymbolInstance)) {
                     var instance = cast(element, DOMSymbolInstance);
+
+                    // 动画
+                    var deltaX = 0.0;
+                    var deltaY = 0.0;
+                    if (frame.tweenType == "motion") {
+                        var nextFrame = frame;
+                        for (n in 0...layer.frames.length) {
+                            if (layer.frames[n] == frame) {
+                                nextFrame = layer.frames[n + 1];
+                            }
+                        }
+                        var starX = frame.elements[0].matrix.tx;
+                        var starY = frame.elements[0].matrix.ty;
+                        var endX = nextFrame.elements[0].matrix.tx;
+                        var endY = nextFrame.elements[0].matrix.ty;
+                        var perAddX = (endX - starX) / frame.duration;
+                        var perAddY = (endY - starY) / frame.duration;
+                        deltaX = perAddX * (currentFrame-frame.index);
+                        deltaY = perAddY * (currentFrame-frame.index);
+                    }
                     // TODO
                     // set child name
                     if ("movie clip" == instance.symbolType ||
@@ -101,11 +127,15 @@ class MovieClip extends Sprite
                         displayObject.transform.matrix = instance.matrix.toFlashMatrix();
                         if (null != instance.name)
                             displayObject.name = instance.name;
+                        displayObject.x += deltaX;
+                        displayObject.y += deltaY;
                         addChild(displayObject);
                     } else if ("button" == instance.symbolType) {
                         var displayObject = new ButtonInstance(instance);
                         if (null != instance.name)
                             displayObject.name = instance.name;
+                        displayObject.x += deltaX;
+                        displayObject.y += deltaY;
                         addChild(displayObject);
                     }
                 } else if (Std.is(element, DOMText)) {

@@ -2,17 +2,9 @@ package hx.xfl.openfl;
 
 import flash.display.SimpleButton;
 import flash.display.Sprite;
-import flash.geom.Matrix;
-import hx.xfl.assembler.DOMTimeLineAssembler;
 import hx.xfl.DOMSymbolInstance;
 import hx.xfl.DOMSymbolItem;
-import hx.xfl.DOMTimeLine;
-import hx.xfl.XFLDocument;
 
-/**
- * ...
- * @author Sunshine
- */
 class ButtonInstance extends SimpleButton
 {
     var dom:DOMSymbolInstance;
@@ -31,7 +23,7 @@ class ButtonInstance extends SimpleButton
             var layer = new Layer(dom);
             layer.gotoAndStop(0);
             upState.addChild(layer);
-            
+
             var layer = new Layer(dom);
             layer.gotoAndStop(1);
             overState.addChild(layer);

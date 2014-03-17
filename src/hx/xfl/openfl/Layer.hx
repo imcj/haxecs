@@ -6,6 +6,7 @@ import hx.xfl.DOMFrame;
 import hx.xfl.DOMBitmapInstance;
 import flash.display.Sprite;
 import hx.xfl.DOMSymbolInstance;
+import hx.xfl.openfl.display.MovieClip;
 
 import flash.errors.RangeError;
 
@@ -82,7 +83,12 @@ class Layer extends Sprite
                 addChild(new BitmapInstance(instance));
             } else if (Std.is(element, DOMSymbolInstance)) {
                 var instance = cast(element, DOMSymbolInstance);
-                addChild(new ButtonInstance(instance));
+                if (instance.symbolType == "button") {
+                    addChild(new ButtonInstance(instance));
+                }
+                if (instance.symbolType == "graphic") {
+                    addChild(new ShapeInstance(instance));
+                }
             } else if (Std.is(element, DOMText)) {
                 var instance = cast(element, DOMText);
                 addChild(new TextInstance(instance));

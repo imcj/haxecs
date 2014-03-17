@@ -32,7 +32,13 @@ class DOMLayer
 
     public function getFrameAt(index:Int):DOMFrame
     {
-        return frames[index];
+        for (frame in frames) {
+            if (index == frame.index || 
+                index <  frame.index + frame.duration) {
+                return frame;
+            }
+        }
+        return null;
     }
 
     public function getFramesIterator():Iterator<DOMFrame>
