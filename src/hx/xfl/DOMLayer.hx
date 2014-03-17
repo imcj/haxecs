@@ -30,6 +30,11 @@ class DOMLayer
         return this;
     }
 
+    public function getFrameAt(index:Int):DOMFrame
+    {
+        return frames[index];
+    }
+
     public function getFramesIterator():Iterator<DOMFrame>
     {
         return frames.iterator();

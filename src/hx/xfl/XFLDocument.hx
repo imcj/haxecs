@@ -30,6 +30,7 @@ class XFLDocument extends DOMDocument
     public var width:Float;
     public var height:Float;
     public var xflVersion:Float;
+    public var library:DOMLibrary;
 
     public var dir:String;
 
@@ -66,6 +67,8 @@ class XFLDocument extends DOMDocument
         mapMedia = new Map();
         mapSymbol = new Map();
         mapTimeLines = new Map();
+        
+        library = new DOMLibrary();
     }
 
     public function addMedia(bitmapItem:DOMBitmapItem):XFLDocument
@@ -92,9 +95,9 @@ class XFLDocument extends DOMDocument
         return this;
     }
 
-    public function getSymbol(href:String):DOMSymbolItem
+    public function getSymbol(name:String):DOMSymbolItem
     {
-        return mapSymbol.get(href);
+        return mapSymbol.get(name);
     }
 
     public function getSymbolIterator():Iterator<DOMSymbolItem>
@@ -137,8 +140,8 @@ class XFLDocument extends DOMDocument
             throw new hx.xfl.exception.IOError(
                 'No such file or directory: \'$xfl_file\'');
 
-        var document = XFLDocumentAssembler.instance.parse(
-            Xml.parse(sys.io.File.getContent(xfl_file)));
+        var document = new XFLDocumentAssembler().parse(
+            Xml.parse(sys.io.File.getContent(xfl_file)), path);
         document.dir = path;
 
         return document;
@@ -158,16 +161,24 @@ class XFLDocument extends DOMDocument
         return openFromAsset(path);
         #end
 
+        #if js
+        return openFromAsset(path);
+        #end
+
         #if (neko || cpp)
-        if (!sys.FileSystem.exists(path))
+        /*
+         * FIXME
+
+        if (!sys.FileSystem.exists(absolute))
             throw new hx.xfl.exception.IOError(
                 'No such file or directory: \'$path\'');
 
-        if (sys.FileSystem.isDirectory(path)) {
+        if (sys.FileSystem.isDirectory(absolute)) {
             return openDirectory(path);
         } else {
             return openFile(path);
-        }
+        }*/
+        return openFromAsset(path);
         #end
 
         return null;
@@ -176,7 +187,7 @@ class XFLDocument extends DOMDocument
     static public function openFromAsset(path:String):XFLDocument
     {
         var text = hx.Assets.getText(path + "/DOMDocument.xml");
-        var document = XFLDocumentAssembler.instance.parse(
+        var document = new XFLDocumentAssembler().parse(
             Xml.parse(text), path);
 
         return document;

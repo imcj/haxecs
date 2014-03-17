@@ -2,7 +2,7 @@ package hx.xfl;
 
 import hx.geom.Matrix;
 
-class DOMSymbolInstance extends DOMElement
+class DOMSymbolInstance extends DOMInstance
 {
     public var selected:Bool;
     public var symbolType:String;

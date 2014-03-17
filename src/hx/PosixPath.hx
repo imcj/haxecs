@@ -22,4 +22,64 @@ class PosixPath implements IPath
         }
         return path;
     }
+
+    function isabs(s:String):Bool
+    {
+        return s.startsWith("/");
+    }
+
+    function repeat(s:String, num:Int)
+    {
+        var r:String = "";
+        for (i in 0...num)
+            r += s;
+
+        return r;
+    }
+
+    function normpath(path:String):String
+    {
+        if ('' == path)
+            return '.';
+
+        var dot = '.';
+        var slash = '/';
+        var initial_slashes:Int = -1;
+        if (slash == path.substr(0, 1))
+            initial_slashes = 1;
+
+        if (initial_slashes > -1
+            && path.startsWith("//")
+            && ! path.startsWith("///"))
+            initial_slashes = 2;
+
+        var comps = path.split("/");
+        var new_comps:Array<String> = [];
+
+        for (comp in comps) {
+            if (comp == '' || comp == ".")
+                continue;
+            if (comp != '..'
+                || (-1 == initial_slashes && 0 == new_comps.length)
+                || (0 < new_comps.length
+                    && new_comps[new_comps.length - 1] == '..'))
+                new_comps.push(comp)
+            else if (0 < new_comps.length)
+                new_comps.pop();
+        }
+        path = new_comps.join(slash);
+        if (0 < initial_slashes)
+            path = repeat(slash, initial_slashes) + path;
+
+        return if (path == "") dot else path;
+    }
+
+    public function abspath(path:String):String
+    {
+        #if (cpp||neko||php)
+        if (!isabs(path))
+            path = join(Sys.getCwd(), [path]);
+        #end
+        return normpath(path);
+    }
 }

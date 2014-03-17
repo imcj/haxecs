@@ -22,7 +22,7 @@ class ButtonInstance extends SimpleButton
         this.dom = dom;
         var document = dom.frame.layer.timeLine.document;
         var file:DOMSymbolItem = 
-        cast(document.getSymbol(dom.libraryItemName), DOMSymbolItem);
+        cast(document.getSymbol(dom.libraryItem.name), DOMSymbolItem);
 
         var upState = new Sprite();
         var overState = new Sprite();
@@ -41,8 +41,7 @@ class ButtonInstance extends SimpleButton
             downState.addChild(layer);
         }
 
-        this.transform.matrix = dom.matrix.toFlashMatrix();
-        
         super(upState, overState, downState, upState);
+        this.transform.matrix = dom.matrix.toFlashMatrix();
     }
 }

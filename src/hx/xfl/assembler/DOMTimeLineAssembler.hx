@@ -2,15 +2,12 @@ package hx.xfl.assembler;
 
 class DOMTimeLineAssembler extends XFLBaseAssembler
 {
-    static var _instance:DOMTimeLineAssembler;
-    static public var instance(get, null):DOMTimeLineAssembler;
-
     var layerAssembler:DOMLayerAssembler;
 
-    public function new()
+    public function new(document:XFLDocument)
     {
-        super();
-        layerAssembler = DOMLayerAssembler.instance;
+        super(document);
+        layerAssembler = new DOMLayerAssembler(document);
     }
 
     public function parse(data:Xml):Array<DOMTimeLine>
@@ -29,13 +26,5 @@ class DOMTimeLineAssembler extends XFLBaseAssembler
         }
 
         return timeLines;
-    }
-
-    static function get_instance():DOMTimeLineAssembler
-    {
-        if (null == _instance)
-            _instance = new DOMTimeLineAssembler();
-
-        return _instance;
     }
 }

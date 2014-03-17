@@ -1,5 +1,7 @@
 package hx;
 
+using StringTools;
+
 class Path
 {
     static var path:IPath = new PosixPath();
@@ -15,5 +17,10 @@ class Path
     static public function join(a:String, b:Array<String>):String
     {
         return path.join(a, b);
+    }
+
+    static public function abspath(path:String):String
+    {
+        return Path.path.abspath(path);
     }
 }
