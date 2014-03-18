@@ -35,10 +35,12 @@ class TextInstance extends TextField
 
         text   = dom.getTextRunAt(0).characters;
         width  = dom.width;
-        height = dom.height;
+        height = dom.height + 10;
         selectable = false;
 
-        this.transform.matrix = dom.matrix.toFlashMatrix();
+        var matrix = dom.matrix.toFlashMatrix();
+        matrix.ty -= 6;
+        this.transform.matrix = matrix;
     }
 
     function alignmentEnumToString(alignment)
