@@ -9,7 +9,6 @@
     <gif>0</gif>
     <jpeg>0</jpeg>
     <png>0</png>
-    <svg>0</svg>
     <rnwk>0</rnwk>
     <swc>0</swc>
     <flashDefaultName>1</flashDefaultName>
@@ -19,31 +18,29 @@
     <gifDefaultName>1</gifDefaultName>
     <jpegDefaultName>1</jpegDefaultName>
     <pngDefaultName>1</pngDefaultName>
-    <svgDefaultName>1</svgDefaultName>
     <rnwkDefaultName>1</rnwkDefaultName>
     <swcDefaultName>1</swcDefaultName>
-    <flashFileName>Rectangle.swf</flashFileName>
-    <projectorWinFileName>Rectangle.exe</projectorWinFileName>
-    <projectorMacFileName>Rectangle.app</projectorMacFileName>
-    <htmlFileName>Rectangle.html</htmlFileName>
-    <gifFileName>Rectangle.gif</gifFileName>
-    <jpegFileName>Rectangle.jpg</jpegFileName>
-    <pngFileName>Rectangle.png</pngFileName>
-    <svgFileName>Rectangle.svg</svgFileName>
-    <rnwkFileName>Rectangle.smil</rnwkFileName>
-    <swcFileName>Rectangle.swc</swcFileName>
+    <flashFileName>Classic.swf</flashFileName>
+    <projectorWinFileName>Classic.exe</projectorWinFileName>
+    <projectorMacFileName>Classic.app</projectorMacFileName>
+    <htmlFileName>Classic.html</htmlFileName>
+    <gifFileName>Classic.gif</gifFileName>
+    <jpegFileName>Classic.jpg</jpegFileName>
+    <pngFileName>Classic.png</pngFileName>
+    <rnwkFileName>Classic.smil</rnwkFileName>
+    <swcFileName>Classic.swc</swcFileName>
   </PublishFormatProperties>
   <PublishHtmlProperties enabled="true">
     <VersionDetectionIfAvailable>0</VersionDetectionIfAvailable>
     <VersionInfo>11,8,0,0;11,7,0,0;11,6,0,0;11,5,0,0;11,4,0,0;11,3,0,0;11,2,0,0;11,1,0,0;10,3,0,0;10,2,153,0;10,1,52,0;9,0,124,0;8,0,24,0;7,0,14,0;6,0,79,0;5,0,58,0;4,0,32,0;3,0,8,0;2,0,1,12;1,0,0,1;</VersionInfo>
     <UsingDefaultContentFilename>1</UsingDefaultContentFilename>
     <UsingDefaultAlternateFilename>1</UsingDefaultAlternateFilename>
-    <ContentFilename>Rectangle_content.html</ContentFilename>
-    <AlternateFilename>Rectangle_alternate.html</AlternateFilename>
+    <ContentFilename>Classic_content.html</ContentFilename>
+    <AlternateFilename>Classic_alternate.html</AlternateFilename>
     <UsingOwnAlternateFile>0</UsingOwnAlternateFile>
     <OwnAlternateFilename></OwnAlternateFilename>
     <Width>550</Width>
-    <Height>400</Height>
+    <Height>472</Height>
     <Align>0</Align>
     <Units>0</Units>
     <Loop>1</Loop>
@@ -72,8 +69,8 @@
     <EventFormat>0</EventFormat>
     <EventCompress>7</EventCompress>
     <OverrideSounds>0</OverrideSounds>
-    <Version>21</Version>
-    <ExternalPlayer>FlashPlayer11.8</ExternalPlayer>
+    <Version>20</Version>
+    <ExternalPlayer>FlashPlayer11.7</ExternalPlayer>
     <ActionScriptVersion>3</ActionScriptVersion>
     <PackageExportFrame>1</PackageExportFrame>
     <PackagePaths></PackagePaths>
@@ -116,7 +113,7 @@
   </PublishFlashProperties>
   <PublishJpegProperties enabled="true">
     <Width>550</Width>
-    <Height>400</Height>
+    <Height>472</Height>
     <Progressive>0</Progressive>
     <DPI>4718592</DPI>
     <Size>0</Size>
@@ -142,7 +139,7 @@
   </PublishRNWKProperties>
   <PublishGifProperties enabled="true">
     <Width>550</Width>
-    <Height>400</Height>
+    <Height>472</Height>
     <Animated>0</Animated>
     <MatchMovieDim>1</MatchMovieDim>
     <Loop>1</Loop>

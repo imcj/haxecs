@@ -1,19 +1,22 @@
-<DOMDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" currentTimeline="1" xflVersion="2.4" creatorInfo="Adobe Flash Professional CC" platform="Macintosh" versionInfo="Saved by Adobe Flash Macintosh 13.1 build 217" majorVersion="13" minorVersion="1" buildNumber="217" objectsSnapTo="false" nextSceneIdentifier="2" playOptionsPlayLoop="false" playOptionsPlayPages="false" playOptionsPlayFrameActions="false" filetypeGUID="DD0DDBBF-5BEF-45B2-9F24-A3048D2A676F">
+<DOMDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" height="472" currentTimeline="1" xflVersion="2.3" creatorInfo="Adobe Flash Professional CC" platform="Windows" versionInfo="Saved by Adobe Flash Windows 13.0 build 808" majorVersion="13" buildNumber="808" objectsSnapTo="false" nextSceneIdentifier="2" playOptionsPlayLoop="false" playOptionsPlayPages="false" playOptionsPlayFrameActions="false">
+     <media>
+          <DOMBitmapItem name="pause.png" itemID="53044e29-0000003e" sourceExternalFilepath="LIBRARY/pause.png" sourceLastImported="1395105331" sourcePlatform="macintosh" externalFileSize="3629" allowSmoothing="true" originalCompressionType="lossless" quality="50" href="pause.png" bitmapDataHRef="M 1 1395111908.dat" frameRight="1160" frameBottom="1220"/>
+          <DOMBitmapItem name="pause_down.png" itemID="53044e29-0000003f" sourceExternalFilepath="+LIBRARY/pause_down.png" sourceLastImported="1378184885" sourcePlatform="macintosh" externalFileSize="4863" allowSmoothing="true" originalCompressionType="lossless" quality="50" href="pause_down.png" bitmapDataHRef="M 2 1395111908.dat" frameRight="1160" frameBottom="1220"/>
+     </media>
      <symbols>
-          <Include href="Symbol 1.xml" itemIcon="1" loadImmediate="false" itemID="530ec3fc-00000133" lastModified="1393476604"/>
-          <Include href="Tween 1.xml" itemIcon="1" loadImmediate="false" itemID="530ec409-00000138" lastModified="1393476617"/>
-          <Include href="Tween 2.xml" itemIcon="1" loadImmediate="false" itemID="530ec409-0000013d" lastModified="1393476617"/>
+          <Include href="Pause.xml" itemIcon="0" loadImmediate="false" itemID="53044d61-00000023" lastModified="1393144126"/>
+          <Include href="test.xml" loadImmediate="false" itemID="5326a70b-00000017" lastModified="1395042107"/>
      </symbols>
      <timelines>
-          <DOMTimeline name="Scene 1" currentFrame="31">
+          <DOMTimeline name="Scene 1">
                <layers>
-                    <DOMLayer name="Layer 1" color="#4F80FF" current="true" isSelected="true">
+                    <DOMLayer name="layer 3" color="#9933CC" current="true" isSelected="true" autoNamed="false">
                          <frames>
-                              <DOMFrame index="0" duration="50" tweenType="motion" motionTweenSnap="true" keyMode="22017">
+                              <DOMFrame index="0" duration="43" tweenType="motion" motionTweenSnap="true" keyMode="22017">
                                    <elements>
-                                        <DOMSymbolInstance libraryItemName="Tween 1" selected="true" symbolType="graphic" loop="loop">
+                                        <DOMSymbolInstance libraryItemName="Pause" symbolType="button">
                                              <matrix>
-                                                  <Matrix tx="217" ty="170"/>
+                                                  <Matrix tx="58" ty="200.5"/>
                                              </matrix>
                                              <transformationPoint>
                                                   <Point/>
@@ -21,16 +24,96 @@
                                         </DOMSymbolInstance>
                                    </elements>
                               </DOMFrame>
-                              <DOMFrame index="50" keyMode="9728">
+                              <DOMFrame index="43" duration="18" tweenType="motion" motionTweenSnap="true" keyMode="22017">
                                    <elements>
-                                        <DOMSymbolInstance libraryItemName="Tween 2" selected="true" symbolType="graphic" loop="loop">
+                                        <DOMSymbolInstance libraryItemName="Pause" selected="true" symbolType="button" centerPoint3DX="373.4" centerPoint3DY="275">
                                              <matrix>
-                                                  <Matrix tx="411.95" ty="169"/>
+                                                  <Matrix a="1.14097595214844" b="0.660003662109375" c="-0.634994506835938" d="1.09771728515625" tx="375" ty="238.5"/>
                                              </matrix>
                                              <transformationPoint>
                                                   <Point/>
                                              </transformationPoint>
                                         </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="61" duration="11" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Pause" symbolType="button" centerPoint3DX="549" centerPoint3DY="233">
+                                             <matrix>
+                                                  <Matrix tx="520" ty="202.5"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 1" color="#4F80FF" autoNamed="false">
+                         <frames>
+                              <DOMFrame index="0" duration="43" tweenType="motion" motionTweenSnap="true" keyMode="22017">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="test">
+                                             <matrix>
+                                                  <Matrix tx="106" ty="162.5"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point x="29" y="30.5"/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="43" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="test" centerPoint3DX="404" centerPoint3DY="150">
+                                             <matrix>
+                                                  <Matrix tx="375" ty="119.5"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point x="29" y="30.5"/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#4F80FF" autoNamed="false">
+                         <frames>
+                              <DOMFrame index="0" duration="20" keyMode="9728">
+                                   <elements>
+                                        <DOMBitmapInstance libraryItemName="pause.png">
+                                             <matrix>
+                                                  <Matrix tx="141" ty="366.45"/>
+                                             </matrix>
+                                        </DOMBitmapInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="20" duration="24" keyMode="9728">
+                                   <elements>
+                                        <DOMBitmapInstance libraryItemName="pause.png">
+                                             <matrix>
+                                                  <Matrix tx="449" ty="317.5"/>
+                                             </matrix>
+                                        </DOMBitmapInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="44" duration="25" keyMode="9728">
+                                   <elements>
+                                        <DOMBitmapInstance libraryItemName="pause.png">
+                                             <matrix>
+                                                  <Matrix tx="487" ty="344.5"/>
+                                             </matrix>
+                                        </DOMBitmapInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="69" duration="3" keyMode="9728">
+                                   <elements>
+                                        <DOMBitmapInstance libraryItemName="pause.png">
+                                             <matrix>
+                                                  <Matrix tx="104" ty="305.55"/>
+                                             </matrix>
+                                        </DOMBitmapInstance>
                                    </elements>
                               </DOMFrame>
                          </frames>

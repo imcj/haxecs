@@ -1,6 +1,7 @@
 package hx.xfl.openfl.display;
 
 import flash.events.Event;
+import hx.geom.Matrix;
 import hx.xfl.DOMLayer;
 import hx.xfl.DOMFrame;
 import hx.xfl.DOMBitmapInstance;
@@ -94,8 +95,7 @@ class MovieClip extends Sprite
                     var instance = cast(element, DOMSymbolInstance);
 
                     // 动画
-                    var deltaX = 0.0;
-                    var deltaY = 0.0;
+                    var matrix = instance.matrix;
                     if (frame.tweenType == "motion") {
                         var nextFrame = frame;
                         for (n in 0...layer.frames.length) {
@@ -103,14 +103,11 @@ class MovieClip extends Sprite
                                 nextFrame = layer.frames[n + 1];
                             }
                         }
-                        var starX = frame.elements[0].matrix.tx;
-                        var starY = frame.elements[0].matrix.ty;
-                        var endX = nextFrame.elements[0].matrix.tx;
-                        var endY = nextFrame.elements[0].matrix.ty;
-                        var perAddX = (endX - starX) / frame.duration;
-                        var perAddY = (endY - starY) / frame.duration;
-                        deltaX = perAddX * (currentFrame-frame.index);
-                        deltaY = perAddY * (currentFrame-frame.index);
+                        var starMatrix = frame.elements[0].matrix;
+                        var endMatrix = nextFrame.elements[0].matrix;
+                        var perAddMatrix = endMatrix.sub(starMatrix).div(frame.duration);
+                        var deltaMatrix = perAddMatrix.multi(currentFrame-frame.index);
+                        matrix = starMatrix.add(deltaMatrix);
                     }
                     // TODO
                     // set child name
@@ -124,18 +121,15 @@ class MovieClip extends Sprite
                         }
 
                         var displayObject = new MovieClip(item.timeline);
-                        displayObject.transform.matrix = instance.matrix.toFlashMatrix();
                         if (null != instance.name)
                             displayObject.name = instance.name;
-                        displayObject.x += deltaX;
-                        displayObject.y += deltaY;
+                        displayObject.transform.matrix = matrix.toFlashMatrix();
                         addChild(displayObject);
                     } else if ("button" == instance.symbolType) {
                         var displayObject = new ButtonInstance(instance);
                         if (null != instance.name)
                             displayObject.name = instance.name;
-                        displayObject.x += deltaX;
-                        displayObject.y += deltaY;
+                        displayObject.transform.matrix = matrix.toFlashMatrix();
                         addChild(displayObject);
                     }
                 } else if (Std.is(element, DOMText)) {
