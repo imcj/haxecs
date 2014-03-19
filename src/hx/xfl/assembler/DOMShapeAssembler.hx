@@ -55,6 +55,7 @@ class DOMShapeAssembler extends DOMElementAssembler
                 }
             }else if ("edges" == element.nodeName){
                 for (edgeXml in element.elements()) {
+                    if (null != edgeXml.get("cubics")) continue;
                     var edge = new Edge();
                     fillProperty(edge, edgeXml, ["edges"]);
                     //TODO
