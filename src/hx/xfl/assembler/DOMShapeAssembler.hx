@@ -56,6 +56,7 @@ class DOMShapeAssembler extends DOMElementAssembler
                     var edges = edgeXml.get("edges");
                     edges = StringTools.replace(edges, "!", "$!");
                     edges = StringTools.replace(edges, "|", "$|");
+                    edges = StringTools.replace(edges, "[", "$[");
                     var edgesArr = edges.split("$");
                     if (edgesArr[0] == "" || edgesArr[0] == " ") {
                         edgesArr.shift();
@@ -73,6 +74,15 @@ class DOMShapeAssembler extends DOMElementAssembler
                             command.y = Std.parseInt(com.substr(6, 4))/20;
                         }
                         edge.edges.push(command);
+                    }
+                    var n = 1;
+                    while (n < edge.edges.length) {
+                        if (edge.edges[n-1].x == edge.edges[n].x &&
+                            edge.edges[n-1].y == edge.edges[n].y) {
+                            edge.edges.remove(edge.edges[n]);
+                        }else {
+                            n++;
+                        }
                     }
                     instance.edge = edge;
                 }
