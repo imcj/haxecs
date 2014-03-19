@@ -27,23 +27,29 @@ class DOMShapeAssembler extends DOMElementAssembler
         // 解析矢量图绘制数据
         for (element in data.elements()) {
             if ("fills" == element.nodeName) {
-                for (fill in element.firstElement().elements()) {
-                    if ("SolidColor" == fill.nodeName) {
+                for (fill in element.elements()) {
+                    if ("SolidColor" == fill.firstElement().nodeName) {
                         var fillStyle = new FillStyle();
-                        fillProperty(fillStyle, element.firstElement());
-                        fillStyle.type = fill.nodeName;
-                        var c = "0x"+fill.get("color").substring(1);
+                        fillProperty(fillStyle, fill);
+                        fillStyle.type = fill.firstElement().nodeName;
+                        var c = "0x"+fill.firstElement().get("color").substring(1);
                         fillStyle.color = Std.parseInt(c);
                         instance.fills.set(fillStyle.index, fillStyle);
                     }
                 }
             }else if ("strokes" == element.nodeName) {
-                for (stroke in element.firstElement().elements()) {
-                    if ("SolidStroke" == stroke.nodeName) {
+                for (stroke in element.elements()) {
+                    if ("SolidStroke" == stroke.firstElement().nodeName) {
                         var strokeStyle = new StrokeStyle();
-                        fillProperty(strokeStyle, element.firstElement());
-                        strokeStyle.type = stroke.nodeName;
                         fillProperty(strokeStyle, stroke);
+                        strokeStyle.type = stroke.firstElement().nodeName;
+                        fillProperty(strokeStyle, stroke.firstElement());
+                        var c = stroke.firstElement().firstElement().firstElement().get("color");
+                        if (null != c)
+                            c = "0x" + c.substring(1);
+                        else
+                            c = "0x0";
+                        strokeStyle.color = Std.parseInt(c);
                         instance.strokes.set(strokeStyle.index, strokeStyle);
                     }
                 }
@@ -84,7 +90,7 @@ class DOMShapeAssembler extends DOMElementAssembler
                             n++;
                         }
                     }
-                    instance.edge = edge;
+                    instance.edges.push(edge);
                 }
             }
         }
