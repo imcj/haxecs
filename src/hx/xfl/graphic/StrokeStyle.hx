@@ -7,6 +7,7 @@ class StrokeStyle
 
     public var scaleMode:String;
     public var color:Int;
+    public var weight:Float;
 
     public function new()
     {
@@ -14,6 +15,7 @@ class StrokeStyle
         type = "";
         scaleMode = "";
         color = 0;
+        weight = 1;
     }
     
 }

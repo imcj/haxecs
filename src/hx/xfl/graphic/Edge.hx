@@ -8,8 +8,8 @@ class Edge
 
     public function new()
     {
-        fillStyle1 = 1;
-        strokeStyle = 1;
+        fillStyle1 = 0;
+        strokeStyle = 0;
         edges = [];
     }
     

@@ -8,6 +8,7 @@ import hx.xfl.DOMBitmapInstance;
 import flash.display.Sprite;
 import hx.xfl.DOMShape;
 import hx.xfl.DOMSymbolInstance;
+import hx.xfl.openfl.ShapeInstance;
 
 import flash.errors.RangeError;
 
@@ -141,6 +142,8 @@ class MovieClip extends Sprite
                     addChild(displayObject);
                 } else if (Std.is(element, DOMShape)) {
                     var instance = cast(element, DOMShape);
+                    var displayObject = new ShapeInstance(instance);
+                    addChild(displayObject);
                 }
             }
         }
