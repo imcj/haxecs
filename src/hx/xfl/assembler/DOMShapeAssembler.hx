@@ -79,12 +79,26 @@ class DOMShapeAssembler extends DOMElementAssembler
                             command.x = Std.parseInt(com.substr(1, 4))/20;
                             command.y = Std.parseInt(com.substr(6, 4))/20;
                         }
+                        if (com.indexOf("[") >= 0 ) {
+                            command.type = "curveTo";
+                            command.x = Std.parseInt(com.substr(1, 4))/20;
+                            command.y = Std.parseInt(com.substr(6, 4))/20;
+                            command.anchorX = Std.parseInt(com.substr(11, 4))/20;
+                            command.anchorY = Std.parseInt(com.substr(16, 4))/20;
+                        }
                         edge.edges.push(command);
                     }
+
+                    //去除多余moveTo
                     var n = 1;
                     while (n < edge.edges.length) {
-                        if (edge.edges[n-1].x == edge.edges[n].x &&
+                        if (edge.edges[n - 1].type != "curveTo" &&
+                            edge.edges[n-1].x == edge.edges[n].x &&
                             edge.edges[n-1].y == edge.edges[n].y) {
+                            edge.edges.remove(edge.edges[n]);
+                        }else if (edge.edges[n - 1].type == "curveTo" &&
+                            edge.edges[n-1].anchorX == edge.edges[n].x &&
+                            edge.edges[n-1].anchorY == edge.edges[n].y) {
                             edge.edges.remove(edge.edges[n]);
                         }else {
                             n++;

@@ -20,13 +20,17 @@ class ShapeInstance extends Shape
         for (edge in dom.edges) {
             var fill = dom.fills.get(edge.fillStyle1);
             var stroke = dom.strokes.get(edge.strokeStyle);
-            switch (fill.type) {
-                case "SolidColor":
-                    this.graphics.beginFill(fill.color);
+            if (null != fill) {
+                switch (fill.type) {
+                    case "SolidColor":
+                        this.graphics.beginFill(fill.color);
+                }
             }
-            switch (stroke.type) {
-                case "SolidStroke":
-                    this.graphics.lineStyle(stroke.weight,stroke.color);
+            if (null != stroke) {
+                switch (stroke.type) {
+                    case "SolidStroke":
+                        this.graphics.lineStyle(stroke.weight,stroke.color);
+                }
             }
             for (draw in edge.edges) {
                 switch (draw.type) {
@@ -34,6 +38,8 @@ class ShapeInstance extends Shape
                         this.graphics.moveTo(draw.x, draw.y);
                     case "lineTo":
                         this.graphics.lineTo(draw.x, draw.y);
+                    case "curveTo":
+                        this.graphics.curveTo(draw.x, draw.y, draw.anchorX, draw.anchorY);
                 }
             }
             this.graphics.endFill();
