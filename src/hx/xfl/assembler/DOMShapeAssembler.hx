@@ -120,7 +120,19 @@ class DOMShapeAssembler extends DOMElementAssembler
         str = str.substring(1);
         var strArr = str.split(" ");
         for (vStr in strArr) {
-            values.push(Std.parseFloat(vStr)/20);
+            var indexHash   =   vStr.indexOf("#");
+            var indexS      =   vStr.indexOf("S");
+            if (indexS >= 0) {
+                vStr = vStr.substring(0, indexS);
+            }
+            if (indexHash >= 0) {
+                vStr = "0x" + vStr.substring(1);
+                var indexDecimal=   vStr.indexOf(".");
+                if (indexDecimal >= 0) {
+                    vStr = vStr.substring(0, indexDecimal);
+                }
+            }
+            values.push(Std.parseInt(vStr)/20);
         }
         return values;
     }
