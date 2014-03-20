@@ -20,15 +20,15 @@ class ShapeInstance extends Shape
         var preX = -1.0;
         var preY = -1.0;
         for (edge in dom.fillEdges) {
-            var fill = dom.fills.get(edge.fillStyle0);
-            if (edge.fillStyle1 != 0)
-                fill = dom.fills.get(edge.fillStyle1);
+            var fill = dom.fills.get(edge.fillStyle1);
+            if (edge.fillStyle0 != 0)
+                fill = dom.fills.get(edge.fillStyle0);
             if (null != fill) {
                 switch (fill.type) {
                     case "SolidColor":
                         if (fill != prefill) {
                             this.graphics.endFill();
-                            this.graphics.beginFill(fill.color);
+                            this.graphics.beginFill(fill.color,fill.alpha);
                             preX = -1.0;
                             preY = -1.0;
                             trace("begin");
