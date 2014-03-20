@@ -87,22 +87,27 @@ class DOMShapeAssembler extends DOMElementAssembler
                         edge.edges.push(command);
                     }
 
-                    //去除多余moveTo
+                    //去除填充中多余moveTo
+                    var fillEdge = new Edge();
+                    fillEdge.fillStyle0 = edge.fillStyle0;
+                    fillEdge.fillStyle1 = edge.fillStyle1;
+                    fillEdge.edges = edge.edges.copy();
                     var n = 1;
-                    while (n < edge.edges.length) {
-                        if (edge.edges[n - 1].type != "curveTo" &&
-                            edge.edges[n-1].x == edge.edges[n].x &&
-                            edge.edges[n-1].y == edge.edges[n].y) {
-                            edge.edges.remove(edge.edges[n]);
-                        }else if (edge.edges[n - 1].type == "curveTo" &&
-                            edge.edges[n-1].anchorX == edge.edges[n].x &&
-                            edge.edges[n-1].anchorY == edge.edges[n].y) {
-                            edge.edges.remove(edge.edges[n]);
+                    while (n < fillEdge.edges.length) {
+                        if (fillEdge.edges[n - 1].type != "curveTo" &&
+                            fillEdge.edges[n-1].x == fillEdge.edges[n].x &&
+                            fillEdge.edges[n-1].y == fillEdge.edges[n].y) {
+                            fillEdge.edges.remove(fillEdge.edges[n]);
+                        }else if (fillEdge.edges[n - 1].type == "curveTo" &&
+                            fillEdge.edges[n-1].anchorX == fillEdge.edges[n].x &&
+                            fillEdge.edges[n-1].anchorY == fillEdge.edges[n].y) {
+                            fillEdge.edges.remove(fillEdge.edges[n]);
                         }else {
                             n++;
                         }
                     }
                     instance.edges.push(edge);
+                    instance.fillEdges.push(fillEdge);
                 }
             }
         }
