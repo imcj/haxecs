@@ -17,20 +17,26 @@ class ShapeInstance extends Shape
 
         // TODO
         // 实现矢量图绘制，目前只是用个红色圆代替
+        var prefill = null;
         for (edge in dom.edges) {
             var fill = dom.fills.get(edge.fillStyle1);
             var stroke = dom.strokes.get(edge.strokeStyle);
             if (null != fill) {
                 switch (fill.type) {
                     case "SolidColor":
-                        this.graphics.beginFill(fill.color);
+                        if (fill != prefill) {
+                            this.graphics.beginFill(fill.color);
+                        }
+                        prefill = fill;
                 }
             }
             if (null != stroke) {
                 switch (stroke.type) {
                     case "SolidStroke":
-                        this.graphics.lineStyle(stroke.weight,stroke.color);
+                        this.graphics.lineStyle(stroke.weight, stroke.color);
                 }
+            }else {
+                this.graphics.lineStyle();
             }
             for (draw in edge.edges) {
                 switch (draw.type) {
@@ -42,7 +48,7 @@ class ShapeInstance extends Shape
                         this.graphics.curveTo(draw.x, draw.y, draw.anchorX, draw.anchorY);
                 }
             }
-            this.graphics.endFill();
+            //this.graphics.endFill();
         }
         
     }

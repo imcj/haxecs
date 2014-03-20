@@ -69,22 +69,18 @@ class DOMShapeAssembler extends DOMElementAssembler
                         edgesArr.shift();
                     }
                     for (com in edgesArr) {
-                        var values = parseNumbers(com);
                         var command = new EdgeCommand();
+                        var values = parseNumbers(com);
+                        command.x = values[0];
+                        command.y = values[1];
                         if (com.indexOf("!") >= 0 ) {
                             command.type = "moveTo";
-                            command.x = values[0];
-                            command.y = values[1];
                         }
                         if (com.indexOf("|") >= 0 ) {
                             command.type = "lineTo";
-                            command.x = values[0];
-                            command.y = values[1];
                         }
                         if (com.indexOf("[") >= 0 ) {
                             command.type = "curveTo";
-                            command.x = values[0];
-                            command.y = values[1];
                             command.anchorX = values[2];
                             command.anchorY = values[3];
                         }
@@ -120,11 +116,11 @@ class DOMShapeAssembler extends DOMElementAssembler
         str = str.substring(1);
         var strArr = str.split(" ");
         for (vStr in strArr) {
-            var indexHash   =   vStr.indexOf("#");
             var indexS      =   vStr.indexOf("S");
             if (indexS >= 0) {
                 vStr = vStr.substring(0, indexS);
             }
+            var indexHash   =   vStr.indexOf("#");
             if (indexHash >= 0) {
                 vStr = "0x" + vStr.substring(1);
                 var indexDecimal=   vStr.indexOf(".");
