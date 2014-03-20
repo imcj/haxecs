@@ -69,23 +69,24 @@ class DOMShapeAssembler extends DOMElementAssembler
                         edgesArr.shift();
                     }
                     for (com in edgesArr) {
+                        var values = parseNumbers(com);
                         var command = new EdgeCommand();
                         if (com.indexOf("!") >= 0 ) {
                             command.type = "moveTo";
-                            command.x = Std.parseInt(com.substr(1, 4))/20;
-                            command.y = Std.parseInt(com.substr(6, 4))/20;
+                            command.x = values[0];
+                            command.y = values[1];
                         }
                         if (com.indexOf("|") >= 0 ) {
                             command.type = "lineTo";
-                            command.x = Std.parseInt(com.substr(1, 4))/20;
-                            command.y = Std.parseInt(com.substr(6, 4))/20;
+                            command.x = values[0];
+                            command.y = values[1];
                         }
                         if (com.indexOf("[") >= 0 ) {
                             command.type = "curveTo";
-                            command.x = Std.parseInt(com.substr(1, 4))/20;
-                            command.y = Std.parseInt(com.substr(6, 4))/20;
-                            command.anchorX = Std.parseInt(com.substr(11, 4))/20;
-                            command.anchorY = Std.parseInt(com.substr(16, 4))/20;
+                            command.x = values[0];
+                            command.y = values[1];
+                            command.anchorX = values[2];
+                            command.anchorY = values[3];
                         }
                         edge.edges.push(command);
                     }
@@ -111,6 +112,17 @@ class DOMShapeAssembler extends DOMElementAssembler
         }
 
         return instance;
+    }
+
+    function parseNumbers(str:String):Array<Float>
+    {
+        var values:Array<Float> = [];
+        str = str.substring(1);
+        var strArr = str.split(" ");
+        for (vStr in strArr) {
+            values.push(Std.parseFloat(vStr)/20);
+        }
+        return values;
     }
 
     override public function createElement():IDOMElement {
