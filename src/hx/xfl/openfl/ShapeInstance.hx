@@ -20,8 +20,9 @@ class ShapeInstance extends Shape
         var preX = -1.0;
         var preY = -1.0;
         for (edge in dom.fillEdges) {
-            var fill = dom.fills.get(edge.fillStyle1);
-            if(edge.fillStyle0 !=0)fill = dom.fills.get(edge.fillStyle0);
+            var fill = dom.fills.get(edge.fillStyle0);
+            if (edge.fillStyle1 != 0)
+                fill = dom.fills.get(edge.fillStyle1);
             if (null != fill) {
                 switch (fill.type) {
                     case "SolidColor":
@@ -30,6 +31,7 @@ class ShapeInstance extends Shape
                             this.graphics.beginFill(fill.color);
                             preX = -1.0;
                             preY = -1.0;
+                            trace("begin");
                         }
                         prefill = fill;
                 }
@@ -52,6 +54,7 @@ class ShapeInstance extends Shape
                     preX = draw.anchorX;
                     preY = draw.anchorY;
                 }
+                trace(draw.x, draw.y);
             }
         }
         this.graphics.endFill();
