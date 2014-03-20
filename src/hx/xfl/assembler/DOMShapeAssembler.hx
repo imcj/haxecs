@@ -64,11 +64,12 @@ class DOMShapeAssembler extends DOMElementAssembler
                     edges = StringTools.replace(edges, "!", "$!");
                     edges = StringTools.replace(edges, "|", "$|");
                     edges = StringTools.replace(edges, "[", "$[");
+                    edges = StringTools.replace(edges, "\r", "");
+                    edges = StringTools.replace(edges, "\n", "");
                     var edgesArr = edges.split("$");
-                    if (edgesArr[0] == "" || edgesArr[0] == " ") {
-                        edgesArr.shift();
-                    }
                     for (com in edgesArr) {
+                        if (com == " " || com == "")
+                            continue;
                         var command = new EdgeCommand();
                         var values = parseNumbers(com);
                         command.x = values[0];

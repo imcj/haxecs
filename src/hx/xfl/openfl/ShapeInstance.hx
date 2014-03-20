@@ -40,6 +40,8 @@ class ShapeInstance extends Shape
 
         //绘制填充
         var prefill = null;
+        var preX = -1.0;
+        var preY = -1.0;
         for (edge in dom.fillEdges) {
             var fill = dom.fills.get(edge.fillStyle1);
             if(edge.fillStyle0 !=0)fill = dom.fills.get(edge.fillStyle0);
@@ -53,6 +55,8 @@ class ShapeInstance extends Shape
                 }
             }
             for (draw in edge.edges) {
+                if (draw.x == preX && draw.y == preY) 
+                    continue;
                 switch (draw.type) {
                     case "moveTo":
                         this.graphics.moveTo(draw.x, draw.y);
@@ -61,7 +65,8 @@ class ShapeInstance extends Shape
                     case "curveTo":
                         this.graphics.curveTo(draw.x, draw.y, draw.anchorX, draw.anchorY);
                 }
-                trace(draw.x , draw.y);
+                preX = draw.x;
+                preY = draw.y;
             }
         }
     }
