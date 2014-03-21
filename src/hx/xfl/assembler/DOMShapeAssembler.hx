@@ -89,30 +89,53 @@ class DOMShapeAssembler extends DOMElementAssembler
                         edge.edges.push(command);
                     }
 
-                    //获得填充数据
-                    var fillEdge = edge.clone();
                     instance.edges.push(edge);
-                    instance.fillEdges.push(fillEdge);
+                    //获得分类填充数据
+                    if (edge.fillStyle0 != 0) {
+                        instance.fillEdges0.push(edge.clone());
+                    }
+                    if (edge.fillStyle1 != 0) {
+                        instance.fillEdges1.push(edge.clone());
+                    }
                 }
             }
         }
         //重制填充数据
-        var preFill = null;
+        var preFill:Edge = null;
         var needDeleteFill = [];
-        for (fill in instance.fillEdges) {
+        for (fill in instance.fillEdges0) {
             if (null != preFill &&
-                fill.fillStyle0 == preFill.fillStyle0 &&
-                fill.fillStyle1 == preFill.fillStyle1) {
-                preFill.edges.concat(fill.edges);
+                fill.fillStyle0 == preFill.fillStyle0) {
+                preFill.edges = preFill.edges.concat(fill.edges);
                 needDeleteFill.push(fill);
+            }else {
+                preFill = fill;
             }
-            preFill = fill;
         }
         while (needDeleteFill.length > 0) {
             var fill = needDeleteFill.pop();
-            instance.fillEdges.remove(fill);
+            instance.fillEdges0.remove(fill);
         }
-        for (f in instance.fillEdges) {
+        for (f in instance.fillEdges0) {
+            f.rebuild();
+        }
+
+        //preFill = null;
+        //needDeleteFill = [];
+        //for (fill in instance.fillEdges1) {
+            //if (null != preFill &&
+                //fill.fillStyle1 == preFill.fillStyle1) {
+                //preFill.edges = preFill.edges.concat(fill.edges);
+                //needDeleteFill.push(fill);
+            //}else {
+                //preFill = fill;
+            //}
+        //}
+        //while (needDeleteFill.length > 0) {
+            //var fill = needDeleteFill.pop();
+            //instance.fillEdges1.remove(fill);
+        //}
+        for (f in instance.fillEdges1) {
             f.rebuild();
         }
 
