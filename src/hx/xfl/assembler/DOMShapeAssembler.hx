@@ -89,11 +89,8 @@ class DOMShapeAssembler extends DOMElementAssembler
                         edge.edges.push(command);
                     }
 
-                    //去除填充中多余moveTo
-                    var fillEdge = new Edge();
-                    fillEdge.fillStyle0 = edge.fillStyle0;
-                    fillEdge.fillStyle1 = edge.fillStyle1;
-                    fillEdge.edges = edge.edges.copy();
+                    //获得填充数据
+                    var fillEdge = edge.clone();
                     var n = 1;
                     while (n < fillEdge.edges.length) {
                         if (fillEdge.edges[n - 1].type != "curveTo" &&

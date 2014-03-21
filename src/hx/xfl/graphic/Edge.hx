@@ -14,5 +14,15 @@ class Edge
         strokeStyle = 0;
         edges = [];
     }
-    
+
+    public function clone():Edge
+    {
+        var edge = new Edge();
+        edge.fillStyle0 = this.fillStyle0;
+        edge.fillStyle1 = this.fillStyle1;
+        edge.strokeStyle = this.strokeStyle;
+        edge.edges = this.edges.copy();
+
+        return edge;
+    }
 }
