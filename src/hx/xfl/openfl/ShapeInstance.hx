@@ -1,6 +1,8 @@
 package hx.xfl.openfl;
 
 import flash.display.Shape;
+import flash.Lib;
+import flash.text.TextField;
 import hx.xfl.DOMShape;
 import hx.xfl.DOMSymbolInstance;
 import hx.xfl.DOMSymbolItem;
@@ -25,16 +27,24 @@ class ShapeInstance extends Shape
                         trace("Fill0",edge.fillStyle0);
                 }
             }
+            var n = 0;
             for (draw in edge.edges) {
                 switch (draw.type) {
                     case "moveTo":
-                        this.graphics.moveTo(draw.x, draw.y);
+                        if (n != 0) this.graphics.lineTo(draw.x, draw.y);
+                        else this.graphics.moveTo(draw.x, draw.y);
                     case "lineTo":
                         this.graphics.lineTo(draw.x, draw.y);
                     case "curveTo":
                         this.graphics.curveTo(draw.x, draw.y, draw.anchorX, draw.anchorY);
                 }
                 trace(draw.type, draw.x, draw.y);
+                var text = new TextField();
+                text.x = draw.x;
+                text.y = draw.y;
+                text.text = draw.x + "," + draw.y;
+                Lib.current.stage.addChild(text);
+                n++;
             }
             this.graphics.endFill();
         }
@@ -44,7 +54,6 @@ class ShapeInstance extends Shape
                 switch (fill.type) {
                     case "SolidColor":
                         this.graphics.beginFill(fill.color,fill.alpha);
-                        trace("Fill1",edge.fillStyle1);
                 }
             }
             for (draw in edge.edges) {
@@ -56,7 +65,6 @@ class ShapeInstance extends Shape
                     case "curveTo":
                         this.graphics.curveTo(draw.x, draw.y, draw.anchorX, draw.anchorY);
                 }
-                trace(draw.type, draw.x, draw.y);
             }
             this.graphics.endFill();
         }

@@ -34,6 +34,48 @@ class Edge
         }
     }
 
+    public function reverse():Void 
+    {
+        var areas = [];
+        var fillArea = [];
+        for (e in edges) {
+            if (e.type == "moveTo") {
+                if (fillArea.length > 0) {
+                    areas.push(fillArea.copy());
+                    fillArea = [];
+                }
+            }
+            fillArea.push(e.clone());
+        }
+        if (fillArea.length > 0) {
+            areas.push(fillArea.copy());
+        }
+
+        var reversAreas = [];
+        for (area in areas) {
+            var reversArea = [];
+            for (n in 0...area.length) {
+                reversArea.push(area.pop());
+            }
+            if (reversArea[0].type != "curveTo") {
+                reversArea[0].type = "moveTo";
+                reversArea[reversArea.length - 1].type = "lineTo";
+            }else {
+                reversArea[0].type = "moveTo";
+                reversArea[reversArea.length - 1].type = "curveTo";
+                reversArea[reversArea.length - 1].anchorX = reversArea[0].anchorX;
+                reversArea[reversArea.length - 1].anchorY = reversArea[0].anchorY;
+            }
+            
+            reversAreas.push(reversArea);
+        }
+
+        edges = [];
+        for (a in reversAreas) {
+            edges = edges.concat(a);
+        }
+    }
+
     public function clone():Edge
     {
         var edge = new Edge();

@@ -16,5 +16,16 @@ class EdgeCommand
         anchorX = 0;
         anchorY = 0;
     }
-    
+
+    public function clone():EdgeCommand
+    {
+        var command = new EdgeCommand();
+        command.anchorX = this.anchorX;
+        command.anchorY = this.anchorY;
+        command.type = this.type;
+        command.x = this.x;
+        command.y = this.y;
+
+        return command;
+    }
 }

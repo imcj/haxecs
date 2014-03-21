@@ -118,6 +118,7 @@ class DOMShapeAssembler extends DOMElementAssembler
         }
         for (f in instance.fillEdges0) {
             f.rebuild();
+            f.reverse();
         }
 
         preFill = null;
