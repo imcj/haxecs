@@ -120,21 +120,21 @@ class DOMShapeAssembler extends DOMElementAssembler
             f.rebuild();
         }
 
-        //preFill = null;
-        //needDeleteFill = [];
-        //for (fill in instance.fillEdges1) {
-            //if (null != preFill &&
-                //fill.fillStyle1 == preFill.fillStyle1) {
-                //preFill.edges = preFill.edges.concat(fill.edges);
-                //needDeleteFill.push(fill);
-            //}else {
-                //preFill = fill;
-            //}
-        //}
-        //while (needDeleteFill.length > 0) {
-            //var fill = needDeleteFill.pop();
-            //instance.fillEdges1.remove(fill);
-        //}
+        preFill = null;
+        needDeleteFill = [];
+        for (fill in instance.fillEdges1) {
+            if (null != preFill &&
+                fill.fillStyle1 == preFill.fillStyle1) {
+                preFill.edges = preFill.edges.concat(fill.edges);
+                needDeleteFill.push(fill);
+            }else {
+                preFill = fill;
+            }
+        }
+        while (needDeleteFill.length > 0) {
+            var fill = needDeleteFill.pop();
+            instance.fillEdges1.remove(fill);
+        }
         for (f in instance.fillEdges1) {
             f.rebuild();
         }
