@@ -15,6 +15,25 @@ class Edge
         edges = [];
     }
 
+    //重制edges数据，去除多余的moveTo
+    public function rebuild():Void 
+    {
+        var n = 1;
+        while (n < edges.length) {
+            if (edges[n - 1].type != "curveTo" &&
+                edges[n-1].x == edges[n].x &&
+                edges[n-1].y == edges[n].y) {
+                edges.remove(edges[n]);
+            }else if (edges[n - 1].type == "curveTo" &&
+                edges[n-1].anchorX == edges[n].x &&
+                edges[n-1].anchorY == edges[n].y) {
+                edges.remove(edges[n]);
+            }else {
+                n++;
+            }
+        }
+    }
+
     public function clone():Edge
     {
         var edge = new Edge();
