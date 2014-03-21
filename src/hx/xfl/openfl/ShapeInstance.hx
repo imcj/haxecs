@@ -16,29 +16,18 @@ class ShapeInstance extends Shape
         var document = dom.frame.layer.timeLine.document;
 
         //绘制填充
-        var prefill = null;
-        var preX = -1.0;
-        var preY = -1.0;
         for (edge in dom.fillEdges) {
-            var fill = dom.fills.get(edge.fillStyle1);
-            if (edge.fillStyle0 != 0)
-                fill = dom.fills.get(edge.fillStyle0);
+            var fill = dom.fills.get(edge.fillStyle0);
+            if (edge.fillStyle1 != 0)
+                fill = dom.fills.get(edge.fillStyle1);
             if (null != fill) {
                 switch (fill.type) {
                     case "SolidColor":
-                        if (fill != prefill) {
-                            this.graphics.endFill();
-                            this.graphics.beginFill(fill.color,fill.alpha);
-                            preX = -1.0;
-                            preY = -1.0;
-                            trace("begin");
-                        }
-                        prefill = fill;
+                        this.graphics.beginFill(fill.color,fill.alpha);
+                        trace("begin");
                 }
             }
             for (draw in edge.edges) {
-                if (draw.x == preX && draw.y == preY) 
-                    continue;
                 switch (draw.type) {
                     case "moveTo":
                         this.graphics.moveTo(draw.x, draw.y);
@@ -47,17 +36,10 @@ class ShapeInstance extends Shape
                     case "curveTo":
                         this.graphics.curveTo(draw.x, draw.y, draw.anchorX, draw.anchorY);
                 }
-                if ("curveTo" != draw.type) {
-                    preX = draw.x;
-                    preY = draw.y;
-                }else {
-                    preX = draw.anchorX;
-                    preY = draw.anchorY;
-                }
-                trace(draw.x, draw.y);
+                trace(draw.type, draw.x, draw.y);
             }
+            this.graphics.endFill();
         }
-        this.graphics.endFill();
 
         // 绘制线条
         for (edge in dom.edges) {

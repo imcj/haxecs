@@ -91,24 +91,29 @@ class DOMShapeAssembler extends DOMElementAssembler
 
                     //获得填充数据
                     var fillEdge = edge.clone();
-                    var n = 1;
-                    while (n < fillEdge.edges.length) {
-                        if (fillEdge.edges[n - 1].type != "curveTo" &&
-                            fillEdge.edges[n-1].x == fillEdge.edges[n].x &&
-                            fillEdge.edges[n-1].y == fillEdge.edges[n].y) {
-                            fillEdge.edges.remove(fillEdge.edges[n]);
-                        }else if (fillEdge.edges[n - 1].type == "curveTo" &&
-                            fillEdge.edges[n-1].anchorX == fillEdge.edges[n].x &&
-                            fillEdge.edges[n-1].anchorY == fillEdge.edges[n].y) {
-                            fillEdge.edges.remove(fillEdge.edges[n]);
-                        }else {
-                            n++;
-                        }
-                    }
                     instance.edges.push(edge);
                     instance.fillEdges.push(fillEdge);
                 }
             }
+        }
+        //重制填充数据
+        var preFill = null;
+        var needDeleteFill = [];
+        for (fill in instance.fillEdges) {
+            if (null != preFill &&
+                fill.fillStyle0 == preFill.fillStyle0 &&
+                fill.fillStyle1 == preFill.fillStyle1) {
+                preFill.edges.concat(fill.edges);
+                needDeleteFill.push(fill);
+            }
+            preFill = fill;
+        }
+        while (needDeleteFill.length > 0) {
+            var fill = needDeleteFill.pop();
+            instance.fillEdges.remove(fill);
+        }
+        for (f in instance.fillEdges) {
+            f.rebuild();
         }
 
         return instance;
@@ -120,11 +125,13 @@ class DOMShapeAssembler extends DOMElementAssembler
         str = str.substring(1);
         var strArr = str.split(" ");
         for (vStr in strArr) {
-            var indexS      =   vStr.indexOf("S");
+            //忽略S及其以后数据
+            var indexS = vStr.indexOf("S");
             if (indexS >= 0) {
                 vStr = vStr.substring(0, indexS);
             }
-            var indexHash   =   vStr.indexOf("#");
+            //解析16进制数据，忽略小数点后的数据
+            var indexHash = vStr.indexOf("#");
             if (indexHash >= 0) {
                 vStr = "0x" + vStr.substring(1);
                 var indexDecimal=   vStr.indexOf(".");
