@@ -94,11 +94,14 @@ class DOMShapeAssembler extends DOMElementAssembler
                     //获得分类填充数据
                     if (edge.fillStyle0 != 0) {
                         instance.fillEdges0.push(edge.clone());
+                        var reverseEdge = edge.clone();
+                        reverseEdge.rebuild();
+                        reverseEdge.reverse();
                         var e = instance.fillEdges.get(edge.fillStyle0);
-                        if (null == e)
-                            instance.fillEdges.set(edge.fillStyle0, edge.clone());
+                        if (null == e) 
+                            instance.fillEdges.set(edge.fillStyle0, reverseEdge);
                         else
-                            e.edges = e.edges.concat(edge.edges.copy());
+                            e.edges = e.edges.concat(reverseEdge.edges);
                     }
                     if (edge.fillStyle1 != 0) {
                         instance.fillEdges1.push(edge.clone());
@@ -137,7 +140,13 @@ class DOMShapeAssembler extends DOMElementAssembler
             f.rebuild();
         }
 
-        
+        //重制fillEdges
+        for (fe in instance.fillEdges) {
+            fe.rebuild();
+            //fe.reverse();
+            fe.alignByVectors();
+            fe.rebuild();
+        }
 
         return instance;
     }
