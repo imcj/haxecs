@@ -36,20 +36,7 @@ class Edge
 
     public function reverse():Void 
     {
-        var areas = [];
-        var fillArea = [];
-        for (e in edges) {
-            if (e.type == "moveTo") {
-                if (fillArea.length > 0) {
-                    areas.push(fillArea.copy());
-                    fillArea = [];
-                }
-            }
-            fillArea.push(e.clone());
-        }
-        if (fillArea.length > 0) {
-            areas.push(fillArea.copy());
-        }
+        var areas = getAreas();
 
         var reversAreas = [];
         for (area in areas) {
@@ -74,6 +61,25 @@ class Edge
         for (a in reversAreas) {
             edges = edges.concat(a);
         }
+    }
+
+    public function getAreas():Array<Array<EdgeCommand>>
+    {
+        var areas = [];
+        var fillArea = [];
+        for (e in edges) {
+            if (e.type == "moveTo") {
+                if (fillArea.length > 0) {
+                    areas.push(fillArea.copy());
+                    fillArea = [];
+                }
+            }
+            fillArea.push(e.clone());
+        }
+        if (fillArea.length > 0) {
+            areas.push(fillArea.copy());
+        }
+        return areas;
     }
 
     public function clone():Edge
