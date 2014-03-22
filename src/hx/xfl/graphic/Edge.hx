@@ -63,10 +63,24 @@ class Edge
         }
     }
 
-    public function getAreasVectors():Array<{starX:Float,starY:Float,angle:Float}>
+    function vectorsByClockwise():Array<{starX:Float,starY:Float,angle:Float,index:Int}>
+    {
+        var vectors = getAreasVectors();
+        vectors.sort(function (a,b):Int 
+        {
+            if (a.angle != b.angle)
+                return Reflect.compare(a.angle, b.angle);
+            else 
+                return -Reflect.compare(a.starX, b.starX);
+        });
+        return vectors;
+    }
+
+    function getAreasVectors():Array<{starX:Float,starY:Float,angle:Float,index:Int}>
     {
         var vectors = [];
         var areas = getAreas();
+        var n = 0;
         for (area in areas) {
             var vector:Dynamic = { };
             vector.starX = area[0].x;
@@ -81,13 +95,15 @@ class Edge
                 endY = endEdgeCommand.anchorY;
             }
             vector.angle = Math.atan2(endY - vector.starY, endX - vector.starX);
+            vector.index = n;
+            n++;
 
             vectors.push(vector);
         }
         return vectors;
     }
 
-    public function getAreas():Array<Array<EdgeCommand>>
+    function getAreas():Array<Array<EdgeCommand>>
     {
         var areas = [];
         var fillArea = [];
