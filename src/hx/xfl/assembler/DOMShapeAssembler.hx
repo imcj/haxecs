@@ -98,7 +98,7 @@ class DOMShapeAssembler extends DOMElementAssembler
                         if (null == e)
                             instance.fillEdges.set(edge.fillStyle0, edge.clone());
                         else
-                            e.edges.concat(edge.edges.copy());
+                            e.edges = e.edges.concat(edge.edges.copy());
                     }
                     if (edge.fillStyle1 != 0) {
                         instance.fillEdges1.push(edge.clone());
@@ -106,7 +106,7 @@ class DOMShapeAssembler extends DOMElementAssembler
                         if (null == e)
                             instance.fillEdges.set(edge.fillStyle1, edge.clone());
                         else
-                            e.edges.concat(edge.edges.copy());
+                            e.edges = e.edges.concat(edge.edges.copy());
                     }
                 }
             }
