@@ -63,6 +63,30 @@ class Edge
         }
     }
 
+    public function getAreasVectors():Array<{starX:Float,starY:Float,angle:Float}>
+    {
+        var vectors = [];
+        var areas = getAreas();
+        for (area in areas) {
+            var vector:Dynamic = { };
+            vector.starX = area[0].x;
+            vector.starY = area[0].y;
+            var endEdgeCommand = area[area.length - 1];
+            var endX, endY;
+            if ("lineTo" == endEdgeCommand.type) {
+                endX = endEdgeCommand.x;
+                endY = endEdgeCommand.y;
+            }else {
+                endX = endEdgeCommand.anchorX;
+                endY = endEdgeCommand.anchorY;
+            }
+            vector.angle = Math.atan2(endY - vector.starY, endX - vector.starX);
+
+            vectors.push(vector);
+        }
+        return vectors;
+    }
+
     public function getAreas():Array<Array<EdgeCommand>>
     {
         var areas = [];
