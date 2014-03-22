@@ -94,9 +94,19 @@ class DOMShapeAssembler extends DOMElementAssembler
                     //获得分类填充数据
                     if (edge.fillStyle0 != 0) {
                         instance.fillEdges0.push(edge.clone());
+                        var e = instance.fillEdges.get(edge.fillStyle0);
+                        if (null == e)
+                            instance.fillEdges.set(edge.fillStyle0, edge.clone());
+                        else
+                            e.edges.concat(edge.edges.copy());
                     }
                     if (edge.fillStyle1 != 0) {
                         instance.fillEdges1.push(edge.clone());
+                        var e = instance.fillEdges.get(edge.fillStyle1);
+                        if (null == e)
+                            instance.fillEdges.set(edge.fillStyle1, edge.clone());
+                        else
+                            e.edges.concat(edge.edges.copy());
                     }
                 }
             }
@@ -123,24 +133,11 @@ class DOMShapeAssembler extends DOMElementAssembler
             f.alignByVectors();
         }
 
-        preFill = null;
-        needDeleteFill = [];
-        for (fill in instance.fillEdges1) {
-            if (null != preFill &&
-                fill.fillStyle1 == preFill.fillStyle1) {
-                preFill.edges = preFill.edges.concat(fill.edges);
-                needDeleteFill.push(fill);
-            }else {
-                preFill = fill;
-            }
-        }
-        while (needDeleteFill.length > 0) {
-            var fill = needDeleteFill.pop();
-            instance.fillEdges1.remove(fill);
-        }
         for (f in instance.fillEdges1) {
             f.rebuild();
         }
+
+        
 
         return instance;
     }
