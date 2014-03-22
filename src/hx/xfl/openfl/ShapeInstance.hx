@@ -24,7 +24,7 @@ class ShapeInstance extends Shape
                 switch (fill.type) {
                     case "SolidColor":
                         this.graphics.beginFill(fill.color,fill.alpha);
-                        trace("Fill0",edge.fillStyle0);
+                        #if debug trace("Fill0",edge.fillStyle0);#end
                 }
             }
             var n = 0;
@@ -38,12 +38,14 @@ class ShapeInstance extends Shape
                     case "curveTo":
                         this.graphics.curveTo(draw.x, draw.y, draw.anchorX, draw.anchorY);
                 }
+                #if debug
                 trace(draw.type, draw.x, draw.y);
                 var text = new TextField();
                 text.x = draw.x;
                 text.y = draw.y;
                 text.text = draw.x + "," + draw.y;
                 Lib.current.stage.addChild(text);
+                #end
                 n++;
             }
             this.graphics.endFill();
@@ -53,7 +55,8 @@ class ShapeInstance extends Shape
             if (null != fill) {
                 switch (fill.type) {
                     case "SolidColor":
-                        this.graphics.beginFill(fill.color,fill.alpha);
+                        this.graphics.beginFill(fill.color, fill.alpha);
+                        #if debug trace("Fill1",edge.fillStyle1); #end
                 }
             }
             for (draw in edge.edges) {
@@ -65,6 +68,14 @@ class ShapeInstance extends Shape
                     case "curveTo":
                         this.graphics.curveTo(draw.x, draw.y, draw.anchorX, draw.anchorY);
                 }
+                #if debug
+                trace(draw.type, draw.x, draw.y);
+                var text = new TextField();
+                text.x = draw.x;
+                text.y = draw.y;
+                text.text = draw.x + "," + draw.y;
+                Lib.current.stage.addChild(text);
+                #end
             }
             this.graphics.endFill();
         }

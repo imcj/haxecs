@@ -63,6 +63,16 @@ class Edge
         }
     }
 
+    public function alignByVectors():Void 
+    {
+        var areas = getAreas();
+        var vectors = vectorsByClockwise();
+        edges = [];
+        for (v in vectors) {
+            edges = edges.concat(areas[v.index]);
+        }
+    }
+
     function vectorsByClockwise():Array<{starX:Float,starY:Float,angle:Float,index:Int}>
     {
         var vectors = getAreasVectors();

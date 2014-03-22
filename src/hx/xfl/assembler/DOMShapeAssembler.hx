@@ -34,7 +34,8 @@ class DOMShapeAssembler extends DOMElementAssembler
                         fillStyle.type = fill.firstElement().nodeName;
                         var c = "0x"+fill.firstElement().get("color").substring(1);
                         fillStyle.color = Std.parseInt(c);
-                        fillStyle.alpha = Std.parseFloat(fill.firstElement().get("alpha"));
+                        var alpha = fill.firstElement().get("alpha");
+                        if(alpha != null)fillStyle.alpha = Std.parseFloat(alpha);
                         instance.fills.set(fillStyle.index, fillStyle);
                     }
                 }
@@ -119,6 +120,7 @@ class DOMShapeAssembler extends DOMElementAssembler
         for (f in instance.fillEdges0) {
             f.rebuild();
             f.reverse();
+            f.alignByVectors();
         }
 
         preFill = null;
