@@ -91,7 +91,6 @@ class DOMShapeAssembler extends DOMElementAssembler
                     }
 
                     instance.edges.push(edge);
-                    trace(edge);
                     //获得填充数据，对fillstyle0和fillstyle1分开处理
                     //fillstyle0转为fillstyle1，然后再合并
                     if (edge.fillStyle1 != 0) {
@@ -102,7 +101,15 @@ class DOMShapeAssembler extends DOMElementAssembler
                             e.edges = e.edges.concat(edge.clone().edges);
                         }
                     }
-
+                    if (edge.fillStyle0 != 0) {
+                        var edgeTofill1 = edge.toFillStyle1();
+                        var e = instance.fillEdges1.get(edgeTofill1.fillStyle1);
+                        if (null == e) {
+                            instance.fillEdges1.set(edge.fillStyle1, edgeTofill1);
+                        }else {
+                            e.edges = e.edges.concat(edgeTofill1.edges);
+                        }
+                    }
                 }
             }
         }
@@ -110,6 +117,7 @@ class DOMShapeAssembler extends DOMElementAssembler
         //重制填充数据，连接填充区域
         for (f1 in instance.fillEdges1) {
             f1.rebuild();
+            trace(f1);
         }
 
         return instance;
