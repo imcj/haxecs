@@ -94,8 +94,14 @@ class DOMShapeAssembler extends DOMElementAssembler
                     //获得填充数据，对fillstyle0和fillstyle1分开处理
                     //fillstyle0转为fillstyle1，然后再合并
                     if (edge.fillStyle1 != 0) {
-                        instance.fillEdges1.push(edge.clone());
+                        var e = instance.fillEdges1.get(edge.fillStyle1);
+                        if (null == e) {
+                            instance.fillEdges1.set(edge.fillStyle1, edge.clone());
+                        }else {
+                            e.edges = e.edges.concat(edge.clone().edges);
+                        }
                     }
+
                 }
             }
         }

@@ -11,7 +11,7 @@ class DOMShape extends DOMInstance
     public var strokes:Map<Int,StrokeStyle>;
     public var edges:Array<Edge>;
     public var fillEdges0:Array<Edge>;
-    public var fillEdges1:Array<Edge>;
+    public var fillEdges1:Map<Int,Edge>;
 
     public function new()
     {
@@ -22,7 +22,7 @@ class DOMShape extends DOMInstance
         strokes = new Map();
         edges = [];
         fillEdges0 = [];
-        fillEdges1 = [];
+        fillEdges1 = new Map();
     }
     
 }

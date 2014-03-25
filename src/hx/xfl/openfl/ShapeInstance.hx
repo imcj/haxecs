@@ -59,26 +59,23 @@ class ShapeInstance extends Shape
                         #if debug trace("Fill1",edge.fillStyle1); #end
                 }
             }
-            var n = 0;
             for (draw in edge.edges) {
                 switch (draw.type) {
                     case "moveTo":
-                        if (n != 0) this.graphics.lineTo(draw.x, draw.y);
-                        else this.graphics.moveTo(draw.x, draw.y);
+                        this.graphics.moveTo(draw.x, draw.y);
                     case "lineTo":
                         this.graphics.lineTo(draw.x, draw.y);
                     case "curveTo":
                         this.graphics.curveTo(draw.x, draw.y, draw.anchorX, draw.anchorY);
                 }
                 #if debug
-                trace(draw.type, draw.x, draw.y, n);
+                trace(draw.type, draw.x, draw.y);
                 var text = new TextField();
                 text.x = draw.x;
                 text.y = draw.y;
-                text.text = draw.x + "," + draw.y + " " + n;
+                text.text = draw.x + "," + draw.y + " ";
                 Lib.current.stage.addChild(text);
                 #end
-                n++;
             }
             this.graphics.endFill();
         }
