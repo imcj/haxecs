@@ -172,7 +172,9 @@ class Edge
         edge.fillStyle0 = this.fillStyle0;
         edge.fillStyle1 = this.fillStyle1;
         edge.strokeStyle = this.strokeStyle;
-        edge.edges = this.edges.copy();
+        for (e in this.edges) {
+            edge.edges.push(e.clone());
+        }
 
         return edge;
     }
