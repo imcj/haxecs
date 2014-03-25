@@ -23,13 +23,13 @@ class Edge
         var area:Array<EdgeCommand> = [];
         while (tempEdges.length > 0) {
             var n = 0;
-            while (n < tempEdges.length) {
+            while (n < tempEdges.length - 1) {
                 var e = tempEdges[n];
                 if (area.length == 0) {
                     area.push(e);
                     area.push(tempEdges[n + 1]);
-                    tempEdges.remove(e);
                     tempEdges.remove(tempEdges[n + 1]);
+                    tempEdges.remove(e);
                     continue;
                 }else {
                     var lastEdge = area[area.length - 1];
@@ -51,12 +51,11 @@ class Edge
                         continue;
                     }
                 }
-                n++;
+                n += 2;
             }
             edges = edges.concat(area);
             area = [];
         }
-        trace(edges.length);
     }
 
     //转变为fillstyle1的Edge,用于将fillstyle0的数据转换为fillstyle1
@@ -66,8 +65,7 @@ class Edge
         if (this.fillStyle0 == 0) {
             return this.clone();
         }
-        var edge:Edge;
-        edge = this.clone();
+        var edge = this.clone();
         edge.fillStyle1 = edge.fillStyle0;
         var edges = [];
         var n = 0;
