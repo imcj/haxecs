@@ -23,7 +23,6 @@ class DOMShape extends DOMInstance
         edges = [];
         fillEdges0 = [];
         fillEdges1 = [];
-        fillEdges = new Map();
     }
     
 }
