@@ -13,8 +13,6 @@ class DOMShape extends DOMInstance
     public var fillEdges0:Array<Edge>;
     public var fillEdges1:Array<Edge>;
 
-    public var fillEdges:Map<Int,Edge>;
-
     public function new()
     {
         super();

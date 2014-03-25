@@ -91,61 +91,10 @@ class DOMShapeAssembler extends DOMElementAssembler
                     }
 
                     instance.edges.push(edge);
-                    //获得分类填充数据
-                    if (edge.fillStyle0 != 0) {
-                        instance.fillEdges0.push(edge.clone());
-                        var reverseEdge = edge.clone();
-                        reverseEdge.rebuild();
-                        reverseEdge.reverse();
-                        var e = instance.fillEdges.get(edge.fillStyle0);
-                        if (null == e) 
-                            instance.fillEdges.set(edge.fillStyle0, reverseEdge);
-                        else
-                            e.edges = e.edges.concat(reverseEdge.edges);
-                    }
-                    if (edge.fillStyle1 != 0) {
-                        instance.fillEdges1.push(edge.clone());
-                        var e = instance.fillEdges.get(edge.fillStyle1);
-                        if (null == e)
-                            instance.fillEdges.set(edge.fillStyle1, edge.clone());
-                        else
-                            e.edges = e.edges.concat(edge.edges.copy());
-                    }
+                    //获得填充数据，对fillstyle0和fillstyle1分开处理
+                    //fillstyle0转为fillstyle1，然后再合并
                 }
             }
-        }
-        //重制填充数据
-        var preFill:Edge = null;
-        var needDeleteFill = [];
-        for (fill in instance.fillEdges0) {
-            if (null != preFill &&
-                fill.fillStyle0 == preFill.fillStyle0) {
-                preFill.edges = preFill.edges.concat(fill.edges);
-                needDeleteFill.push(fill);
-            }else {
-                preFill = fill;
-            }
-        }
-        while (needDeleteFill.length > 0) {
-            var fill = needDeleteFill.pop();
-            instance.fillEdges0.remove(fill);
-        }
-        for (f in instance.fillEdges0) {
-            f.rebuild();
-            f.reverse();
-            f.alignByVectors();
-        }
-
-        for (f in instance.fillEdges1) {
-            f.rebuild();
-        }
-
-        //重制fillEdges
-        for (fe in instance.fillEdges) {
-            fe.rebuild();
-            //fe.reverse();
-            fe.alignByVectors();
-            fe.rebuild();
         }
 
         return instance;
