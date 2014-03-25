@@ -15,22 +15,36 @@ class Edge
         edges = [];
     }
 
-    //重制edges数据，去除多余的moveTo
+    //重制edges数据，连接绘制区域，去除多余的moveTo
     public function rebuild():Void 
     {
-        var n = 1;
-        while (n < edges.length) {
-            if (edges[n - 1].type != "curveTo" &&
-                edges[n-1].x == edges[n].x &&
-                edges[n-1].y == edges[n].y) {
-                edges.remove(edges[n]);
-            }else if (edges[n - 1].type == "curveTo" &&
-                edges[n-1].anchorX == edges[n].x &&
-                edges[n-1].anchorY == edges[n].y) {
-                edges.remove(edges[n]);
-            }else {
+        var tempEdges = edges.copy();
+        edges = [];
+        var area:Array<EdgeCommand> = [];
+        while (tempEdges.length > 0) {
+            var n = 0;
+            while (n < tempEdges.length) {
+                var e = tempEdges[n];
+                if (area.length == 0) {
+                    area.push(e);
+                    area.push(tempEdges[n + 1]);
+                    tempEdges.remove(e);
+                    tempEdges.remove(tempEdges[n + 1]);
+                    continue;
+                }else {
+                    if (e.x == area[area.length - 1].x &&
+                        e.y == area[area.length - 1].y) {
+                        area.push(tempEdges[n+1]);
+                        tempEdges.remove(tempEdges[n + 1]);
+                        tempEdges.remove(e);
+                        n = 0;
+                        continue;
+                    }
+                }
                 n++;
             }
+            edges = edges.concat(area);
+            area = [];
         }
     }
 
@@ -185,7 +199,7 @@ class Edge
         if(this.fillStyle0 != 0)str += "\tfillStyle0:" + this.fillStyle0 + "\n";
         if(this.fillStyle1 != 0)str += "\tfillStyle1:" + this.fillStyle1 + "\n";
         str += "\tstrokeStyle:" + this.strokeStyle + "\n";
-        str += "\tedges:\n";
+        str += "\tedges[" + this.edges.length + "]:\n";
         for (e in this.edges) {
             str += "\t\t" + e.toString() + "\n";
         }
