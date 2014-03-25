@@ -23,7 +23,6 @@ class DOMShapeAssembler extends DOMElementAssembler
                 DOMSymbolItem);
         }
 
-        // TODO
         // 解析矢量图绘制数据
         for (element in data.elements()) {
             if ("fills" == element.nodeName) {
@@ -60,7 +59,6 @@ class DOMShapeAssembler extends DOMElementAssembler
                     if (null != edgeXml.get("cubics")) continue;
                     var edge = new Edge();
                     fillProperty(edge, edgeXml, ["edges"]);
-                    //TODO
                     //解析绘制
                     var edges = edgeXml.get("edges");
                     edges = StringTools.replace(edges, "!", "$!");
@@ -91,6 +89,7 @@ class DOMShapeAssembler extends DOMElementAssembler
                     }
 
                     instance.edges.push(edge);
+
                     //获得填充数据，对fillstyle0和fillstyle1分开处理
                     //fillstyle0转为fillstyle1，然后再合并
                     if (edge.fillStyle1 != 0) {

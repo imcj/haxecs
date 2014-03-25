@@ -91,104 +91,6 @@ class Edge
         return edge;
     }
 
-    public function reverse():Void 
-    {
-        var areas = getAreas();
-
-        var reversAreas = [];
-        for (area in areas) {
-            var reversArea = [];
-            for (n in 0...area.length) {
-                reversArea.push(area.pop());
-            }
-            if (reversArea[0].type != "curveTo") {
-                reversArea[0].type = "moveTo";
-                reversArea[reversArea.length - 1].type = "lineTo";
-            }else {
-                reversArea[0].type = "moveTo";
-                reversArea[reversArea.length - 1].type = "curveTo";
-                reversArea[reversArea.length - 1].anchorX = reversArea[0].anchorX;
-                reversArea[reversArea.length - 1].anchorY = reversArea[0].anchorY;
-            }
-            
-            reversAreas.push(reversArea);
-        }
-
-        edges = [];
-        for (a in reversAreas) {
-            edges = edges.concat(a);
-        }
-    }
-
-    public function alignByVectors():Void 
-    {
-        var areas = getAreas();
-        var vectors = vectorsByClockwise();
-        edges = [];
-        for (v in vectors) {
-            edges = edges.concat(areas[v.index]);
-        }
-    }
-
-    function vectorsByClockwise():Array<{starX:Float,starY:Float,angle:Float,index:Int}>
-    {
-        var vectors = getAreasVectors();
-        vectors.sort(function (a,b):Int 
-        {
-            if (a.angle != b.angle)
-                return Reflect.compare(a.angle, b.angle);
-            else 
-                return -Reflect.compare(a.starX, b.starX);
-        });
-        return vectors;
-    }
-
-    function getAreasVectors():Array<{starX:Float,starY:Float,angle:Float,index:Int}>
-    {
-        var vectors = [];
-        var areas = getAreas();
-        var n = 0;
-        for (area in areas) {
-            var vector:Dynamic = { };
-            vector.starX = area[0].x;
-            vector.starY = area[0].y;
-            var endEdgeCommand = area[area.length - 1];
-            var endX, endY;
-            if ("lineTo" == endEdgeCommand.type) {
-                endX = endEdgeCommand.x;
-                endY = endEdgeCommand.y;
-            }else {
-                endX = endEdgeCommand.anchorX;
-                endY = endEdgeCommand.anchorY;
-            }
-            vector.angle = Math.atan2(endY - vector.starY, endX - vector.starX);
-            vector.index = n;
-            n++;
-
-            vectors.push(vector);
-        }
-        return vectors;
-    }
-
-    function getAreas():Array<Array<EdgeCommand>>
-    {
-        var areas = [];
-        var fillArea = [];
-        for (e in edges) {
-            if (e.type == "moveTo") {
-                if (fillArea.length > 0) {
-                    areas.push(fillArea.copy());
-                    fillArea = [];
-                }
-            }
-            fillArea.push(e.clone());
-        }
-        if (fillArea.length > 0) {
-            areas.push(fillArea.copy());
-        }
-        return areas;
-    }
-
     public function clone():Edge
     {
         var edge = new Edge();
@@ -198,7 +100,6 @@ class Edge
         for (e in this.edges) {
             edge.edges.push(e.clone());
         }
-
         return edge;
     }
 
