@@ -34,6 +34,40 @@ class Edge
         }
     }
 
+    //转变为fillstyle1的Edge,用于将fillstyle0的数据转换为fillstyle1
+    //以便将fillstyle1形成闭合图形
+    public function toFillStyle1():Edge
+    {
+        if (this.fillStyle0 == 0) {
+            return this.clone();
+        }
+        var edge:Edge;
+        edge = this.clone();
+        edge.fillStyle1 = edge.fillStyle0;
+        var edges = [];
+        var n = 0;
+        while (n < edge.edges.length) {
+            var star = edge.edges[n];
+            var end = edge.edges[n + 1];
+            var temp = end.clone();
+            end.type = star.type;
+            star.type = temp.type;
+            if ("curveTo" == star.type) {
+                end.x = end.anchorX;
+                end.y = end.anchorY;
+                star.anchorX = star.x;
+                star.anchorY = star.y;
+                star.x = temp.x;
+                star.y = temp.y;
+            }
+            edges.push(end);
+            edges.push(star);
+            n += 2;
+        }
+        edge.edges = edges;
+        return edge;
+    }
+
     public function reverse():Void 
     {
         var areas = getAreas();
@@ -146,8 +180,8 @@ class Edge
     public function toString():String
     {
         var str = "\nEdge:\n";
-        str += "\tfillStyle0:" + this.fillStyle0 + "\n";
-        str += "\tfillStyle1:" + this.fillStyle1 + "\n";
+        if(this.fillStyle0 != 0)str += "\tfillStyle0:" + this.fillStyle0 + "\n";
+        if(this.fillStyle1 != 0)str += "\tfillStyle1:" + this.fillStyle1 + "\n";
         str += "\tstrokeStyle:" + this.strokeStyle + "\n";
         str += "\tedges:\n";
         for (e in this.edges) {
