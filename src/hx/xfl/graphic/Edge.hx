@@ -32,9 +32,19 @@ class Edge
                     tempEdges.remove(tempEdges[n + 1]);
                     continue;
                 }else {
-                    if (e.x == area[area.length - 1].x &&
-                        e.y == area[area.length - 1].y) {
-                        area.push(tempEdges[n+1]);
+                    var lastEdge = area[area.length - 1];
+                    if ("curveTo" != lastEdge.type &&
+                        e.x == lastEdge.x &&
+                        e.y == lastEdge.y) {
+                        area.push(tempEdges[n + 1]);
+                        tempEdges.remove(tempEdges[n + 1]);
+                        tempEdges.remove(e);
+                        n = 0;
+                        continue;
+                    }else if ("curveTo" == lastEdge.type &&
+                              e.x == lastEdge.anchorX &&
+                              e.y == lastEdge.anchorY) {
+                        area.push(tempEdges[n + 1]);
                         tempEdges.remove(tempEdges[n + 1]);
                         tempEdges.remove(e);
                         n = 0;
@@ -46,6 +56,7 @@ class Edge
             edges = edges.concat(area);
             area = [];
         }
+        trace(edges.length);
     }
 
     //转变为fillstyle1的Edge,用于将fillstyle0的数据转换为fillstyle1
