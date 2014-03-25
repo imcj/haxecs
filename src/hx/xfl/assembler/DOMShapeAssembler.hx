@@ -105,7 +105,7 @@ class DOMShapeAssembler extends DOMElementAssembler
                         var edgeTofill1 = edge.toFillStyle1();
                         var e = instance.fillEdges1.get(edgeTofill1.fillStyle1);
                         if (null == e) {
-                            instance.fillEdges1.set(edge.fillStyle1, edgeTofill1);
+                            instance.fillEdges1.set(edgeTofill1.fillStyle1, edgeTofill1);
                         }else {
                             e.edges = e.edges.concat(edgeTofill1.edges);
                         }
@@ -117,7 +117,6 @@ class DOMShapeAssembler extends DOMElementAssembler
         //重制填充数据，连接填充区域
         for (f1 in instance.fillEdges1) {
             f1.rebuild();
-            trace(f1);
         }
 
         return instance;
