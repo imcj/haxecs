@@ -142,4 +142,17 @@ class Edge
 
         return edge;
     }
+
+    public function toString():String
+    {
+        var str = "\nEdge:\n";
+        str += "\tfillStyle0:" + this.fillStyle0 + "\n";
+        str += "\tfillStyle1:" + this.fillStyle1 + "\n";
+        str += "\tstrokeStyle:" + this.strokeStyle + "\n";
+        str += "\tedges:\n";
+        for (e in this.edges) {
+            str += "\t\t" + e.toString() + "\n";
+        }
+        return str;
+    }
 }

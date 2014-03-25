@@ -28,4 +28,18 @@ class EdgeCommand
 
         return command;
     }
+
+    public function toString():String
+    {
+        var str = "";
+        str += "[typ:" + this.type;
+        str += ",\tx:" + this.x;
+        str += ",\ty:" + this.y;
+        if (this.type == "curveTo") {
+            str += ",\tanchorX:" + this.anchorX;
+            str += ",\tanchorY:" + this.anchorY;
+        }
+        str += "]";
+        return str;
+    }
 }

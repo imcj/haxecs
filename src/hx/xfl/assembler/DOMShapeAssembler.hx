@@ -91,6 +91,7 @@ class DOMShapeAssembler extends DOMElementAssembler
                     }
 
                     instance.edges.push(edge);
+                    trace(edge);
                     //获得填充数据，对fillstyle0和fillstyle1分开处理
                     //fillstyle0转为fillstyle1，然后再合并
                     if (edge.fillStyle1 != 0) {
