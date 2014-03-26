@@ -103,9 +103,6 @@ class Layer extends Sprite
                 if (instance.symbolType == "button") {
                     addChild(new ButtonInstance(instance));
                 }
-                if (instance.symbolType == "graphic") {
-                    addChild(new ShapeInstance(instance));
-                }
             } else if (Std.is(element, DOMText)) {
                 var instance = cast(element, DOMText);
                 addChild(new TextInstance(instance));

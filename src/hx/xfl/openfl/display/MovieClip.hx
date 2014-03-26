@@ -13,6 +13,9 @@ import flash.display.BitmapData;
 import flash.display.PixelSnapping;
 
 import hx.xfl.DOMSymbolInstance;
+import hx.xfl.DOMShape;
+import hx.xfl.DOMSymbolInstance;
+import hx.xfl.openfl.ShapeInstance;
 import hx.xfl.openfl.display.BitmapInstance;
 
 import flash.errors.RangeError;
@@ -156,6 +159,10 @@ class MovieClip extends Sprite
                     var displayObject = new TextInstance(instance);
                     if (null != instance.name)
                         displayObject.name = instance.name;
+                    addChild(displayObject);
+                } else if (Std.is(element, DOMShape)) {
+                    var instance = cast(element, DOMShape);
+                    var displayObject = new ShapeInstance(instance);
                     addChild(displayObject);
                 }
             }
