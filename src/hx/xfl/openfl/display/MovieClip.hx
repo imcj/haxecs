@@ -131,10 +131,9 @@ class MovieClip extends Sprite
                         matrix = starMatrix.add(deltaMatrix);
                     }
                     
-                    // TODO
-                    // set child name
                     if ("movie clip" == instance.symbolType ||
-                        "" == instance.symbolType) {
+                        "" == instance.symbolType ||
+                        "graphic" == instance.symbolType) {
 
                         var item = cast(instance.libraryItem, DOMSymbolItem);
 
