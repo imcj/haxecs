@@ -1,13 +1,15 @@
 package hx.xfl.openfl;
 
-import flash.events.Event;
 import hx.xfl.DOMLayer;
 import hx.xfl.DOMFrame;
 import hx.xfl.DOMBitmapInstance;
-import flash.display.Sprite;
 import hx.xfl.DOMSymbolInstance;
 import hx.xfl.openfl.display.MovieClip;
+import hx.xfl.openfl.display.BitmapInstance;
 
+import flash.events.Event;
+import flash.display.Sprite;
+import flash.display.PixelSnapping;
 import flash.errors.RangeError;
 
 class Layer extends Sprite
@@ -74,13 +76,28 @@ class Layer extends Sprite
         }
     }
 
+    function createBitmapInstance(bitmap_instance:DOMBitmapInstance)
+    {
+        var bitmapItem = cast(bitmap_instance.libraryItem, DOMBitmapItem);
+        var bitmap = new BitmapInstance(
+            bitmapItem,
+            dom.timeLine.document.assets.getBitmapDataWithBitmapItem(bitmapItem),
+            PixelSnapping.AUTO, true);
+        bitmap.transform.matrix = bitmap_instance.matrix.toFlashMatrix();
+        
+        if (null != bitmap_instance.name)
+            bitmap.name = bitmap_instance.name;
+
+        return bitmap;
+    }
+
     function displayFrame(frame:DOMFrame):Void
     {
         freeChildren();
         for (element in frame.getElementsIterator()) {
             if (Std.is(element, DOMBitmapInstance)) {
                 var instance = cast(element, DOMBitmapInstance);
-                addChild(new BitmapInstance(instance));
+                addChild(createBitmapInstance(instance));
             } else if (Std.is(element, DOMSymbolInstance)) {
                 var instance = cast(element, DOMSymbolInstance);
                 if (instance.symbolType == "button") {

@@ -4,9 +4,16 @@ import flash.events.Event;
 import hx.geom.Matrix;
 import hx.xfl.DOMLayer;
 import hx.xfl.DOMFrame;
+import hx.xfl.DOMBitmapItem;
 import hx.xfl.DOMBitmapInstance;
+
 import flash.display.Sprite;
+import flash.display.Bitmap;
+import flash.display.BitmapData;
+import flash.display.PixelSnapping;
+
 import hx.xfl.DOMSymbolInstance;
+import hx.xfl.openfl.display.BitmapInstance;
 
 import flash.errors.RangeError;
 
@@ -75,6 +82,21 @@ class MovieClip extends Sprite
         displayFrame();
     }
 
+    function createBitmapInstance(bitmap_instance:DOMBitmapInstance)
+    {
+        var bitmapItem = cast(bitmap_instance.libraryItem, DOMBitmapItem);
+        var bitmap = new BitmapInstance(
+            bitmapItem,
+            domTimeLine.document.assets.getBitmapDataWithBitmapItem(bitmapItem),
+            PixelSnapping.AUTO, true);
+        bitmap.transform.matrix = bitmap_instance.matrix.toFlashMatrix();
+        
+        if (null != bitmap_instance.name)
+            bitmap.name = bitmap_instance.name;
+
+        return bitmap;
+    }
+
     function displayFrame():Void
     {
         freeChildren();
@@ -85,12 +107,8 @@ class MovieClip extends Sprite
             if (frame == null) continue;
             for (element in frame.getElementsIterator()) {
                 if (Std.is(element, DOMBitmapInstance)) {
-                    var instance = cast(element, DOMBitmapInstance);
-                    var displayObject = new BitmapInstance(instance);
-                    
-                    if (null != instance.name)
-                        displayObject.name = instance.name;
-                    addChild(displayObject);
+                    var bitmap_instance = cast(element, DOMBitmapInstance);
+                    addChild(createBitmapInstance(bitmap_instance));
                 } else if (Std.is(element, DOMSymbolInstance)) {
                     var instance = cast(element, DOMSymbolInstance);
 
@@ -109,6 +127,7 @@ class MovieClip extends Sprite
                         var deltaMatrix = perAddMatrix.multi(currentFrame-frame.index);
                         matrix = starMatrix.add(deltaMatrix);
                     }
+                    
                     // TODO
                     // set child name
                     if ("movie clip" == instance.symbolType ||
@@ -142,12 +161,6 @@ class MovieClip extends Sprite
             }
         }
     }
-
-    // override public function getChildByName(name:String):Sprite
-    // {
-    //     return 
-    // }
-
 
     // TODO
     //

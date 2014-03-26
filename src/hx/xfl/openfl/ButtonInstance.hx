@@ -7,7 +7,7 @@ import hx.xfl.DOMSymbolItem;
 
 class ButtonInstance extends SimpleButton
 {
-    var dom:DOMSymbolInstance;
+    public var dom:DOMSymbolInstance;
 
     public function new(dom:DOMSymbolInstance) 
     {

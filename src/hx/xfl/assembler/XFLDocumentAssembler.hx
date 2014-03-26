@@ -1,6 +1,5 @@
 package hx.xfl.assembler;
 
-import hx.Assets;
 import hx.xfl.XFLDocument;
 import hx.xfl.DOMFolderItem;
 
@@ -40,7 +39,7 @@ class XFLDocumentAssembler extends XFLBaseAssembler
         for (element in data.elements()) {
             symbolItem = new DOMSymbolItem();
             var file = document.dir + "/LIBRARY/" + element.get("href");
-            var text = Assets.getText(file);
+            var text = hx.xfl.openfl.Assets.getText(file);
             var symbolXml = Xml.parse(text).firstChild();
 
             fillProperty(symbolItem, symbolXml);

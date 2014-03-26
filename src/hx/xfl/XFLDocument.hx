@@ -2,6 +2,8 @@ package hx.xfl;
 
 import hx.xfl.assembler.XFLDocumentAssembler;
 
+import hx.xfl.openfl.Assets;
+
 class XFLDocument extends DOMDocument
 {
     var mapMedia:Map<String, DOMBitmapItem>;
@@ -31,6 +33,7 @@ class XFLDocument extends DOMDocument
     public var height:Float;
     public var xflVersion:Float;
     public var library:DOMLibrary;
+    public var assets:Assets;
 
     public var dir:String;
 
@@ -69,6 +72,7 @@ class XFLDocument extends DOMDocument
         mapTimeLines = new Map();
         
         library = new DOMLibrary();
+        assets = new Assets(this);
     }
 
     public function addMedia(bitmapItem:DOMBitmapItem):XFLDocument
@@ -186,7 +190,7 @@ class XFLDocument extends DOMDocument
 
     static public function openFromAsset(path:String):XFLDocument
     {
-        var text = hx.Assets.getText(path + "/DOMDocument.xml");
+        var text = hx.xfl.openfl.Assets.getText(path + "/DOMDocument.xml");
         var document = new XFLDocumentAssembler().parse(
             Xml.parse(text), path);
 
