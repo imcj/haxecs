@@ -11,6 +11,8 @@ class DOMElement implements IDOMElement
     public var centerPoint3DY(default, default):Float;
     public var width(default, default):Float;
     public var height(default, default):Float;
+    public var top(default, default):Float;
+    public var left(default, default):Float;
 
     public function new()
     {
@@ -20,5 +22,7 @@ class DOMElement implements IDOMElement
         centerPoint3DY = -1;
         width = 0;
         height = 0;
+        top = 0;
+        left = 0;
     }
 }
