@@ -39,8 +39,8 @@ openfl可以运行在Windows, Mac, Linux, iOS, Android, BlackBerry, Tizen, Flash
 
 ### TODO
 
-- [#2 画一个矩形](https://github.com/imcj/haxecs/issues/2)
-- [#3 最简单的动画](https://github.com/imcj/haxecs/issues/3)
+- <del>[#2 画一个矩形](https://github.com/imcj/haxecs/issues/2)</del>
+- <del>[#3 最简单的动画](https://github.com/imcj/haxecs/issues/3)</del>
 
 你可以查看我们的贡献成员列表：
 
@@ -54,7 +54,23 @@ openfl可以运行在Windows, Mac, Linux, iOS, Android, BlackBerry, Tizen, Flash
 
 *这是一次尝试，可能随时终止这种开发方式。*
 
+## Symbol的扩展
 
+可以配置Symbol(MovieClip,Graphic,Button)的linkageClass扩展对象。
+
+```
+package org.haxe-china.components;
+
+class Checked extends MovieClip
+{
+	public var checked(get, set):Bool;
+	
+	public function new()
+	{
+
+	}
+}
+```
 
 # 社区
 
