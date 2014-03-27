@@ -17,6 +17,7 @@ import hx.xfl.DOMShape;
 import hx.xfl.DOMSymbolInstance;
 import hx.xfl.openfl.ShapeInstance;
 import hx.xfl.openfl.display.BitmapInstance;
+import hx.xfl.openfl.display.SimpleButton;
 
 import flash.errors.RangeError;
 
@@ -147,11 +148,11 @@ class MovieClip extends Sprite
                         displayObject.transform.matrix = matrix.toFlashMatrix();
                         addChild(displayObject);
                     } else if ("button" == instance.symbolType) {
-                        var displayObject = new ButtonInstance(instance);
+                        var button = new SimpleButton(instance);
                         if (null != instance.name)
-                            displayObject.name = instance.name;
-                        displayObject.transform.matrix = matrix.toFlashMatrix();
-                        addChild(displayObject);
+                            button.name = instance.name;
+                        button.transform.matrix = matrix.toFlashMatrix();
+                        addChild(button);
                     }
                 } else if (Std.is(element, DOMText)) {
                     var instance = cast(element, DOMText);

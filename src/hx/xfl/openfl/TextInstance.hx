@@ -41,6 +41,9 @@ class TextInstance extends TextField
         var matrix = dom.matrix.toFlashMatrix();
         matrix.ty -= 6;
         this.transform.matrix = matrix;
+
+        this.x += dom.left;
+        this.y += dom.top;
     }
 
     function alignmentEnumToString(alignment)
