@@ -13,5 +13,9 @@ class Property
     {
         keyFrames = [];
     }
-    
+
+    public function parse(data:Xml)
+    {
+        
+    }
 }
