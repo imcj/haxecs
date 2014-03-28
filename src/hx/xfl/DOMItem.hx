@@ -8,6 +8,6 @@ class DOMItem
 
     public function new()
     {
-    	linkageClassName = null;
+        linkageClassName = null;
     }
 }
