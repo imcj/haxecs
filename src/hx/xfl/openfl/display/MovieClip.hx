@@ -6,6 +6,7 @@ import hx.xfl.DOMLayer;
 import hx.xfl.DOMFrame;
 import hx.xfl.DOMBitmapItem;
 import hx.xfl.DOMBitmapInstance;
+import hx.xfl.motion.Property;
 
 import flash.display.Sprite;
 import flash.display.Bitmap;
@@ -131,6 +132,25 @@ class MovieClip extends Sprite
                         var perAddMatrix = endMatrix.sub(starMatrix).div(frame.duration);
                         var deltaMatrix = perAddMatrix.multi(currentFrame-frame.index);
                         matrix = starMatrix.add(deltaMatrix);
+                    }else if (frame.tweenType == "motion object") {
+                        var keyFrames = frame.animation.PropertyContainers;
+                        var basic = keyFrames.get("headContainer").children.get("Basic_Motion");
+                        var xKeys = cast(basic.children.get("Motion_X"), Property).getStarEnd(currentFrame);
+                        if (xKeys.length == 1) {
+                            matrix.tx += xKeys[0].anchor.x;
+                        }else if(xKeys.length > 1) {
+                            var deltaX = xKeys[1].anchor.y - xKeys[0].anchor.y;
+                            var deltaFrame = Std.int((xKeys[1].timevalue - xKeys[0].timevalue) / 1000);
+                            matrix.tx += deltaX / deltaFrame;
+                        }
+                        var yKeys = cast(basic.children.get("Motion_Y"), Property).getStarEnd(currentFrame);
+                        if (yKeys.length == 1) {
+                            matrix.ty += xKeys[0].anchor.y;
+                        }else if (yKeys.length > 1) {
+                            var deltaY = yKeys[1].anchor.y - yKeys[0].anchor.y;
+                            var deltaFrame = Std.int((yKeys[1].timevalue - yKeys[0].timevalue) / 1000);
+                            matrix.ty += deltaY / deltaFrame;
+                        }
                     }
                     
                     if ("movie clip" == instance.symbolType ||
