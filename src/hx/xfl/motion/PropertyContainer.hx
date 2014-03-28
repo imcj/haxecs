@@ -3,12 +3,12 @@ package hx.xfl.motion;
 class PropertyContainer
 {
     public var id:String;
-    public var children:Array<Dynamic>;
+    public var children:Map<String, Dynamic>;
 
     public function new()
     {
         id = "";
-        children = [];
+        children = new Map();
     }
 
     public function parse(data:Xml)
@@ -18,11 +18,11 @@ class PropertyContainer
                 var pContainer = new PropertyContainer();
                 pContainer.id = element.get("id");
                 pContainer.parse(element);
-                children.push(pContainer);
+                children.set(pContainer.id, pContainer);
             }else {
                 var property = new Property();
                 property.parse(element);
-                children.push(property);
+                children.set(property.id, property);
             }
         }
     }

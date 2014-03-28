@@ -7,11 +7,11 @@ class DOMAnimationCore
     public var Version:Int;
     public var duration:Int;
 
-    public var PropertyContainers:Array<PropertyContainer>;
+    public var PropertyContainers:Map<String, PropertyContainer>;
 
     public function new()
     {
-        PropertyContainers = [];
+        PropertyContainers = new Map();
     }
     
 }

@@ -20,7 +20,7 @@ class DOMAnimationCoreAssembler extends XFLBaseAssembler
                 var pContainer = new PropertyContainer();
                 fillProperty(pContainer, element);
                 pContainer.parse(element);
-                animation.PropertyContainers.push(pContainer);
+                animation.PropertyContainers.set(pContainer.id, pContainer);
             }
         }
         return animation;
