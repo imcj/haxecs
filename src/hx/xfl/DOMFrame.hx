@@ -15,6 +15,7 @@ class DOMFrame
     public var visibleAnimationKeyframes:Int;
 
     public var elements:Array<IDOMElement>;
+    public var animation:DOMAnimationCore;
 
     public function new()
     {
@@ -27,6 +28,7 @@ class DOMFrame
         actionscript = null;
         elements = [];
         motionTweenRotate = "";
+        animation = null;
     }
 
     public function addElement(element:IDOMElement):DOMFrame

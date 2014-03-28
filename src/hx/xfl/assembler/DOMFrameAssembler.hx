@@ -37,7 +37,7 @@ class DOMFrameAssembler extends XFLBaseAssembler
             for (dom_element in element.firstElement().elements()) {
                 if ("AnimationCore" == dom_element.nodeName) {
                     var animation_assembler = new DOMAnimationCoreAssembler(document);
-                    animation_assembler.parse(dom_element);
+                    frame.animation = animation_assembler.parse(dom_element);
                 }else {
                     assembler = assemblers.get(dom_element.nodeName);
                     if (null == assembler)
