@@ -9,8 +9,9 @@ class DOMAnimationCore
 
     public var PropertyContainers:Array<PropertyContainer>;
 
-    public function new() {
-        
+    public function new()
+    {
+        PropertyContainers = [];
     }
     
 }

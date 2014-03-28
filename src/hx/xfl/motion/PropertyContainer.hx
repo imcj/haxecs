@@ -11,4 +11,8 @@ class PropertyContainer
         children = [];
     }
 
+    public function parse(data:Xml)
+    {
+        
+    }
 }
