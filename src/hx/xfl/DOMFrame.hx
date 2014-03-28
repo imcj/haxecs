@@ -9,6 +9,10 @@ class DOMFrame
     public var index:Int;
     public var keyMode:Int;
     public var actionscript:String;
+    public var motionTweenRotate:String;
+    public var motionTweenScale:Bool;
+    public var isMotionObject:Bool;
+    public var visibleAnimationKeyframes:Int;
 
     public var elements:Array<IDOMElement>;
 
@@ -22,6 +26,7 @@ class DOMFrame
         keyMode = -1;
         actionscript = null;
         elements = [];
+        motionTweenRotate = "";
     }
 
     public function addElement(element:IDOMElement):DOMFrame

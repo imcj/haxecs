@@ -10,6 +10,7 @@ class DOMLayer
     public var name:String;
     public var frames:Array<DOMFrame>;
     public var totalFrames:Int;
+    public var animationType:String;
 
     public function new()
     {
@@ -21,6 +22,7 @@ class DOMLayer
         name = null;
         frames = [];
         totalFrames = 0;
+        animationType = "";
     }
 
     public function addFrame(frame:DOMFrame):DOMLayer
