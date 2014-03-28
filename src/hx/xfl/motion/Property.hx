@@ -24,6 +24,7 @@ class Property
                 starEnd.push(kf);
                 break;
             }else if (keyIndex < frameIndex) {
+                starEnd = [];
                 starEnd.push(kf);
             }else if (keyIndex > frameIndex) {
                 starEnd.push(kf);
