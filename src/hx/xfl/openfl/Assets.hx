@@ -1,6 +1,9 @@
 package hx.xfl.openfl;
 
+import flash.display.Bitmap;
 import flash.display.BitmapData;
+import flash.display.PixelSnapping;
+
 import hx.xfl.DOMBitmapItem;
 import hx.xfl.XFLDocument;
 
@@ -21,6 +24,19 @@ class Assets
             name = name.substr(1);
 
         return openfl.Assets.getBitmapData(name);
+    }
+
+    public function getBitmapByMediaName(name:String):Bitmap
+    {
+        return new Bitmap(
+            getBitmapDataWithBitmapItem(document.getMedia(name)),
+            PixelSnapping.AUTO, true
+        );
+    }
+
+    public function getBitmapDataByBitmapItem(name:DOMBitmapItem):BitmapData
+    {
+        return getBitmapDataWithBitmapItem(name);
     }
 
     public function getBitmapDataWithBitmapItem(item:DOMBitmapItem)

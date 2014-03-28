@@ -17,6 +17,7 @@ import hx.xfl.DOMShape;
 import hx.xfl.DOMSymbolInstance;
 import hx.xfl.openfl.ShapeInstance;
 import hx.xfl.openfl.display.BitmapInstance;
+import hx.xfl.openfl.display.SimpleButton;
 
 import flash.errors.RangeError;
 
@@ -105,6 +106,7 @@ class MovieClip extends Sprite
         freeChildren();
 
         var frame;
+        var className:Class<Dynamic>;
         for (layer in domTimeLine.getLayersIterator(false)) {
             frame = layer.getFrameAt(currentFrame);
             if (frame == null) continue;
@@ -131,10 +133,9 @@ class MovieClip extends Sprite
                         matrix = starMatrix.add(deltaMatrix);
                     }
                     
-                    // TODO
-                    // set child name
                     if ("movie clip" == instance.symbolType ||
-                        "" == instance.symbolType) {
+                        "" == instance.symbolType ||
+                        "graphic" == instance.symbolType) {
 
                         var item = cast(instance.libraryItem, DOMSymbolItem);
 
@@ -142,17 +143,26 @@ class MovieClip extends Sprite
                             throw '现在我还不清楚是不是只能是SymbolItem';
                         }
 
-                        var displayObject = new MovieClip(item.timeline);
+                        var displayObject:MovieClip;
+                        if (null != instance.libraryItem.linkageClassName) {
+                            displayObject = Type.createInstance(Type.resolveClass(instance.libraryItem.linkageClassName), [item.timeline]);
+                        } else
+                            displayObject = new MovieClip(item.timeline);
                         if (null != instance.name)
                             displayObject.name = instance.name;
                         displayObject.transform.matrix = matrix.toFlashMatrix();
                         addChild(displayObject);
                     } else if ("button" == instance.symbolType) {
-                        var displayObject = new ButtonInstance(instance);
+                        var button:Sprite;
+                        if (null != instance.libraryItem.linkageClassName) {
+                            className = Type.resolveClass(instance.libraryItem.linkageClassName);
+                            button = Type.createInstance(className, [instance]);
+                        } else
+                            button = new SimpleButton(instance);
                         if (null != instance.name)
-                            displayObject.name = instance.name;
-                        displayObject.transform.matrix = matrix.toFlashMatrix();
-                        addChild(displayObject);
+                            button.name = instance.name;
+                        button.transform.matrix = matrix.toFlashMatrix();
+                        addChild(button);
                     }
                 } else if (Std.is(element, DOMText)) {
                     var instance = cast(element, DOMText);
