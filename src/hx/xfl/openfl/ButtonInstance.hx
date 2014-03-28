@@ -4,6 +4,7 @@ import flash.display.SimpleButton;
 import flash.display.Sprite;
 import hx.xfl.DOMSymbolInstance;
 import hx.xfl.DOMSymbolItem;
+import hx.xfl.openfl.display.MovieClip;
 
 class ButtonInstance extends SimpleButton
 {
@@ -19,21 +20,25 @@ class ButtonInstance extends SimpleButton
         var upState = new Sprite();
         var overState = new Sprite();
         var downState = new Sprite();
-        for (dom in file.timeline.layers) {
-            var layer = new Layer(dom);
-            layer.gotoAndStop(0);
-            upState.addChild(layer);
 
-            var layer = new Layer(dom);
-            layer.gotoAndStop(1);
-            overState.addChild(layer);
+        var timeline = file.timeline;
+        var movieClip = new MovieClip(timeline);
+        movieClip.gotoAndStop(0);
+        upState = movieClip;
+        var movieClip = new MovieClip(timeline);
+        movieClip.gotoAndStop(1);
+        overState = movieClip;
+        var movieClip = new MovieClip(timeline);
+        movieClip.gotoAndStop(2);
+        downState = movieClip;
 
-            var layer = new Layer(dom);
-            layer.gotoAndStop(2);
-            downState.addChild(layer);
-        }
+        var hitTest = upState;
+        if (hitTest.width == 0 || hitTest.height == 0)
+            hitTest = overState;
+        if (hitTest.width == 0 || hitTest.height == 0)
+            hitTest = downState;
 
-        super(upState, overState, downState, upState);
+        super(upState, overState, downState, hitTest);
         this.transform.matrix = dom.matrix.toFlashMatrix();
     }
 }
