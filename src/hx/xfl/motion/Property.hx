@@ -1,4 +1,5 @@
 package hx.xfl.motion;
+import hx.xfl.assembler.XFLBaseAssembler;
 
 class Property
 {
@@ -16,6 +17,12 @@ class Property
 
     public function parse(data:Xml)
     {
-        
+        var assembler = new XFLBaseAssembler(null);
+        assembler.fillProperty(this, data);
+        for (element in data.elements()) {
+            var keyFrame = new KeyFrame();
+            keyFrame.parse(element);
+            this.keyFrames.push(keyFrame);
+        }
     }
 }

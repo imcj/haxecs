@@ -15,5 +15,9 @@ class KeyFrame
         next = new Point();
         previous = new Point();
     }
-    
+
+    public function parse(data:Xml)
+    {
+        
+    }
 }
