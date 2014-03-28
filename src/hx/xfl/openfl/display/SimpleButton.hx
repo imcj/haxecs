@@ -18,11 +18,17 @@ class SimpleButton extends MovieClip
         gotoAndStop(0);
         addEventListener(MouseEvent.MOUSE_DOWN, __onMouseDown);
         addEventListener(MouseEvent.MOUSE_OVER, __onMouseOver);
+        addEventListener(MouseEvent.MOUSE_OUT, __onMouseOut);
     }
 
     function __onMouseOver(?e)
     {
         gotoAndStop(1);
+    }
+
+    function __onMouseOut(?e)
+    {
+        gotoAndStop(0);
     }
 
     function __onMouseDown(?e)
