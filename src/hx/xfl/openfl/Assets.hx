@@ -48,7 +48,7 @@ class Assets
         if ("+" == name.substr(0, 1))
             name = name.substr(1);
         var bmd = getBitmapData(
-            hx.Path.abspath(hx.Path.join(document.dir, ["LIBRARY", name])));
+            hx.Path.join(document.dir, ["LIBRARY", name]));
 
         return bmd;
     }
