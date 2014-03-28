@@ -35,12 +35,17 @@ class DOMFrameAssembler extends XFLBaseAssembler
             frames.push(frame);
 
             for (dom_element in element.firstElement().elements()) {
-                assembler = assemblers.get(dom_element.nodeName);
-                if (null == assembler)
-                    continue;
-                    // throw dom_element.nodeName + 
-                    //       " is not support element type.";
-                frame.addElement(assembler.parse(dom_element));
+                if ("AnimationCore" == dom_element.nodeName) {
+                    var animation_assembler = new DOMAnimationCoreAssembler(document);
+                    animation_assembler.parse(dom_element);
+                }else {
+                    assembler = assemblers.get(dom_element.nodeName);
+                    if (null == assembler)
+                        continue;
+                        // throw dom_element.nodeName + 
+                        //       " is not support element type.";
+                    frame.addElement(assembler.parse(dom_element));
+                }
             }
         }
 
