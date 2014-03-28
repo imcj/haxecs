@@ -17,6 +17,7 @@ class SimpleButton extends MovieClip
         this.transform.matrix = symbol.matrix.toFlashMatrix();
         gotoAndStop(0);
         addEventListener(MouseEvent.MOUSE_DOWN, __onMouseDown);
+        addEventListener(MouseEvent.MOUSE_OVER, __onMouseOver);
     }
 
     function __onMouseOver(?e)
