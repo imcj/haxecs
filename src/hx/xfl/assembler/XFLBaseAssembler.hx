@@ -37,6 +37,9 @@ class XFLBaseAssembler
 
             if (~/selected/.match(attribute))
                 continue;
+
+            if (~/locked/.match(attribute))
+                continue;
             // attribute = attribute.replace("\n", "");
             // attribute = attribute.replace("\r", "");
             // trace(Type.getInstanceFields(Type.getClass(object)));
