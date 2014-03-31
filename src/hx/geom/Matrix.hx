@@ -54,13 +54,16 @@ class Matrix
 
     public function skew(x:Float, y:Float):Void 
     {
-        var orgY = Math.acos(a);
-        a = Math.cos(orgY) * Math.cos(y) - Math.sin(orgY) * Math.sin(y);
-        b = Math.sin(orgY) * Math.cos(y) + Math.cos(orgY) * Math.sin(y);
-        var orgX = Math.acos(d);
-        c = -(Math.sin(orgX) * Math.cos(x) + Math.cos(orgX) * Math.sin(x));
-        d = Math.cos(orgX) * Math.cos(x) - Math.sin(orgX) * Math.sin(x);
-        
+        var cosY = Math.cos(y);
+        var sinY = Math.sin(y);
+        var a1 = a * cosY - sinY * b;
+        b = b * cosY + a * sinY;
+        a = a1;
+        var cosX = Math.cos(x);
+        var sinX = Math.sin(x);
+        var c1 = c * cosX - d * sinX;
+        d = d * cosX + c * sinX;
+        c = c1;
     }
 
     public function sub(matrix:Matrix):Matrix
