@@ -52,6 +52,17 @@ class Matrix
         d = Math.cos(x);
     }
 
+    public function skew(x:Float, y:Float):Void 
+    {
+        var orgY = Math.acos(a);
+        a = Math.cos(orgY) * Math.cos(y) - Math.sin(orgY) * Math.sin(y);
+        b = Math.sin(orgY) * Math.cos(y) + Math.cos(orgY) * Math.sin(y);
+        var orgX = Math.acos(d);
+        c = -(Math.sin(orgX) * Math.cos(x) + Math.cos(orgX) * Math.sin(x));
+        d = Math.cos(orgX) * Math.cos(x) - Math.sin(orgX) * Math.sin(x);
+        
+    }
+
     public function sub(matrix:Matrix):Matrix
     {
         return new Matrix(a - matrix.a, b - matrix.b, c - matrix.c, d - matrix.d, tx - matrix.tx, ty - matrix.ty);
