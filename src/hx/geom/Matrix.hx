@@ -29,9 +29,9 @@ class Matrix
         var c1 = c * cos - d * sin;
         this.d = c * sin + d * cos;
         this.c = c1;
-        var tx1 = this.tx * cos - this.ty * sin;
-        this.ty = this.tx * sin + this.ty * cos;
-        this.tx = tx1;
+        //var tx1 = this.tx * cos - this.ty * sin;
+        //this.ty = this.tx * sin + this.ty * cos;
+        //this.tx = tx1;
     }
 
     public function sub(matrix:Matrix):Matrix
