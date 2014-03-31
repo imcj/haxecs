@@ -19,6 +19,21 @@ class Matrix
         this.ty = ty;
     }
 
+    public function rotate(angle:Float):Void 
+    {
+        var cos = Math.cos(angle);
+        var sin = Math.sin(angle);
+        var a1 = a * cos - b * sin;
+        this.b = a * sin + b * cos;
+        this.a = a1;
+        var c1 = c * cos - d * sin;
+        this.d = c * sin + d * cos;
+        this.c = c1;
+        var tx1 = this.tx * cos - this.ty * sin;
+        this.ty = this.tx * sin + this.ty * cos;
+        this.tx = tx1;
+    }
+
     public function sub(matrix:Matrix):Matrix
     {
         return new Matrix(a - matrix.a, b - matrix.b, c - matrix.c, d - matrix.d, tx - matrix.tx, ty - matrix.ty);
