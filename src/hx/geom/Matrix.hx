@@ -38,12 +38,10 @@ class Matrix
     {
         a *= x;
         b *= y;
-
         c *= x;
         d *= y;
-
-        tx *= x;
-        ty *= y;
+        //tx *= x;
+        //ty *= y;
     }
 
     public function sub(matrix:Matrix):Matrix
