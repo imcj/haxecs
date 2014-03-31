@@ -44,6 +44,12 @@ class Matrix
         //ty *= y;
     }
 
+    public function skew(x:Float, y:Float):Void 
+    {
+        b = Math.tan(y);
+        c = Math.tan(x);
+    }
+
     public function sub(matrix:Matrix):Matrix
     {
         return new Matrix(a - matrix.a, b - matrix.b, c - matrix.c, d - matrix.d, tx - matrix.tx, ty - matrix.ty);
