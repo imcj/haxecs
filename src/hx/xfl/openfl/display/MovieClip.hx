@@ -157,6 +157,20 @@ class MovieClip extends Sprite
                             var deltaFrame = Std.int((rKeys[1].timevalue - rKeys[0].timevalue) / 1000);
                             matrix.rotate(deltaR / deltaFrame * Math.PI / 180);
                         }
+
+                        var transform = keyFrames.get("headContainer").children.get("Transformation");
+                        var sxKeys = cast(transform.children.get("Scale_X"), Property).getStarEnd(currentFrame);
+                        if (sxKeys.length > 1) {
+                            var deltaSX = sxKeys[1].anchor.y - sxKeys[0].anchor.y;
+                            var deltaFrame = Std.int((sxKeys[1].timevalue - sxKeys[0].timevalue) / 1000);
+                            matrix.scale(sxKeys[0].anchor.y/100 + (deltaSX / 100 / deltaFrame), sxKeys[0].anchor.y/100);
+                        }
+                        var syKeys = cast(transform.children.get("Scale_Y"), Property).getStarEnd(currentFrame);
+                        if (syKeys.length > 1) {
+                            var deltaSX = syKeys[1].anchor.y - syKeys[0].anchor.y;
+                            var deltaFrame = Std.int((syKeys[1].timevalue - syKeys[0].timevalue) / 1000);
+                            matrix.scale(syKeys[0].anchor.y/100,syKeys[0].anchor.y/100 + (deltaSX / 100 / deltaFrame));
+                        }
                     }
                     
                     if ("movie clip" == instance.symbolType ||
