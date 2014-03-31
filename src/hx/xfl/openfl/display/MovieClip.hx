@@ -153,11 +153,11 @@ class MovieClip extends Sprite
                         }
                         var rKeys = cast(basic.children.get("Rotation_Z"), Property).getStarEnd(currentFrame);
                         if (rKeys.length == 1) {
-                            matrix.rotate(rKeys[0].anchor.y * 180 / Math.PI);
+                            matrix.rotate(rKeys[0].anchor.y * Math.PI / 180);
                         }else if (rKeys.length > 1) {
                             var deltaR = rKeys[1].anchor.y - rKeys[0].anchor.y;
                             var deltaFrame = Std.int((rKeys[1].timevalue - rKeys[0].timevalue) / 1000);
-                            matrix.rotate(deltaR / deltaFrame * 180 / Math.PI);
+                            matrix.rotate(deltaR / deltaFrame * Math.PI / 180);
                         }
                     }
                     
