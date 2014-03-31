@@ -46,8 +46,10 @@ class Matrix
 
     public function skew(x:Float, y:Float):Void 
     {
-        b = Math.tan(y);
-        c = Math.tan(x);
+        a = Math.cos(y);
+        b = Math.sin(y);
+        c = -Math.sin(x);
+        d = Math.cos(x);
     }
 
     public function sub(matrix:Matrix):Matrix
