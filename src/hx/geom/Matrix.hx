@@ -44,7 +44,7 @@ class Matrix
         //ty *= y;
     }
 
-    public function skew(x:Float, y:Float):Void 
+    public function setSkew(x:Float, y:Float):Void 
     {
         a = Math.cos(y);
         b = Math.sin(y);
