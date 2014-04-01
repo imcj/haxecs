@@ -66,6 +66,18 @@ class Matrix
         c = c1;
     }
 
+    public function translate(x=0.0, y=0.0, point=null):Void 
+    {
+        if (null == point) {
+            tx += x;
+            ty += y;
+        }else {
+            tx += point.x;
+            ty += point.y;
+        }
+        
+    }
+
     public function sub(matrix:Matrix):Matrix
     {
         return new Matrix(a - matrix.a, b - matrix.b, c - matrix.c, d - matrix.d, tx - matrix.tx, ty - matrix.ty);
