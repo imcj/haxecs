@@ -2,6 +2,7 @@ package hx.xfl.openfl.display;
 
 import flash.events.Event;
 import hx.geom.Matrix;
+import hx.geom.Point;
 import hx.xfl.DOMLayer;
 import hx.xfl.DOMFrame;
 import hx.xfl.DOMBitmapItem;
@@ -133,6 +134,8 @@ class MovieClip extends Sprite
                         var deltaMatrix = perAddMatrix.multi(currentFrame-frame.index);
                         matrix = starMatrix.add(deltaMatrix);
                     }else if (frame.tweenType == "motion object") {
+                        var prePosition = new Point(matrix.tx, matrix.ty);
+                        var preTransform = matrix.transformPoint(instance.transformPoint);
                         var keyFrames = frame.animation.PropertyContainers;
                         var basic = keyFrames.get("headContainer").children.get("Basic_Motion");
                         var xKeys = cast(basic.children.get("Motion_X"), Property).getStarEnd(currentFrame);
@@ -183,6 +186,12 @@ class MovieClip extends Sprite
                             var deltaFrame = Std.int((skyKeys[1].timevalue - skyKeys[0].timevalue) / 1000);
                             matrix.skew(0, deltaSKY / deltaFrame * Math.PI / 180);
                         }
+
+                        var deltaPosition = new Point(matrix.tx - prePosition.x, matrix.ty - prePosition.y);
+                        var nowTransform = matrix.transformPoint(instance.transformPoint);
+                        var deltaTransform = new Point(nowTransform.x - preTransform.x, nowTransform.y - preTransform.y);
+                        var revise = deltaPosition.sub(deltaTransform);
+                        matrix.translate(revise);
                     }
                     
                     if ("movie clip" == instance.symbolType ||
