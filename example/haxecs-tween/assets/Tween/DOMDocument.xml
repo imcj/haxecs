@@ -4,19 +4,37 @@
           <Include href="rect2.xml" loadImmediate="false" itemID="5338fcd4-00000006" lastModified="1396243668"/>
      </symbols>
      <timelines>
-          <DOMTimeline name="Scene 1" currentFrame="38">
+          <DOMTimeline name="Scene 1">
                <layers>
-                    <DOMLayer name="图层 2" color="#9933CC" current="true" isSelected="true" animationType="motion object">
+                    <DOMLayer name="图层 4" color="#FF4FFF" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" duration="23" keyMode="9728">
+                                   <Actionscript>
+                                        <script><![CDATA[import flash.geom.Point;
+
+trace(xx.transform.matrix.deltaTransformPoint(new Point(52.15,36.35)));]]></script>
+                                   </Actionscript>
+                                   <elements/>
+                              </DOMFrame>
+                              <DOMFrame index="23" duration="16" keyMode="9728">
+                                   <Actionscript>
+                                        <script><![CDATA[trace(xx.transform.matrix);]]></script>
+                                   </Actionscript>
+                                   <elements/>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="图层 2" color="#9933CC" visible="false" animationType="motion object">
                          <frames>
                               <DOMFrame index="0" duration="39" tweenType="motion object" motionTweenRotate="none" motionTweenScale="false" isMotionObject="true" visibleAnimationKeyframes="2097151" keyMode="8195">
-                                   <motionObjectXML><AnimationCore TimeScale="24000" Version="1" duration="39000"><TimeMap strength="0" type="Quadratic"/><metadata><names><name langID="zh_CN" value=""/></names><Settings orientToPath="0" xformPtXOffsetPct="0.5" xformPtYOffsetPct="0.5" xformPtZOffsetPixels="0"/></metadata><PropertyContainer id="headContainer"><PropertyContainer id="Basic_Motion"><Property enabled="1" id="Motion_X" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="0,0" previous="0,0" roving="0" timevalue="0"/><Keyframe anchor="0,216" next="0,216" previous="0,216" roving="0" timevalue="38000"/></Property><Property enabled="1" id="Motion_Y" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="0,0" previous="0,0" roving="0" timevalue="0"/><Keyframe anchor="0,-196.95" next="0,-196.95" previous="0,-196.95" roving="0" timevalue="38000"/></Property><Property enabled="1" id="Rotation_Z" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="0,0" previous="0,0" roving="0" timevalue="0"/><Keyframe anchor="0,29.994" next="0,29.994" previous="0,29.994" roving="0" timevalue="38000"/></Property></PropertyContainer><PropertyContainer id="Transformation"><Property enabled="1" id="Skew_X" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="0,0" previous="0,0" roving="0" timevalue="0"/><Keyframe anchor="0,10" next="0,10" previous="0,10" roving="0" timevalue="38000"/></Property><Property enabled="1" id="Skew_Y" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="0,0" previous="0,0" roving="0" timevalue="0"/><Keyframe anchor="0,7" next="0,7" previous="0,7" roving="0" timevalue="38000"/></Property><Property enabled="1" id="Scale_X" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,100" next="0,100" previous="0,100" roving="0" timevalue="0"/></Property><Property enabled="1" id="Scale_Y" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,100" next="0,100" previous="0,100" roving="0" timevalue="0"/></Property></PropertyContainer><PropertyContainer id="Colors"/><PropertyContainer id="Filters"/></PropertyContainer></AnimationCore></motionObjectXML>
+                                   <motionObjectXML><AnimationCore TimeScale="24000" Version="1" duration="39000"><TimeMap strength="0" type="Quadratic"/><metadata><names><name langID="zh_CN" value=""/></names><Settings orientToPath="0" xformPtXOffsetPct="0.493976" xformPtYOffsetPct="0.492742" xformPtZOffsetPixels="0"/></metadata><PropertyContainer id="headContainer"><PropertyContainer id="Basic_Motion"><Property enabled="1" id="Motion_X" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="0,0" previous="0,0" roving="0" timevalue="0"/><Keyframe anchor="0,246" next="0,246" previous="0,246" roving="0" timevalue="38000"/></Property><Property enabled="1" id="Motion_Y" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="0,0" previous="0,0" roving="0" timevalue="0"/><Keyframe anchor="0,-173.45" next="0,-173.45" previous="0,-173.45" roving="0" timevalue="38000"/></Property><Property enabled="1" id="Rotation_Z" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="0,0" previous="0,0" roving="0" timevalue="0"/><Keyframe anchor="0,0" next="0,0" previous="0,0" roving="0" timevalue="38000"/></Property></PropertyContainer><PropertyContainer id="Transformation"><Property enabled="1" id="Skew_X" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="0,0" previous="0,0" roving="0" timevalue="0"/><Keyframe anchor="0,10" next="0,10" previous="0,10" roving="0" timevalue="38000"/></Property><Property enabled="1" id="Skew_Y" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="0,0" previous="0,0" roving="0" timevalue="0"/><Keyframe anchor="0,81" next="0,81" previous="0,81" roving="0" timevalue="38000"/></Property><Property enabled="1" id="Scale_X" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,100" next="0,100" previous="0,100" roving="0" timevalue="0"/></Property><Property enabled="1" id="Scale_Y" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,100" next="0,100" previous="0,100" roving="0" timevalue="0"/></Property></PropertyContainer><PropertyContainer id="Colors"/><PropertyContainer id="Filters"/></PropertyContainer></AnimationCore></motionObjectXML>
                                    <elements>
-                                        <DOMSymbolInstance libraryItemName="rect2" centerPoint3DX="154.5" centerPoint3DY="261.95">
+                                        <DOMSymbolInstance libraryItemName="rect2" centerPoint3DX="155.05" centerPoint3DY="261.45">
                                              <matrix>
-                                                  <Matrix tx="113" ty="230.95"/>
+                                                  <Matrix tx="113.55" ty="230.45"/>
                                              </matrix>
                                              <transformationPoint>
-                                                  <Point x="41.5" y="31"/>
+                                                  <Point x="41" y="30.55"/>
                                              </transformationPoint>
                                         </DOMSymbolInstance>
                                    </elements>
@@ -26,14 +44,14 @@
                     <DOMLayer name="图层 1" color="#4F80FF" animationType="motion object">
                          <frames>
                               <DOMFrame index="0" duration="39" tweenType="motion object" motionTweenRotate="none" motionTweenScale="false" isMotionObject="true" visibleAnimationKeyframes="2097151" keyMode="8195">
-                                   <motionObjectXML><AnimationCore TimeScale="24000" Version="1" duration="39000"><TimeMap strength="0" type="Quadratic"/><metadata><names><name langID="zh_CN" value=""/></names><Settings orientToPath="0" xformPtXOffsetPct="0.509896" xformPtYOffsetPct="0.5" xformPtZOffsetPixels="0"/></metadata><PropertyContainer id="headContainer"><PropertyContainer id="Basic_Motion"><Property enabled="1" id="Motion_X" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="7659,105.05" previous="0,0" roving="0" timevalue="0"/><Keyframe anchor="0,178.15" next="0,178.15" previous="-7658,164.4" roving="0" timevalue="23000"/><Keyframe anchor="0,339" next="0,339" previous="0,339" roving="0" timevalue="38000"/></Property><Property enabled="1" id="Motion_Y" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="7659,-6.9" previous="0,0" roving="0" timevalue="0"/><Keyframe anchor="0,94.6" next="0,94.6" previous="-7658,24.65" roving="0" timevalue="23000"/><Keyframe anchor="0,82" next="0,82" previous="0,82" roving="0" timevalue="38000"/></Property><Property enabled="1" id="Rotation_Z" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,-177" next="0,-177" previous="0,-177" roving="0" timevalue="0"/><Keyframe anchor="0,37" next="0,37" previous="0,37" roving="0" timevalue="23000"/></Property></PropertyContainer><PropertyContainer id="Transformation"><Property enabled="1" id="Skew_X" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="0,0" previous="0,0" roving="0" timevalue="0"/></Property><Property enabled="1" id="Skew_Y" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="0,0" previous="0,0" roving="0" timevalue="0"/></Property><Property enabled="1" id="Scale_X" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,100" next="0,100" previous="0,100" roving="0" timevalue="0"/><Keyframe anchor="0,138" next="0,138" previous="0,138" roving="0" timevalue="38000"/></Property><Property enabled="1" id="Scale_Y" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,100" next="0,100" previous="0,100" roving="0" timevalue="0"/><Keyframe anchor="0,138" next="0,138" previous="0,138" roving="0" timevalue="38000"/></Property></PropertyContainer><PropertyContainer id="Colors"/><PropertyContainer id="Filters"/></PropertyContainer></AnimationCore></motionObjectXML>
+                                   <motionObjectXML><AnimationCore TimeScale="24000" Version="1" duration="39000"><TimeMap strength="0" type="Quadratic"/><metadata><names><name langID="zh_CN" value=""/></names><Settings orientToPath="0" xformPtXOffsetPct="0.542708" xformPtYOffsetPct="0.543284" xformPtZOffsetPixels="0"/></metadata><PropertyContainer id="headContainer"><PropertyContainer id="Basic_Motion"><Property enabled="1" id="Motion_X" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="7659,50.2" previous="0,0" roving="0" timevalue="0"/><Keyframe anchor="0,178.15" next="0,178.15" previous="-7658,109.6" roving="0" timevalue="23000"/><Keyframe anchor="0,339" next="0,339" previous="0,339" roving="0" timevalue="38000"/></Property><Property enabled="1" id="Motion_Y" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="7659,70.9" previous="0,0" roving="0" timevalue="0"/><Keyframe anchor="0,94.6" next="0,94.6" previous="-7658,102.45" roving="0" timevalue="23000"/><Keyframe anchor="0,82" next="0,82" previous="0,82" roving="0" timevalue="38000"/></Property><Property enabled="1" id="Rotation_Z" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,-177" next="0,-177" previous="0,-177" roving="0" timevalue="0"/><Keyframe anchor="0,37" next="0,37" previous="0,37" roving="0" timevalue="23000"/></Property></PropertyContainer><PropertyContainer id="Transformation"><Property enabled="1" id="Skew_X" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="0,0" previous="0,0" roving="0" timevalue="0"/></Property><Property enabled="1" id="Skew_Y" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="0,0" previous="0,0" roving="0" timevalue="0"/></Property><Property enabled="1" id="Scale_X" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,100" next="0,100" previous="0,100" roving="0" timevalue="0"/><Keyframe anchor="0,138" next="0,138" previous="0,138" roving="0" timevalue="38000"/></Property><Property enabled="1" id="Scale_Y" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,100" next="0,100" previous="0,100" roving="0" timevalue="0"/><Keyframe anchor="0,138" next="0,138" previous="0,138" roving="0" timevalue="38000"/></Property></PropertyContainer><PropertyContainer id="Colors"/><PropertyContainer id="Filters"/></PropertyContainer></AnimationCore></motionObjectXML>
                                    <elements>
-                                        <DOMSymbolInstance libraryItemName="rect" centerPoint3DX="105" centerPoint3DY="126.5">
+                                        <DOMSymbolInstance libraryItemName="rect" name="xx" centerPoint3DX="124" centerPoint3DY="113.65">
                                              <matrix>
-                                                  <Matrix a="-0.998626708984375" b="-0.052337646484375" c="0.052337646484375" d="-0.998626708984375" tx="152.1" ty="162.5"/>
+                                                  <Matrix a="-0.998626708984375" b="-0.052337646484375" c="0.052337646484375" d="-0.998626708984375" tx="171.15" ty="149.6"/>
                                              </matrix>
                                              <transformationPoint>
-                                                  <Point x="48.9" y="33.5"/>
+                                                  <Point x="52.15" y="36.35"/>
                                              </transformationPoint>
                                         </DOMSymbolInstance>
                                    </elements>
@@ -45,6 +63,21 @@
      </timelines>
      <PrinterSettings/>
      <publishHistory>
+          <PublishItem publishSize="1850" publishTime="1396330714"/>
+          <PublishItem publishSize="1858" publishTime="1396330653"/>
+          <PublishItem publishSize="1858" publishTime="1396330603"/>
+          <PublishItem publishSize="1838" publishTime="1396330493"/>
+          <PublishItem publishSize="1843" publishTime="1396329961"/>
+          <PublishItem publishSize="1857" publishTime="1396329658"/>
+          <PublishItem publishSize="1856" publishTime="1396324246"/>
+          <PublishItem publishSize="1835" publishTime="1396324049"/>
+          <PublishItem publishSize="1848" publishTime="1396323998"/>
+          <PublishItem publishSize="1418" publishTime="1396323971"/>
+          <PublishItem publishSize="1803" publishTime="1396255761"/>
+          <PublishItem publishSize="1795" publishTime="1396255668"/>
+          <PublishItem publishSize="1797" publishTime="1396255652"/>
+          <PublishItem publishSize="1417" publishTime="1396255324"/>
+          <PublishItem publishSize="1403" publishTime="1396255118"/>
           <PublishItem publishSize="1403" publishTime="1396255113"/>
           <PublishItem publishSize="1657" publishTime="1396254514"/>
           <PublishItem publishSize="1289" publishTime="1396254466"/>
