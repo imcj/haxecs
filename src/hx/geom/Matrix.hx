@@ -75,7 +75,16 @@ class Matrix
             tx += point.x;
             ty += point.y;
         }
-        
+    }
+
+    public function deltaTransformPoint(point:{x:Float, y:Float}):{x:Float, y:Float}
+    {
+        return new Point(point.x * a + point.y * c, point.x * b + point.y * d);
+    }
+
+    public function transformPoint(point:{x:Float, y:Float}):{x:Float, y:Float}
+    {
+        return new Point(point.x * a + point.y * c + tx, point.x * b + point.y * d + ty);
     }
 
     public function sub(matrix:Matrix):Matrix
