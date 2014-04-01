@@ -10,5 +10,9 @@ class Point
         this.x = x;
         this.y = y;
     }
-    
+
+    public function sub(point:{x:Float, y:Float}):Point 
+    {
+        return new Point(this.x - point.x, this.y - point.y);
+    }
 }
