@@ -18,6 +18,7 @@ class DOMElementAssembler extends XFLBaseAssembler
 
         for (elementNode in data.elements()) {
             parse_matrix(elementNode, element);
+            parse_transformPoint(elementNode, element);
         }
 
         return element;
@@ -61,6 +62,25 @@ class DOMElementAssembler extends XFLBaseAssembler
             if (null != matrix_ty)
                 matrix.ty = Std.parseFloat(matrix_ty);
 
+        }
+    }
+
+    function parse_transformPoint(elementNode:Xml, element):Void 
+    {
+        var transformPoint = element.transformPoint;
+        var transformPoint_x:String, transformPoint_y:String;
+
+        if ("transformationPoint" == elementNode.nodeName) {
+            transformPoint_x = elementNode.firstElement().get('x');
+            transformPoint_y = elementNode.firstElement().get('y');
+
+            if (null != transformPoint_x) {
+                transformPoint.x = Std.parseFloat(transformPoint_x);
+            }
+
+            if (null != transformPoint_y) {
+                transformPoint.y = Std.parseFloat(transformPoint_y);
+            }
         }
     }
 }
