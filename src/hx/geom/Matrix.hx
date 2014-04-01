@@ -66,7 +66,7 @@ class Matrix
         c = c1;
     }
 
-    public function translate(x=0.0, y=0.0, point=null):Void 
+    public function translate(?x=0.0, ?y=0.0, point=null):Void 
     {
         if (null == point) {
             tx += x;
