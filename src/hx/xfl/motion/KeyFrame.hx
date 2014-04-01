@@ -1,6 +1,6 @@
 package hx.xfl.motion;
 
-import flash.geom.Point;
+import hx.geom.Point;
 import hx.xfl.assembler.XFLBaseAssembler;
 
 class KeyFrame
