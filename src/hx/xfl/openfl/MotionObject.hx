@@ -2,15 +2,18 @@ package hx.xfl.openfl;
 import flash.display.DisplayObject;
 import hx.geom.Matrix;
 import hx.xfl.DOMAnimationCore;
+import hx.xfl.DOMElement;
 import hx.xfl.motion.Property;
 import hx.xfl.motion.PropertyContainer;
 
 class MotionObject
 {
-    public var dom:DOMAnimationCore;
+    var dom:DOMAnimationCore;
+    var target:DOMElement;
 
-    public function new(dom)
+    public function new(target, dom)
     {
+        this.target = target;
         this.dom = dom;
     }
 
@@ -24,20 +27,17 @@ class MotionObject
     public function getContainers(name:String):Map<String, PropertyContainer>
     {
         var head = dom.PropertyContainers.get(name);
-        if (null == container) return null;
-        var containers = head.children;
+        if (null == head) return null;
+        var containers = cast(head.children);
         return containers;
     }
 
     public function getProperty(name:String):Property 
     {
-        for (up in dom.PropertyContainers) {
-            for (container in up.children) {
-                for (property in container.children) {
-                    if (name == property.id) {
-                        return property;
-                    }
-                }
+        var containers = getContainers("headContainer");
+        for (c in containers) {
+            for (p in c.children) {
+                if (name == p.id) return cast(p);
             }
         }
         return null;
