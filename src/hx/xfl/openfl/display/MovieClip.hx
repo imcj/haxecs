@@ -165,7 +165,20 @@ class MovieClip extends Sprite
                         }else if (yKeys.length > 1) {
                             var deltaY = yKeys[1].anchor.y - yKeys[0].anchor.y;
                             var deltaFrame = Std.int((yKeys[1].timevalue - yKeys[0].timevalue) / 1000);
-                            matrix.ty += deltaY / deltaFrame;
+                            var s = frame.animation.strength;
+                            if (s > 0) {
+                                var v0 = deltaY / deltaFrame * (1 + s / 100);
+                                var a = -v0 / deltaFrame;
+                                var t = currentFrame-Std.int(xKeys[0].timevalue / 1000);
+                                matrix.tx += v0 + a * (2 * t -1) / 2;
+                            }else if (s < 0) {
+                                var v1 = deltaY / deltaFrame * (1 - s / 100);
+                                var a = v1 / deltaFrame;
+                                var t = currentFrame-Std.int(xKeys[0].timevalue / 1000);
+                                matrix.tx += a * (2 * t -1) / 2;
+                            }else {
+                                matrix.ty += deltaY / deltaFrame;
+                            }
                         }
                         var rKeys = cast(basic.children.get("Rotation_Z"), Property).getStarEnd(currentFrame);
                         if (rKeys.length > 1) {
