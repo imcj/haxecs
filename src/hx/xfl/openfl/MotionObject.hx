@@ -17,11 +17,29 @@ class MotionObject
         this.dom = dom;
     }
 
-    public function getMatrix(frame:Int):Matrix 
+    public function animate(currentFrame:Int)
     {
-        var matrix = new Matrix();
+        var matrix = target.matrix;
         
-        return matrix;
+    }
+
+    //flash中的缓动处理
+    public function ease(delta:Float, deltaFrame:Int, pastFrame:Int):Float 
+    {
+        var s = dom.strength;
+        if (s > 0) {
+            var v0 = delta / deltaFrame * (1 + s / 100);
+            var a = -v0 / deltaFrame;
+            var t = pastFrame;
+            return v0 + a * (2 * t -1) / 2;
+        }else if (s < 0) {
+            var v1 = delta / deltaFrame * (1 - s / 100);
+            var a = v1 / deltaFrame;
+            var t = pastFrame;
+            return  a * (2 * t -1) / 2;
+        }else {
+            return 0;
+        }
     }
 
     public function getContainers(name:String):Map<String, PropertyContainer>
