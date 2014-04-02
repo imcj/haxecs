@@ -141,10 +141,23 @@ class MovieClip extends Sprite
                         var xKeys = cast(basic.children.get("Motion_X"), Property).getStarEnd(currentFrame);
                         if (xKeys.length == 1) {
                             matrix.tx += xKeys[0].anchor.x;
-                        }else if(xKeys.length > 1) {
+                        }else if (xKeys.length > 1) {
                             var deltaX = xKeys[1].anchor.y - xKeys[0].anchor.y;
                             var deltaFrame = Std.int((xKeys[1].timevalue - xKeys[0].timevalue) / 1000);
-                            matrix.tx += deltaX / deltaFrame;
+                            var s = frame.animation.strength;
+                            if (s > 0) {
+                                var v0 = deltaX / deltaFrame * (1 + s / 100);
+                                var a = -v0 / deltaFrame;
+                                var t = currentFrame-Std.int(xKeys[0].timevalue / 1000);
+                                matrix.tx += v0 + a * (2 * t -1);
+                            }else if (s < 0) {
+                                var v1 = deltaX / deltaFrame * (1 + s / 100);
+                                var a = v1 / deltaFrame;
+                                var t = currentFrame-Std.int(xKeys[0].timevalue / 1000);
+                                matrix.tx += a * (2 * t -1);
+                            }else {
+                                matrix.tx += deltaX / deltaFrame;
+                            }
                         }
                         var yKeys = cast(basic.children.get("Motion_Y"), Property).getStarEnd(currentFrame);
                         if (yKeys.length == 1) {
