@@ -149,12 +149,12 @@ class MovieClip extends Sprite
                                 var v0 = deltaX / deltaFrame * (1 + s / 100);
                                 var a = -v0 / deltaFrame;
                                 var t = currentFrame-Std.int(xKeys[0].timevalue / 1000);
-                                matrix.tx += v0 + a * (2 * t -1);
+                                matrix.tx += v0 + a * (2 * t -1) / 2;
                             }else if (s < 0) {
-                                var v1 = deltaX / deltaFrame * (1 + s / 100);
+                                var v1 = deltaX / deltaFrame * (1 - s / 100);
                                 var a = v1 / deltaFrame;
                                 var t = currentFrame-Std.int(xKeys[0].timevalue / 1000);
-                                matrix.tx += a * (2 * t -1);
+                                matrix.tx += a * (2 * t -1) / 2;
                             }else {
                                 matrix.tx += deltaX / deltaFrame;
                             }
