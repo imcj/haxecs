@@ -16,6 +16,9 @@ class DOMAnimationCoreAssembler extends XFLBaseAssembler
         var animation = new DOMAnimationCore();
         fillProperty(animation, data);
         for (element in data.elements()) {
+            if ("TimeMap" == element.nodeName) {
+                animation.strength = Std.parseInt(element.get("strength"));
+            }
             if ("PropertyContainer" == element.nodeName) {
                 var pContainer = new PropertyContainer();
                 fillProperty(pContainer, element);

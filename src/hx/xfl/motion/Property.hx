@@ -8,6 +8,7 @@ class Property
     public var ignoreTimeMap:Int;
     public var readonly:Int;
     public var visible:Int;
+    public var TimeMapIndex:Int;
     public var keyFrames:Array<KeyFrame>;
 
     public function new() 
