@@ -169,13 +169,13 @@ class MovieClip extends Sprite
                             if (s > 0) {
                                 var v0 = deltaY / deltaFrame * (1 + s / 100);
                                 var a = -v0 / deltaFrame;
-                                var t = currentFrame-Std.int(xKeys[0].timevalue / 1000);
-                                matrix.tx += v0 + a * (2 * t -1) / 2;
+                                var t = currentFrame-Std.int(yKeys[0].timevalue / 1000);
+                                matrix.ty += v0 + a * (2 * t -1) / 2;
                             }else if (s < 0) {
                                 var v1 = deltaY / deltaFrame * (1 - s / 100);
                                 var a = v1 / deltaFrame;
-                                var t = currentFrame-Std.int(xKeys[0].timevalue / 1000);
-                                matrix.tx += a * (2 * t -1) / 2;
+                                var t = currentFrame-Std.int(yKeys[0].timevalue / 1000);
+                                matrix.ty += a * (2 * t -1) / 2;
                             }else {
                                 matrix.ty += deltaY / deltaFrame;
                             }
