@@ -11,16 +11,38 @@ class MotionObject
     var dom:DOMAnimationCore;
     var target:DOMElement;
 
+    var currentFrame:Int;
+
     public function new(target, dom)
     {
         this.target = target;
         this.dom = dom;
+        this.currentFrame = 0;
     }
 
     public function animate(currentFrame:Int)
     {
         var matrix = target.matrix;
+        this.currentFrame = currentFrame;
+    }
+
+    public function motion(propertyName:String):Float
+    {
+        var addValue = 0.0;
+        var property = getProperty(propertyName);
+        var keys = property.getStarEnd(currentFrame);
+        if(1 < keys.length) {
+            var delta = keys[1].anchor.y - keys[0].anchor.y;
+            var deltaFrame = Std.int((keys[1].timevalue - keys[0].timevalue) / 1000);
+            if (dom.strength != 0) addValue = ease(delta, deltaFrame, currentFrame-Std.int(keys[0].timevalue / 1000));
+            else addValue = delta / deltaFrame;
+
+            if (~/Rotation/.match(propertyName)) addValue = addValue * Math.PI / 180;
+            if (~/Scale/.match(propertyName)) addValue = addValue / 100;
+            if (~/Skew/.match(propertyName)) addValue = addValue * Math.PI / 180;
+        }
         
+        return addValue;
     }
 
     //flash中的缓动处理
