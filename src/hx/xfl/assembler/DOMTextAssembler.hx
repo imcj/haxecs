@@ -16,6 +16,7 @@ class DOMTextAssembler extends DOMElementAssembler
     override public function parse(data:Xml):IDOMElement
     {
         var element = cast(super.parse(data), DOMText);
+        element.type = data.nodeName;
         // text children
         var text = cast(element, DOMText);
         for (node in data.elements()) {
