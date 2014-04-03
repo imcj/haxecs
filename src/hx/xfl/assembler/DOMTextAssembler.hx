@@ -43,7 +43,7 @@ class DOMTextAssembler extends DOMElementAssembler
             if ("characters" == item.nodeName) {
                 if (null == item)
                     continue;
-                textRun.characters = item.firstChild().nodeValue;
+                textRun.characters = item.firstChild() == null?"":item.firstChild().nodeValue;
             } else if ("textAttrs" == item.nodeName) {
                 textRun.textAttrs = parseTextAttrs(item.firstElement());
             }
