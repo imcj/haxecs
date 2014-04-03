@@ -30,9 +30,9 @@ class MotionObject
         matrix.ty += yAdd;
         var rotationAdd = motion("Rotation_Z");
         matrix.rotate(rotationAdd);
-        //var scaleXAdd = motion("Scale_X");
-        //var scaleYAdd = motion("Scale_Y");
-        //matrix.scale(scaleXAdd, scaleYAdd);
+        var scaleXAdd = motion("Scale_X");
+        var scaleYAdd = motion("Scale_Y");
+        matrix.scale(scaleXAdd, scaleYAdd);
         var skewXAdd = motion("Skew_X");
         var skewYAdd = motion("Skew_Y");
         matrix.skew(skewXAdd, skewYAdd);
@@ -48,12 +48,12 @@ class MotionObject
             var deltaFrame = Std.int((keys[1].timevalue - keys[0].timevalue) / 1000);
             if (dom.strength != 0) addValue = ease(delta, deltaFrame, currentFrame-Std.int(keys[0].timevalue / 1000));
             else addValue = delta / deltaFrame;
-
-            if (~/Rotation/.match(propertyName)) addValue = addValue * Math.PI / 180;
-            if (~/Scale/.match(propertyName)) addValue = addValue / 100;
-            if (~/Skew/.match(propertyName)) addValue = addValue * Math.PI / 180;
         }
-        
+
+        if (~/Rotation/.match(propertyName)) addValue = addValue * Math.PI / 180;
+        if (~/Scale/.match(propertyName)) addValue = (keys[0].anchor.y + addValue) / 100;
+        if (~/Skew/.match(propertyName)) addValue = addValue * Math.PI / 180;
+
         return addValue;
     }
 
