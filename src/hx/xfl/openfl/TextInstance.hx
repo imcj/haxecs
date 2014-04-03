@@ -38,6 +38,14 @@ class TextInstance extends TextField
         height = dom.height + 10;
         selectable = dom.isSelectable;
 
+        //处理文本域类型
+        type = switch (dom.type) {
+            case "DOMInputText":
+                INPUT;
+            default:
+                DYNAMIC;
+        }
+
         var matrix = dom.matrix.toFlashMatrix();
         matrix.ty -= 6;
         this.transform.matrix = matrix;
