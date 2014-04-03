@@ -139,6 +139,7 @@ class MovieClip extends Sprite
                         var prePosition = new Point(matrix.tx, matrix.ty);
                         var preTransform = matrix.transformPoint(instance.transformPoint);
                         motion.animate(currentFrame);
+                        //对形变中心引起的偏移做处理
                         var deltaPosition = new Point(matrix.tx - prePosition.x, matrix.ty - prePosition.y);
                         var nowTransform = matrix.transformPoint(instance.transformPoint);
                         var deltaTransform = new Point(nowTransform.x - preTransform.x, nowTransform.y - preTransform.y);

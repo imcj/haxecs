@@ -42,11 +42,14 @@ class MotionObject
     {
         var addValue = 0.0;
         var property = getProperty(propertyName);
+        var easeKeys = property.keyFrames;
+        var easeDelta = easeKeys[easeKeys.length - 1].anchor.y - easeKeys[0].anchor.y;
+        var easeDeltaFrame = Std.int((easeKeys[easeKeys.length - 1].timevalue - easeKeys[0].timevalue) / 1000);
         var keys = property.getStarEnd(currentFrame);
         if(1 < keys.length) {
             var delta = keys[1].anchor.y - keys[0].anchor.y;
             var deltaFrame = Std.int((keys[1].timevalue - keys[0].timevalue) / 1000);
-            if (dom.strength != 0) addValue = ease(delta, deltaFrame, currentFrame-Std.int(keys[0].timevalue / 1000));
+            if (dom.strength != 0) addValue = ease(easeDelta, easeDeltaFrame, currentFrame-Std.int(easeKeys[0].timevalue / 1000));
             else addValue = delta / deltaFrame;
         }
 
