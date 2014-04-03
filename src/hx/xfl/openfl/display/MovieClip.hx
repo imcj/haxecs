@@ -8,6 +8,7 @@ import hx.xfl.DOMFrame;
 import hx.xfl.DOMBitmapItem;
 import hx.xfl.DOMBitmapInstance;
 import hx.xfl.motion.Property;
+import hx.xfl.openfl.MotionObject;
 
 import flash.display.Sprite;
 import flash.display.Bitmap;
@@ -134,85 +135,10 @@ class MovieClip extends Sprite
                         var deltaMatrix = perAddMatrix.multi(currentFrame-frame.index);
                         matrix = starMatrix.add(deltaMatrix);
                     }else if (frame.tweenType == "motion object") {
+                        var motion = new MotionObject(instance, frame.animation);
                         var prePosition = new Point(matrix.tx, matrix.ty);
                         var preTransform = matrix.transformPoint(instance.transformPoint);
-                        var keyFrames = frame.animation.PropertyContainers;
-                        var basic = keyFrames.get("headContainer").children.get("Basic_Motion");
-                        var xKeys = cast(basic.children.get("Motion_X"), Property).getStarEnd(currentFrame);
-                        if (xKeys.length == 1) {
-                            matrix.tx += xKeys[0].anchor.x;
-                        }else if (xKeys.length > 1) {
-                            var deltaX = xKeys[1].anchor.y - xKeys[0].anchor.y;
-                            var deltaFrame = Std.int((xKeys[1].timevalue - xKeys[0].timevalue) / 1000);
-                            var s = frame.animation.strength;
-                            if (s > 0) {
-                                var v0 = deltaX / deltaFrame * (1 + s / 100);
-                                var a = -v0 / deltaFrame;
-                                var t = currentFrame-Std.int(xKeys[0].timevalue / 1000);
-                                matrix.tx += v0 + a * (2 * t -1) / 2;
-                            }else if (s < 0) {
-                                var v1 = deltaX / deltaFrame * (1 - s / 100);
-                                var a = v1 / deltaFrame;
-                                var t = currentFrame-Std.int(xKeys[0].timevalue / 1000);
-                                matrix.tx += a * (2 * t -1) / 2;
-                            }else {
-                                matrix.tx += deltaX / deltaFrame;
-                            }
-                        }
-                        var yKeys = cast(basic.children.get("Motion_Y"), Property).getStarEnd(currentFrame);
-                        if (yKeys.length == 1) {
-                            matrix.ty += xKeys[0].anchor.y;
-                        }else if (yKeys.length > 1) {
-                            var deltaY = yKeys[1].anchor.y - yKeys[0].anchor.y;
-                            var deltaFrame = Std.int((yKeys[1].timevalue - yKeys[0].timevalue) / 1000);
-                            var s = frame.animation.strength;
-                            if (s > 0) {
-                                var v0 = deltaY / deltaFrame * (1 + s / 100);
-                                var a = -v0 / deltaFrame;
-                                var t = currentFrame-Std.int(yKeys[0].timevalue / 1000);
-                                matrix.ty += v0 + a * (2 * t -1) / 2;
-                            }else if (s < 0) {
-                                var v1 = deltaY / deltaFrame * (1 - s / 100);
-                                var a = v1 / deltaFrame;
-                                var t = currentFrame-Std.int(yKeys[0].timevalue / 1000);
-                                matrix.ty += a * (2 * t -1) / 2;
-                            }else {
-                                matrix.ty += deltaY / deltaFrame;
-                            }
-                        }
-                        var rKeys = cast(basic.children.get("Rotation_Z"), Property).getStarEnd(currentFrame);
-                        if (rKeys.length > 1) {
-                            var deltaR = rKeys[1].anchor.y - rKeys[0].anchor.y;
-                            var deltaFrame = Std.int((rKeys[1].timevalue - rKeys[0].timevalue) / 1000);
-                            matrix.rotate(deltaR / deltaFrame * Math.PI / 180);
-                        }
-
-                        var transform = keyFrames.get("headContainer").children.get("Transformation");
-                        var sxKeys = cast(transform.children.get("Scale_X"), Property).getStarEnd(currentFrame);
-                        if (sxKeys.length > 1) {
-                            var deltaSX = sxKeys[1].anchor.y - sxKeys[0].anchor.y;
-                            var deltaFrame = Std.int((sxKeys[1].timevalue - sxKeys[0].timevalue) / 1000);
-                            matrix.scale(sxKeys[0].anchor.y/100 + (deltaSX / 100 / deltaFrame), sxKeys[0].anchor.y/100);
-                        }
-                        var syKeys = cast(transform.children.get("Scale_Y"), Property).getStarEnd(currentFrame);
-                        if (syKeys.length > 1) {
-                            var deltaSX = syKeys[1].anchor.y - syKeys[0].anchor.y;
-                            var deltaFrame = Std.int((syKeys[1].timevalue - syKeys[0].timevalue) / 1000);
-                            matrix.scale(syKeys[0].anchor.y/100,syKeys[0].anchor.y/100 + (deltaSX / 100 / deltaFrame));
-                        }
-                        var skxKeys = cast(transform.children.get("Skew_X"), Property).getStarEnd(currentFrame);
-                        if (skxKeys.length > 1) {
-                            var deltaSKX = skxKeys[1].anchor.y - skxKeys[0].anchor.y;
-                            var deltaFrame = Std.int((skxKeys[1].timevalue - skxKeys[0].timevalue) / 1000);
-                            matrix.skew(deltaSKX / deltaFrame * Math.PI / 180, 0);
-                        }
-                        var skyKeys = cast(transform.children.get("Skew_Y"), Property).getStarEnd(currentFrame);
-                        if (skyKeys.length > 1) {
-                            var deltaSKY = skyKeys[1].anchor.y - skyKeys[0].anchor.y;
-                            var deltaFrame = Std.int((skyKeys[1].timevalue - skyKeys[0].timevalue) / 1000);
-                            matrix.skew(0, deltaSKY / deltaFrame * Math.PI / 180);
-                        }
-
+                        motion.animate(currentFrame);
                         var deltaPosition = new Point(matrix.tx - prePosition.x, matrix.ty - prePosition.y);
                         var nowTransform = matrix.transformPoint(instance.transformPoint);
                         var deltaTransform = new Point(nowTransform.x - preTransform.x, nowTransform.y - preTransform.y);
