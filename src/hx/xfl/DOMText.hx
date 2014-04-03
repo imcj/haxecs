@@ -13,6 +13,7 @@ class DOMText extends DOMElement
         super();
 
         _textRuns = [];
+        isSelectable = true;
     }
 
     public function addTextRun(textRun)

@@ -36,7 +36,7 @@ class TextInstance extends TextField
         text   = dom.getTextRunAt(0).characters;
         width  = dom.width;
         height = dom.height + 10;
-        selectable = false;
+        selectable = dom.isSelectable;
 
         var matrix = dom.matrix.toFlashMatrix();
         matrix.ty -= 6;
