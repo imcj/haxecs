@@ -111,4 +111,16 @@ class Matrix
     {
         return new flash.geom.Matrix(a, b, c, d, tx, ty);
     }
+
+    public function clone():hx.geom.Matrix
+    {
+        var matrix = new Matrix();
+        matrix.a = this.a;
+        matrix.b = this.b;
+        matrix.c = this.c;
+        matrix.d = this.d;
+        matrix.tx = this.tx;
+        matrix.ty = this.ty;
+        return matrix;
+    }
 }
