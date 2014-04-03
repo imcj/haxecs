@@ -24,6 +24,18 @@ class MotionObject
     {
         var matrix = target.matrix;
         this.currentFrame = currentFrame;
+        var xAdd = motion("Motion_X");
+        var yAdd = motion("Motion_Y");
+        matrix.tx += xAdd;
+        matrix.ty += yAdd;
+        var rotationAdd = motion("Rotation_Z");
+        matrix.rotate(rotationAdd);
+        //var scaleXAdd = motion("Scale_X");
+        //var scaleYAdd = motion("Scale_Y");
+        //matrix.scale(scaleXAdd, scaleYAdd);
+        var skewXAdd = motion("Skew_X");
+        var skewYAdd = motion("Skew_Y");
+        matrix.skew(skewXAdd, skewYAdd);
     }
 
     public function motion(propertyName:String):Float
