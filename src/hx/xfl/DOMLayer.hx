@@ -12,6 +12,8 @@ class DOMLayer
     public var totalFrames:Int;
     public var animationType:String;
     public var visible:Bool;
+    public var layerType:String;
+    public var parentLayerIndex:Int;
 
     public function new()
     {
@@ -25,6 +27,8 @@ class DOMLayer
         totalFrames = 0;
         animationType = "";
         visible = true;
+        layerType = "";
+        parentLayerIndex = 0;
     }
 
     public function addFrame(frame:DOMFrame):DOMLayer
