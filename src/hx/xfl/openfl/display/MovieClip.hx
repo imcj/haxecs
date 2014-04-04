@@ -223,4 +223,11 @@ class MovieClip extends Sprite
             // removeChildren
         }
     }
+
+    public function clone():MovieClip
+    {
+        var mv = new MovieClip(domTimeLine);
+        mv.gotoAndStop(currentFrame);
+        return mv;
+    }
 }
