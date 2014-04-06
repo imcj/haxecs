@@ -37,6 +37,9 @@ class XFLBaseAssembler
 
             if (~/selected/.match(attribute))
                 continue;
+
+            if (~/locked/.match(attribute))
+                continue;
             // attribute = attribute.replace("\n", "");
             // attribute = attribute.replace("\r", "");
             // trace(Type.getInstanceFields(Type.getClass(object)));
@@ -46,7 +49,11 @@ class XFLBaseAssembler
             //           '${Type.getClassName(Type.getClass(object))}' + 
             //           '.$attribute in ${data.nodeName}';
 
-            Reflect.setField(object, attribute, data.get(attribute));
+            Reflect.setField(object, attribute, switch(data.get(attribute)) {
+                case "true": true;
+                case "false": false;
+                default: data.get(attribute);
+            });
         }
     }
 }

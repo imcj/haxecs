@@ -11,12 +11,12 @@ using StringTools;
 
 class Assets
 {
-	public var document:XFLDocument;
+    public var document:XFLDocument;
 
-	public function new(document:XFLDocument)
-	{
-		this.document = document;
-	}
+    public function new(document:XFLDocument)
+    {
+        this.document = document;
+    }
 
     public function getBitmapData(name:String):BitmapData
     {
@@ -40,7 +40,7 @@ class Assets
     }
 
     public function getBitmapDataWithBitmapItem(item:DOMBitmapItem)
-    	:BitmapData
+        :BitmapData
     {
         var name = item.href;
         if ("./" == name.substr(0, 2))
@@ -48,13 +48,13 @@ class Assets
         if ("+" == name.substr(0, 1))
             name = name.substr(1);
         var bmd = getBitmapData(
-            hx.Path.abspath(hx.Path.join(document.dir, ["LIBRARY", name])));
+            hx.Path.join(document.dir, ["LIBRARY", name]));
 
         return bmd;
     }
 
     static public function getText(name:String):String
     {
-    	return openfl.Assets.getText(name);
+        return openfl.Assets.getText(name);
     }
 }

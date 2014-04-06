@@ -36,7 +36,15 @@ class TextInstance extends TextField
         text   = dom.getTextRunAt(0).characters;
         width  = dom.width;
         height = dom.height + 10;
-        selectable = false;
+        selectable = dom.isSelectable;
+
+        //处理文本域类型
+        type = switch (dom.type) {
+            case "DOMInputText":
+                INPUT;
+            default:
+                DYNAMIC;
+        }
 
         var matrix = dom.matrix.toFlashMatrix();
         matrix.ty -= 6;

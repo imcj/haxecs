@@ -4,6 +4,7 @@ class DOMBitmapItem extends DOMItem
 {
     public var allowSmoothing:Bool;
     public var characterId:Int;
+    public var externalFileCRC32:Int;
     public var externalFileSize:Int;
     public var frameRight:Int;
     public var frameBottom:Int;

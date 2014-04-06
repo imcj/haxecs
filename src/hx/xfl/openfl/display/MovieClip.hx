@@ -2,10 +2,13 @@ package hx.xfl.openfl.display;
 
 import flash.events.Event;
 import hx.geom.Matrix;
+import hx.geom.Point;
 import hx.xfl.DOMLayer;
 import hx.xfl.DOMFrame;
 import hx.xfl.DOMBitmapItem;
 import hx.xfl.DOMBitmapInstance;
+import hx.xfl.motion.Property;
+import hx.xfl.openfl.MotionObject;
 
 import flash.display.Sprite;
 import flash.display.Bitmap;
@@ -131,6 +134,17 @@ class MovieClip extends Sprite
                         var perAddMatrix = endMatrix.sub(starMatrix).div(frame.duration);
                         var deltaMatrix = perAddMatrix.multi(currentFrame-frame.index);
                         matrix = starMatrix.add(deltaMatrix);
+                    }else if (frame.tweenType == "motion object") {
+                        var motion = new MotionObject(instance, frame.animation);
+                        var prePosition = new Point(matrix.tx, matrix.ty);
+                        var preTransform = matrix.transformPoint(instance.transformPoint);
+                        motion.animate(currentFrame);
+                        //对形变中心引起的偏移做处理
+                        var deltaPosition = new Point(matrix.tx - prePosition.x, matrix.ty - prePosition.y);
+                        var nowTransform = matrix.transformPoint(instance.transformPoint);
+                        var deltaTransform = new Point(nowTransform.x - preTransform.x, nowTransform.y - preTransform.y);
+                        var revise = deltaPosition.sub(deltaTransform);
+                        matrix.translate(revise);
                     }
                     
                     if ("movie clip" == instance.symbolType ||
@@ -208,5 +222,12 @@ class MovieClip extends Sprite
             // TODO
             // removeChildren
         }
+    }
+
+    public function clone():MovieClip
+    {
+        var mv = new MovieClip(domTimeLine);
+        mv.gotoAndStop(currentFrame);
+        return mv;
     }
 }

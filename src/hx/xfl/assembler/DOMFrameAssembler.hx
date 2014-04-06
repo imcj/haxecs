@@ -34,13 +34,24 @@ class DOMFrameAssembler extends XFLBaseAssembler
             fillProperty(frame, element);
             frames.push(frame);
 
-            for (dom_element in element.firstElement().elements()) {
-                assembler = assemblers.get(dom_element.nodeName);
-                if (null == assembler)
-                    continue;
-                    // throw dom_element.nodeName + 
-                    //       " is not support element type.";
-                frame.addElement(assembler.parse(dom_element));
+            for (element in element.elements()) {
+                if ("motionObjectXML" == element.nodeName) {
+                    for (ani_element in element.elements()) {
+                        var animation_assembler = new DOMAnimationCoreAssembler(document);
+                        frame.animation = animation_assembler.parse(ani_element);
+                    }
+                    
+                }else {
+                    for (dom_element in element.elements()) {
+                        assembler = assemblers.get(dom_element.nodeName);
+                        if (null == assembler)
+                            continue;
+                            // throw dom_element.nodeName + 
+                            //       " is not support element type.";
+                        frame.addElement(assembler.parse(dom_element));
+                    }
+                    
+                }
             }
         }
 

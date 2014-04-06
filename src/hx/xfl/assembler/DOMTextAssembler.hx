@@ -16,6 +16,7 @@ class DOMTextAssembler extends DOMElementAssembler
     override public function parse(data:Xml):IDOMElement
     {
         var element = cast(super.parse(data), DOMText);
+        element.type = data.nodeName;
         // text children
         var text = cast(element, DOMText);
         for (node in data.elements()) {
@@ -42,7 +43,7 @@ class DOMTextAssembler extends DOMElementAssembler
             if ("characters" == item.nodeName) {
                 if (null == item)
                     continue;
-                textRun.characters = item.firstChild().nodeValue;
+                textRun.characters = item.firstChild() == null?"":item.firstChild().nodeValue;
             } else if ("textAttrs" == item.nodeName) {
                 textRun.textAttrs = parseTextAttrs(item.firstElement());
             }

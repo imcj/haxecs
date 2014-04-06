@@ -6,12 +6,12 @@ import hx.xfl.DOMBitmapItem;
 
 class BitmapInstance extends Bitmap
 {
-	public var libraryItem:DOMBitmapItem;
+    public var libraryItem:DOMBitmapItem;
 
-	public function new(libraryItem:DOMBitmapItem, bitmapData:BitmapData,
-		pixelSnapping, smoothing=false)
-	{
-		this.libraryItem = libraryItem;
-		super(bitmapData, pixelSnapping, smoothing);
-	}
+    public function new(libraryItem:DOMBitmapItem, bitmapData:BitmapData,
+        pixelSnapping, smoothing=false)
+    {
+        this.libraryItem = libraryItem;
+        super(bitmapData, pixelSnapping, smoothing);
+    }
 }
