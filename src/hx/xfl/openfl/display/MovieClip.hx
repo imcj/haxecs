@@ -111,12 +111,14 @@ class MovieClip extends Sprite
         var frame;
         var className:Class<Dynamic>;
         for (layer in domTimeLine.getLayersIterator(false)) {
+            var mask = new Sprite();
             frame = layer.getFrameAt(currentFrame);
             if (frame == null) continue;
             for (element in frame.getElementsIterator()) {
                 if (Std.is(element, DOMBitmapInstance)) {
                     var bitmap_instance = cast(element, DOMBitmapInstance);
-                    addChild(createBitmapInstance(bitmap_instance));
+                    if ("mask" == layer.layerType) mask.addChild(createBitmapInstance(bitmap_instance));
+                    else addChild(createBitmapInstance(bitmap_instance));
                 } else if (Std.is(element, DOMSymbolInstance)) {
                     var instance = cast(element, DOMSymbolInstance);
 
@@ -167,7 +169,8 @@ class MovieClip extends Sprite
                         displayObject.transform.matrix = matrix.toFlashMatrix();
                         displayObject.mouseEnabled = !instance.silent;
                         displayObject.mouseChildren = !instance.hasAccessibleData;
-                        addChild(displayObject);
+                        if ("mask" == layer.layerType) mask.addChild(displayObject);
+                        else addChild(displayObject);
                     } else if ("button" == instance.symbolType) {
                         var button:Sprite;
                         if (null != instance.libraryItem.linkageClassName) {
@@ -178,18 +181,21 @@ class MovieClip extends Sprite
                         if (null != instance.name)
                             button.name = instance.name;
                         button.transform.matrix = matrix.toFlashMatrix();
-                        addChild(button);
+                        if ("mask" == layer.layerType) mask.addChild(button);
+                        else addChild(button);
                     }
                 } else if (Std.is(element, DOMText)) {
                     var instance = cast(element, DOMText);
                     var displayObject = new TextInstance(instance);
                     if (null != instance.name)
                         displayObject.name = instance.name;
-                    addChild(displayObject);
+                    if ("mask" == layer.layerType) mask.addChild(displayObject);
+                    else addChild(displayObject);
                 } else if (Std.is(element, DOMShape)) {
                     var instance = cast(element, DOMShape);
                     var displayObject = new ShapeInstance(instance);
-                    addChild(displayObject);
+                    if ("mask" == layer.layerType) mask.addChild(displayObject);
+                    else addChild(displayObject);
                 }
             }
         }
