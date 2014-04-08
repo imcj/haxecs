@@ -165,6 +165,8 @@ class MovieClip extends Sprite
                         if (null != instance.name)
                             displayObject.name = instance.name;
                         displayObject.transform.matrix = matrix.toFlashMatrix();
+                        displayObject.mouseEnabled = !instance.silent;
+                        displayObject.mouseChildren = !instance.hasAccessibleData;
                         addChild(displayObject);
                     } else if ("button" == instance.symbolType) {
                         var button:Sprite;
