@@ -224,7 +224,7 @@ class MovieClip extends Sprite
         }
         var n = 0;
         for (l in mlayers) {
-            var m = masks.get(maskNum[n]);
+            var m = masks.get(numLayer-1-maskNum[n]);
             l.addChild(m);
             l.mask = m;
             n++;
