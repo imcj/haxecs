@@ -9,6 +9,7 @@ import hx.xfl.DOMFrame;
 import hx.xfl.DOMBitmapItem;
 import hx.xfl.DOMBitmapInstance;
 import hx.xfl.motion.Property;
+import hx.xfl.openfl.Layer;
 import hx.xfl.openfl.MotionObject;
 
 import flash.display.Sprite;
@@ -119,102 +120,9 @@ class MovieClip extends Sprite
             var mask = new Sprite();
             var layerSprite = new Sprite();
             if ("mask" == layer.layerType) masks.set(numLayer, mask);
-            frame = layer.getFrameAt(currentFrame);
-            if (frame == null) continue;
-            for (element in frame.getElementsIterator()) {
-                if (Std.is(element, DOMBitmapInstance)) {
-                    var bitmap_instance = cast(element, DOMBitmapInstance);
-                    if ("mask" == layer.layerType)
-                        mask.addChild(createBitmapInstance(bitmap_instance));
-                    else
-                        layerSprite.addChild(createBitmapInstance(bitmap_instance));
-                } else if (Std.is(element, DOMSymbolInstance)) {
-                    var instance = cast(element, DOMSymbolInstance);
-
-                    // 动画
-                    var matrix = instance.matrix;
-                    if (frame.tweenType == "motion") {
-                        var nextFrame = frame;
-                        for (n in 0...layer.frames.length) {
-                            if (layer.frames[n] == frame) {
-                                nextFrame = layer.frames[n + 1];
-                            }
-                        }
-                        var starMatrix = frame.elements[0].matrix;
-                        var endMatrix = nextFrame.elements[0].matrix;
-                        var perAddMatrix = endMatrix.sub(starMatrix).div(frame.duration);
-                        var deltaMatrix = perAddMatrix.multi(currentFrame-frame.index);
-                        matrix = starMatrix.add(deltaMatrix);
-                    }else if (frame.tweenType == "motion object") {
-                        var motion = new MotionObject(instance, frame.animation);
-                        var prePosition = new Point(matrix.tx, matrix.ty);
-                        var preTransform = matrix.transformPoint(instance.transformPoint);
-                        motion.animate(currentFrame);
-                        //对形变中心引起的偏移做处理
-                        var deltaPosition = new Point(matrix.tx - prePosition.x, matrix.ty - prePosition.y);
-                        var nowTransform = matrix.transformPoint(instance.transformPoint);
-                        var deltaTransform = new Point(nowTransform.x - preTransform.x, nowTransform.y - preTransform.y);
-                        var revise = deltaPosition.sub(deltaTransform);
-                        matrix.translate(revise);
-                    }
-                    
-                    if ("movie clip" == instance.symbolType ||
-                        "" == instance.symbolType ||
-                        "graphic" == instance.symbolType) {
-
-                        var item = cast(instance.libraryItem, DOMSymbolItem);
-
-                        if (!Std.is(item, DOMSymbolItem)) {
-                            throw '现在我还不清楚是不是只能是SymbolItem';
-                        }
-
-                        var displayObject:MovieClip;
-                        if (null != instance.libraryItem.linkageClassName) {
-                            displayObject = Type.createInstance(Type.resolveClass(instance.libraryItem.linkageClassName), [item.timeline]);
-                        } else
-                            displayObject = new MovieClip(item.timeline);
-                        if (null != instance.name)
-                            displayObject.name = instance.name;
-                        displayObject.transform.matrix = matrix.toFlashMatrix();
-                        displayObject.mouseEnabled = !instance.silent;
-                        displayObject.mouseChildren = !instance.hasAccessibleData;
-                        if ("mask" == layer.layerType)
-                            mask.addChild(displayObject);
-                        else 
-                            layerSprite.addChild(displayObject);
-                    } else if ("button" == instance.symbolType) {
-                        var button:Sprite;
-                        if (null != instance.libraryItem.linkageClassName) {
-                            className = Type.resolveClass(instance.libraryItem.linkageClassName);
-                            button = Type.createInstance(className, [instance]);
-                        } else
-                            button = new SimpleButton(instance);
-                        if (null != instance.name)
-                            button.name = instance.name;
-                        button.transform.matrix = matrix.toFlashMatrix();
-                        if ("mask" == layer.layerType)
-                            mask.addChild(button);
-                        else
-                            layerSprite.addChild(button);
-                    }
-                } else if (Std.is(element, DOMText)) {
-                    var instance = cast(element, DOMText);
-                    var displayObject = new TextInstance(instance);
-                    if (null != instance.name)
-                        displayObject.name = instance.name;
-                    if ("mask" == layer.layerType)
-                        mask.addChild(displayObject);
-                    else
-                        layerSprite.addChild(displayObject);
-                } else if (Std.is(element, DOMShape)) {
-                    var instance = cast(element, DOMShape);
-                    var displayObject = new ShapeInstance(instance);
-                    if ("mask" == layer.layerType)
-                        mask.addChild(displayObject);
-                    else
-                        layerSprite.addChild(displayObject);
-                }
-            }
+            var l = new Layer(layer);
+            l.displayFrame(currentFrame);
+            addChild(l);
             numLayer++;
             if (layer.parentLayerIndex > 0) {
                 mlayers.push(layerSprite);
