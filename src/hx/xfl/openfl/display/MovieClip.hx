@@ -110,28 +110,30 @@ class MovieClip extends Sprite
     {
         freeChildren();
 
-        var masks:Map<Int, DOMLayer> = new Map();
+        var maskDoms:Map<Int, DOMLayer> = new Map();
         var masklayers = [];
         var maskNums = [];
         var numLayer = 0;
-        for (layer in domTimeLine.getLayersIterator(false)) {
-            var mask = new Sprite();
-            if ("mask" == layer.layerType) masks.set(numLayer, layer);
-            var l = new Layer(layer);
-            l.displayFrame(currentFrame);
-            addChild(l);
-            if (layer.parentLayerIndex > 0) {
-                masklayers.push(l);
-                maskNums.push(layer.parentLayerIndex);
+        for (domLayer in domTimeLine.getLayersIterator(false)) {
+            if ("mask" == domLayer.layerType) {
+                maskDoms.set(numLayer, domLayer);
+            }else {
+                var layer = new Layer(domLayer);
+                layer.displayFrame(currentFrame);
+                addChild(layer);
+                if (domLayer.parentLayerIndex > 0) {
+                    masklayers.push(layer);
+                    maskNums.push(domLayer.parentLayerIndex);
+                }
             }
+            
             numLayer++;
         }
         var n = 0;
         for (l in masklayers) {
-            var dom = masks.get(numLayer - 1 - maskNums[n]);
+            var dom = maskDoms.get(numLayer - 1 - maskNums[n]);
             var mask = new Layer(dom);
             mask.displayFrame(currentFrame);
-            l.addChild(mask);
             l.mask = mask;
             n++;
         }
