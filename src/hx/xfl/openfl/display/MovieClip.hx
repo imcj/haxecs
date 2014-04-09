@@ -1,5 +1,6 @@
 package hx.xfl.openfl.display;
 
+import flash.display.DisplayObject;
 import flash.events.Event;
 import hx.geom.Matrix;
 import hx.geom.Point;
@@ -217,6 +218,16 @@ class MovieClip extends Sprite
             layers.push(layerSprite);
             addChild(layerSprite);
         }
+    }
+
+    override public function getChildByName(name:String):DisplayObject
+    {
+        for (num in 0...numChildren) {
+            var l = cast(super.getChildAt(num));
+            var child = l.getChildByName(name);
+            if (child != null) return child;
+        }
+        return null;
     }
 
     // TODO
