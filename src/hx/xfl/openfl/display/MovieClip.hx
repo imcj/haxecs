@@ -230,6 +230,18 @@ class MovieClip extends Sprite
         return null;
     }
 
+    override public function getChildAt(index:Int):DisplayObject
+    {
+        var n = 0;
+        for (num in 0...numChildren) {
+            var l = cast(super.getChildAt(num));
+            var child = l.getChildAt(index - n);
+            if (child != null) return child;
+            n += l.numChildren;
+        }
+        return super.getChildAt(index);
+    }
+
     // TODO
     //
     // 下面的removeChildren是从openfl-native中拷贝过来的，在openfl-html5项目中api缺少
