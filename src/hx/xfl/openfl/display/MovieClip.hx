@@ -120,17 +120,10 @@ class MovieClip extends Sprite
             for (element in frame.getElementsIterator()) {
                 if (Std.is(element, DOMBitmapInstance)) {
                     var bitmap_instance = cast(element, DOMBitmapInstance);
-                    if ("mask" == layer.layerType) {
+                    if ("mask" == layer.layerType)
                         mask.addChild(createBitmapInstance(bitmap_instance));
-                    }
-                    else {
-                        var b = createBitmapInstance(bitmap_instance);
-                        addChild(b);
-                        if (layer.parentLayerIndex >= 0) {
-                            var m = masks.get(layer.parentLayerIndex);
-                            b.mask = m;
-                        }
-                    }
+                    else
+                        addChild(createBitmapInstance(bitmap_instance));
                 } else if (Std.is(element, DOMSymbolInstance)) {
                     var instance = cast(element, DOMSymbolInstance);
 
@@ -181,15 +174,10 @@ class MovieClip extends Sprite
                         displayObject.transform.matrix = matrix.toFlashMatrix();
                         displayObject.mouseEnabled = !instance.silent;
                         displayObject.mouseChildren = !instance.hasAccessibleData;
-                        if ("mask" == layer.layerType) {
+                        if ("mask" == layer.layerType)
                             mask.addChild(displayObject);
-                        }
-                        else {
+                        else 
                             addChild(displayObject);
-                            if (layer.parentLayerIndex >= 0) {
-                                displayObject.mask = masks.get(layer.parentLayerIndex);
-                            }
-                        }
                     } else if ("button" == instance.symbolType) {
                         var button:Sprite;
                         if (null != instance.libraryItem.linkageClassName) {
@@ -200,42 +188,27 @@ class MovieClip extends Sprite
                         if (null != instance.name)
                             button.name = instance.name;
                         button.transform.matrix = matrix.toFlashMatrix();
-                        if ("mask" == layer.layerType) {
+                        if ("mask" == layer.layerType)
                             mask.addChild(button);
-                        }
-                        else {
+                        else
                             addChild(button);
-                            if (layer.parentLayerIndex >= 0) {
-                                button.mask = masks.get(layer.parentLayerIndex);
-                            }
-                        }
                     }
                 } else if (Std.is(element, DOMText)) {
                     var instance = cast(element, DOMText);
                     var displayObject = new TextInstance(instance);
                     if (null != instance.name)
                         displayObject.name = instance.name;
-                    if ("mask" == layer.layerType) {
+                    if ("mask" == layer.layerType)
                         mask.addChild(displayObject);
-                    }
-                    else {
+                    else
                         addChild(displayObject);
-                        if (layer.parentLayerIndex >= 0) {
-                            displayObject.mask = masks.get(layer.parentLayerIndex);
-                        }
-                    }
                 } else if (Std.is(element, DOMShape)) {
                     var instance = cast(element, DOMShape);
                     var displayObject = new ShapeInstance(instance);
-                    if ("mask" == layer.layerType) {
+                    if ("mask" == layer.layerType)
                         mask.addChild(displayObject);
-                    }
-                    else {
+                    else 
                         addChild(displayObject);
-                        if (layer.parentLayerIndex >= 0) {
-                            displayObject.mask = masks.get(layer.parentLayerIndex);
-                        }
-                    }
                 }
             }
             numLayer++;
