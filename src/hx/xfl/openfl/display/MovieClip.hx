@@ -111,9 +111,11 @@ class MovieClip extends Sprite
         var frame;
         var className:Class<Dynamic>;
         var masks:Map<Int, Sprite> = new Map();
+        var layers = [];
         var numLayer = 0;
         for (layer in domTimeLine.getLayersIterator(false)) {
             var mask = new Sprite();
+            var layerSprite = new Sprite();
             if ("mask" == layer.layerType) masks.set(numLayer, mask);
             frame = layer.getFrameAt(currentFrame);
             if (frame == null) continue;
@@ -123,7 +125,7 @@ class MovieClip extends Sprite
                     if ("mask" == layer.layerType)
                         mask.addChild(createBitmapInstance(bitmap_instance));
                     else
-                        addChild(createBitmapInstance(bitmap_instance));
+                        layerSprite.addChild(createBitmapInstance(bitmap_instance));
                 } else if (Std.is(element, DOMSymbolInstance)) {
                     var instance = cast(element, DOMSymbolInstance);
 
@@ -177,7 +179,7 @@ class MovieClip extends Sprite
                         if ("mask" == layer.layerType)
                             mask.addChild(displayObject);
                         else 
-                            addChild(displayObject);
+                            layerSprite.addChild(displayObject);
                     } else if ("button" == instance.symbolType) {
                         var button:Sprite;
                         if (null != instance.libraryItem.linkageClassName) {
@@ -191,7 +193,7 @@ class MovieClip extends Sprite
                         if ("mask" == layer.layerType)
                             mask.addChild(button);
                         else
-                            addChild(button);
+                            layerSprite.addChild(button);
                     }
                 } else if (Std.is(element, DOMText)) {
                     var instance = cast(element, DOMText);
@@ -201,17 +203,19 @@ class MovieClip extends Sprite
                     if ("mask" == layer.layerType)
                         mask.addChild(displayObject);
                     else
-                        addChild(displayObject);
+                        layerSprite.addChild(displayObject);
                 } else if (Std.is(element, DOMShape)) {
                     var instance = cast(element, DOMShape);
                     var displayObject = new ShapeInstance(instance);
                     if ("mask" == layer.layerType)
                         mask.addChild(displayObject);
-                    else 
-                        addChild(displayObject);
+                    else
+                        layerSprite.addChild(displayObject);
                 }
             }
             numLayer++;
+            layers.push(layerSprite);
+            addChild(layerSprite);
         }
     }
 
