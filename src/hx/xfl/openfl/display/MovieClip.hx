@@ -126,7 +126,6 @@ class MovieClip extends Sprite
                     maskNums.push(domLayer.parentLayerIndex);
                 }
             }
-            
             numLayer++;
         }
         var n = 0;
@@ -134,6 +133,7 @@ class MovieClip extends Sprite
             var dom = maskDoms.get(numLayer - 1 - maskNums[n]);
             var mask = new Layer(dom);
             mask.displayFrame(currentFrame);
+            l.addChild(mask);
             l.mask = mask;
             n++;
         }
