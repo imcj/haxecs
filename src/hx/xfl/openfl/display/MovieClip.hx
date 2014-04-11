@@ -9,7 +9,6 @@ import hx.xfl.DOMFrame;
 import hx.xfl.DOMBitmapItem;
 import hx.xfl.DOMBitmapInstance;
 import hx.xfl.motion.Property;
-import hx.xfl.openfl.Layer;
 import hx.xfl.openfl.MotionObject;
 
 import flash.display.Sprite;
@@ -118,7 +117,7 @@ class MovieClip extends Sprite
             if ("mask" == domLayer.layerType) {
                 maskDoms.set(numLayer, domLayer);
             }else {
-                var layer = displayLayer(domLayer);
+                var layer = displayLayer(domLayer,this);
                 if (domLayer.parentLayerIndex >= 0) {
                     masklayers.push(layer);
                     maskNums.push(domLayer.parentLayerIndex);
@@ -130,8 +129,8 @@ class MovieClip extends Sprite
         for (l in masklayers) {
             for (o in l) {
                 var dom = maskDoms.get(numLayer - 1 - maskNums[n]);
-                var mask = new Layer(dom);
-                mask.displayFrame(currentFrame);
+                var mask = new Sprite();
+                displayLayer(dom, mask);
                 o.mask = mask;
                 addChild(mask);
             }
@@ -139,7 +138,7 @@ class MovieClip extends Sprite
         }
     }
 
-    function displayLayer(domLayer:DOMLayer):Array<DisplayObject> 
+    function displayLayer(domLayer:DOMLayer, parent:Sprite):Array<DisplayObject> 
     {
         var className:Class<Dynamic>;
         var layer:Array<DisplayObject> = [];
@@ -149,7 +148,7 @@ class MovieClip extends Sprite
             if (Std.is(element, DOMBitmapInstance)) {
                 var bitmap_instance = cast(element, DOMBitmapInstance);
                 var bitmap = createBitmapInstance(bitmap_instance);
-                addChild(bitmap);
+                parent.addChild(bitmap);
                 layer.push(bitmap);
             } else if (Std.is(element, DOMSymbolInstance)) {
                 var instance = cast(element, DOMSymbolInstance);
@@ -201,7 +200,7 @@ class MovieClip extends Sprite
                     displayObject.transform.matrix = matrix.toFlashMatrix();
                     displayObject.mouseEnabled = !instance.silent;
                     displayObject.mouseChildren = !instance.hasAccessibleData;
-                    addChild(displayObject);
+                    parent.addChild(displayObject);
                     layer.push(displayObject);
                 } else if ("button" == instance.symbolType) {
                     var button:Sprite;
@@ -213,7 +212,7 @@ class MovieClip extends Sprite
                     if (null != instance.name)
                         button.name = instance.name;
                     button.transform.matrix = matrix.toFlashMatrix();
-                    addChild(button);
+                    parent.addChild(button);
                     layer.push(button);
                 }
             } else if (Std.is(element, DOMText)) {
@@ -221,12 +220,12 @@ class MovieClip extends Sprite
                 var displayObject = new TextInstance(instance);
                 if (null != instance.name)
                     displayObject.name = instance.name;
-                addChild(displayObject);
+                parent.addChild(displayObject);
                 layer.push(displayObject);
             } else if (Std.is(element, DOMShape)) {
                 var instance = cast(element, DOMShape);
                 var displayObject = new ShapeInstance(instance);
-                addChild(displayObject);
+                parent.addChild(displayObject);
                 layer.push(displayObject);
             }
         }
