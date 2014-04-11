@@ -110,7 +110,6 @@ class MovieClip extends Sprite
     {
         freeChildren();
 
-        var className:Class<Dynamic>;
         var maskDoms:Map<Int, DOMLayer> = new Map();
         var masklayers:Array<Array<DisplayObject>> = [];
         var maskNums = [];
@@ -119,94 +118,7 @@ class MovieClip extends Sprite
             if ("mask" == domLayer.layerType) {
                 maskDoms.set(numLayer, domLayer);
             }else {
-                var layer:Array<DisplayObject> = [];
-                var frame = domLayer.getFrameAt(currentFrame);
-                if (frame == null) return;
-                for (element in frame.getElementsIterator()) {
-                    if (Std.is(element, DOMBitmapInstance)) {
-                        var bitmap_instance = cast(element, DOMBitmapInstance);
-                        var bitmap = createBitmapInstance(bitmap_instance);
-                        addChild(bitmap);
-                        layer.push(bitmap);
-                    } else if (Std.is(element, DOMSymbolInstance)) {
-                        var instance = cast(element, DOMSymbolInstance);
-
-                        // 动画
-                        var matrix = instance.matrix;
-                        if (frame.tweenType == "motion") {
-                            var nextFrame = frame;
-                            for (n in 0...domLayer.frames.length) {
-                                if (domLayer.frames[n] == frame) {
-                                    nextFrame = domLayer.frames[n + 1];
-                                }
-                            }
-                            var starMatrix = frame.elements[0].matrix;
-                            var endMatrix = nextFrame.elements[0].matrix;
-                            var perAddMatrix = endMatrix.sub(starMatrix).div(frame.duration);
-                            var deltaMatrix = perAddMatrix.multi(currentFrame-frame.index);
-                            matrix = starMatrix.add(deltaMatrix);
-                        }else if (frame.tweenType == "motion object") {
-                            var motion = new MotionObject(instance, frame.animation);
-                            var prePosition = new Point(matrix.tx, matrix.ty);
-                            var preTransform = matrix.transformPoint(instance.transformPoint);
-                            motion.animate(currentFrame);
-                            //对形变中心引起的偏移做处理
-                            var deltaPosition = new Point(matrix.tx - prePosition.x, matrix.ty - prePosition.y);
-                            var nowTransform = matrix.transformPoint(instance.transformPoint);
-                            var deltaTransform = new Point(nowTransform.x - preTransform.x, nowTransform.y - preTransform.y);
-                            var revise = deltaPosition.sub(deltaTransform);
-                            matrix.translate(revise);
-                        }
-                        
-                        if ("movie clip" == instance.symbolType ||
-                            "" == instance.symbolType ||
-                            "graphic" == instance.symbolType) {
-
-                            var item = cast(instance.libraryItem, DOMSymbolItem);
-
-                            if (!Std.is(item, DOMSymbolItem)) {
-                                throw '现在我还不清楚是不是只能是SymbolItem';
-                            }
-
-                            var displayObject:MovieClip;
-                            if (null != instance.libraryItem.linkageClassName) {
-                                displayObject = Type.createInstance(Type.resolveClass(instance.libraryItem.linkageClassName), [item.timeline]);
-                            } else
-                                displayObject = new MovieClip(item.timeline);
-                            if (null != instance.name)
-                                displayObject.name = instance.name;
-                            displayObject.transform.matrix = matrix.toFlashMatrix();
-                            displayObject.mouseEnabled = !instance.silent;
-                            displayObject.mouseChildren = !instance.hasAccessibleData;
-                            addChild(displayObject);
-                            layer.push(displayObject);
-                        } else if ("button" == instance.symbolType) {
-                            var button:Sprite;
-                            if (null != instance.libraryItem.linkageClassName) {
-                                className = Type.resolveClass(instance.libraryItem.linkageClassName);
-                                button = Type.createInstance(className, [instance]);
-                            } else
-                                button = new SimpleButton(instance);
-                            if (null != instance.name)
-                                button.name = instance.name;
-                            button.transform.matrix = matrix.toFlashMatrix();
-                            addChild(button);
-                            layer.push(button);
-                        }
-                    } else if (Std.is(element, DOMText)) {
-                        var instance = cast(element, DOMText);
-                        var displayObject = new TextInstance(instance);
-                        if (null != instance.name)
-                            displayObject.name = instance.name;
-                        addChild(displayObject);
-                        layer.push(displayObject);
-                    } else if (Std.is(element, DOMShape)) {
-                        var instance = cast(element, DOMShape);
-                        var displayObject = new ShapeInstance(instance);
-                        addChild(displayObject);
-                        layer.push(displayObject);
-                    }
-                }
+                var layer = displayLayer(domLayer);
                 if (domLayer.parentLayerIndex >= 0) {
                     masklayers.push(layer);
                     maskNums.push(domLayer.parentLayerIndex);
@@ -225,6 +137,101 @@ class MovieClip extends Sprite
             }
             n++;
         }
+    }
+
+    function displayLayer(domLayer:DOMLayer):Array<DisplayObject> 
+    {
+        var className:Class<Dynamic>;
+        var layer:Array<DisplayObject> = [];
+        var frame = domLayer.getFrameAt(currentFrame);
+        if (frame == null) return null;
+        for (element in frame.getElementsIterator()) {
+            if (Std.is(element, DOMBitmapInstance)) {
+                var bitmap_instance = cast(element, DOMBitmapInstance);
+                var bitmap = createBitmapInstance(bitmap_instance);
+                addChild(bitmap);
+                layer.push(bitmap);
+            } else if (Std.is(element, DOMSymbolInstance)) {
+                var instance = cast(element, DOMSymbolInstance);
+
+                // 动画
+                var matrix = instance.matrix;
+                if (frame.tweenType == "motion") {
+                    var nextFrame = frame;
+                    for (n in 0...domLayer.frames.length) {
+                        if (domLayer.frames[n] == frame) {
+                            nextFrame = domLayer.frames[n + 1];
+                        }
+                    }
+                    var starMatrix = frame.elements[0].matrix;
+                    var endMatrix = nextFrame.elements[0].matrix;
+                    var perAddMatrix = endMatrix.sub(starMatrix).div(frame.duration);
+                    var deltaMatrix = perAddMatrix.multi(currentFrame-frame.index);
+                    matrix = starMatrix.add(deltaMatrix);
+                }else if (frame.tweenType == "motion object") {
+                    var motion = new MotionObject(instance, frame.animation);
+                    var prePosition = new Point(matrix.tx, matrix.ty);
+                    var preTransform = matrix.transformPoint(instance.transformPoint);
+                    motion.animate(currentFrame);
+                    //对形变中心引起的偏移做处理
+                    var deltaPosition = new Point(matrix.tx - prePosition.x, matrix.ty - prePosition.y);
+                    var nowTransform = matrix.transformPoint(instance.transformPoint);
+                    var deltaTransform = new Point(nowTransform.x - preTransform.x, nowTransform.y - preTransform.y);
+                    var revise = deltaPosition.sub(deltaTransform);
+                    matrix.translate(revise);
+                }
+                
+                if ("movie clip" == instance.symbolType ||
+                    "" == instance.symbolType ||
+                    "graphic" == instance.symbolType) {
+
+                    var item = cast(instance.libraryItem, DOMSymbolItem);
+
+                    if (!Std.is(item, DOMSymbolItem)) {
+                        throw '现在我还不清楚是不是只能是SymbolItem';
+                    }
+
+                    var displayObject:MovieClip;
+                    if (null != instance.libraryItem.linkageClassName) {
+                        displayObject = Type.createInstance(Type.resolveClass(instance.libraryItem.linkageClassName), [item.timeline]);
+                    } else
+                        displayObject = new MovieClip(item.timeline);
+                    if (null != instance.name)
+                        displayObject.name = instance.name;
+                    displayObject.transform.matrix = matrix.toFlashMatrix();
+                    displayObject.mouseEnabled = !instance.silent;
+                    displayObject.mouseChildren = !instance.hasAccessibleData;
+                    addChild(displayObject);
+                    layer.push(displayObject);
+                } else if ("button" == instance.symbolType) {
+                    var button:Sprite;
+                    if (null != instance.libraryItem.linkageClassName) {
+                        className = Type.resolveClass(instance.libraryItem.linkageClassName);
+                        button = Type.createInstance(className, [instance]);
+                    } else
+                        button = new SimpleButton(instance);
+                    if (null != instance.name)
+                        button.name = instance.name;
+                    button.transform.matrix = matrix.toFlashMatrix();
+                    addChild(button);
+                    layer.push(button);
+                }
+            } else if (Std.is(element, DOMText)) {
+                var instance = cast(element, DOMText);
+                var displayObject = new TextInstance(instance);
+                if (null != instance.name)
+                    displayObject.name = instance.name;
+                addChild(displayObject);
+                layer.push(displayObject);
+            } else if (Std.is(element, DOMShape)) {
+                var instance = cast(element, DOMShape);
+                var displayObject = new ShapeInstance(instance);
+                addChild(displayObject);
+                layer.push(displayObject);
+            }
+        }
+
+        return layer;
     }
 
     // TODO
