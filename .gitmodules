@@ -1,0 +1,3 @@
+[submodule "example/piratepig/Assets/ASPiratePig"]
+	path = example/piratepig/Assets/ASPiratePig
+	url = https://github.com/imcj/ASPiratePig

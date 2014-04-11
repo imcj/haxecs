@@ -1,2 +1,5 @@
 build/
 .DS_Store
+example/piratepig/as3
+example/piratepig/export
+example/piratepig/Assets/*.swf
