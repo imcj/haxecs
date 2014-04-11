@@ -112,19 +112,22 @@ class MovieClip extends Sprite
 
         var className:Class<Dynamic>;
         var maskDoms:Map<Int, DOMLayer> = new Map();
-        var masklayers = [];
+        var masklayers:Array<Array<DisplayObject>> = [];
         var maskNums = [];
         var numLayer = 0;
         for (domLayer in domTimeLine.getLayersIterator(false)) {
             if ("mask" == domLayer.layerType) {
                 maskDoms.set(numLayer, domLayer);
             }else {
+                var layer:Array<DisplayObject> = [];
                 var frame = domLayer.getFrameAt(currentFrame);
                 if (frame == null) return;
                 for (element in frame.getElementsIterator()) {
                     if (Std.is(element, DOMBitmapInstance)) {
                         var bitmap_instance = cast(element, DOMBitmapInstance);
-                        addChild(createBitmapInstance(bitmap_instance));
+                        var bitmap = createBitmapInstance(bitmap_instance);
+                        addChild(bitmap);
+                        layer.push(bitmap);
                     } else if (Std.is(element, DOMSymbolInstance)) {
                         var instance = cast(element, DOMSymbolInstance);
 
@@ -176,6 +179,7 @@ class MovieClip extends Sprite
                             displayObject.mouseEnabled = !instance.silent;
                             displayObject.mouseChildren = !instance.hasAccessibleData;
                             addChild(displayObject);
+                            layer.push(displayObject);
                         } else if ("button" == instance.symbolType) {
                             var button:Sprite;
                             if (null != instance.libraryItem.linkageClassName) {
@@ -187,6 +191,7 @@ class MovieClip extends Sprite
                                 button.name = instance.name;
                             button.transform.matrix = matrix.toFlashMatrix();
                             addChild(button);
+                            layer.push(button);
                         }
                     } else if (Std.is(element, DOMText)) {
                         var instance = cast(element, DOMText);
@@ -194,14 +199,16 @@ class MovieClip extends Sprite
                         if (null != instance.name)
                             displayObject.name = instance.name;
                         addChild(displayObject);
+                        layer.push(displayObject);
                     } else if (Std.is(element, DOMShape)) {
                         var instance = cast(element, DOMShape);
                         var displayObject = new ShapeInstance(instance);
                         addChild(displayObject);
+                        layer.push(displayObject);
                     }
                 }
                 if (domLayer.parentLayerIndex > 0) {
-                    //masklayers.push(layer);
+                    masklayers.push(layer);
                     maskNums.push(domLayer.parentLayerIndex);
                 }
             }
@@ -212,8 +219,9 @@ class MovieClip extends Sprite
             var dom = maskDoms.get(numLayer - 1 - maskNums[n]);
             var mask = new Layer(dom);
             mask.displayFrame(currentFrame);
-            l.addChild(mask);
-            l.mask = mask;
+            for (o in l) {
+                o.mask = mask;
+            }
             n++;
         }
     }
