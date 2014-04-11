@@ -207,7 +207,7 @@ class MovieClip extends Sprite
                         layer.push(displayObject);
                     }
                 }
-                if (domLayer.parentLayerIndex > 0) {
+                if (domLayer.parentLayerIndex >= 0) {
                     masklayers.push(layer);
                     maskNums.push(domLayer.parentLayerIndex);
                 }
@@ -216,11 +216,12 @@ class MovieClip extends Sprite
         }
         var n = 0;
         for (l in masklayers) {
-            var dom = maskDoms.get(numLayer - 1 - maskNums[n]);
-            var mask = new Layer(dom);
-            mask.displayFrame(currentFrame);
             for (o in l) {
+                var dom = maskDoms.get(numLayer - 1 - maskNums[n]);
+                var mask = new Layer(dom);
+                mask.displayFrame(currentFrame);
                 o.mask = mask;
+                addChild(mask);
             }
             n++;
         }
