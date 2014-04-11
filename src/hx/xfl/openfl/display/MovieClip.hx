@@ -110,6 +110,7 @@ class MovieClip extends Sprite
     {
         freeChildren();
 
+        var className:Class<Dynamic>;
         var maskDoms:Map<Int, DOMLayer> = new Map();
         var masklayers = [];
         var maskNums = [];
@@ -118,11 +119,89 @@ class MovieClip extends Sprite
             if ("mask" == domLayer.layerType) {
                 maskDoms.set(numLayer, domLayer);
             }else {
-                var layer = new Layer(domLayer);
-                layer.displayFrame(currentFrame);
-                addChild(layer);
+                var frame = domLayer.getFrameAt(currentFrame);
+                if (frame == null) return;
+                for (element in frame.getElementsIterator()) {
+                    if (Std.is(element, DOMBitmapInstance)) {
+                        var bitmap_instance = cast(element, DOMBitmapInstance);
+                        addChild(createBitmapInstance(bitmap_instance));
+                    } else if (Std.is(element, DOMSymbolInstance)) {
+                        var instance = cast(element, DOMSymbolInstance);
+
+                        // 动画
+                        var matrix = instance.matrix;
+                        if (frame.tweenType == "motion") {
+                            var nextFrame = frame;
+                            for (n in 0...domLayer.frames.length) {
+                                if (domLayer.frames[n] == frame) {
+                                    nextFrame = domLayer.frames[n + 1];
+                                }
+                            }
+                            var starMatrix = frame.elements[0].matrix;
+                            var endMatrix = nextFrame.elements[0].matrix;
+                            var perAddMatrix = endMatrix.sub(starMatrix).div(frame.duration);
+                            var deltaMatrix = perAddMatrix.multi(currentFrame-frame.index);
+                            matrix = starMatrix.add(deltaMatrix);
+                        }else if (frame.tweenType == "motion object") {
+                            var motion = new MotionObject(instance, frame.animation);
+                            var prePosition = new Point(matrix.tx, matrix.ty);
+                            var preTransform = matrix.transformPoint(instance.transformPoint);
+                            motion.animate(currentFrame);
+                            //对形变中心引起的偏移做处理
+                            var deltaPosition = new Point(matrix.tx - prePosition.x, matrix.ty - prePosition.y);
+                            var nowTransform = matrix.transformPoint(instance.transformPoint);
+                            var deltaTransform = new Point(nowTransform.x - preTransform.x, nowTransform.y - preTransform.y);
+                            var revise = deltaPosition.sub(deltaTransform);
+                            matrix.translate(revise);
+                        }
+                        
+                        if ("movie clip" == instance.symbolType ||
+                            "" == instance.symbolType ||
+                            "graphic" == instance.symbolType) {
+
+                            var item = cast(instance.libraryItem, DOMSymbolItem);
+
+                            if (!Std.is(item, DOMSymbolItem)) {
+                                throw '现在我还不清楚是不是只能是SymbolItem';
+                            }
+
+                            var displayObject:MovieClip;
+                            if (null != instance.libraryItem.linkageClassName) {
+                                displayObject = Type.createInstance(Type.resolveClass(instance.libraryItem.linkageClassName), [item.timeline]);
+                            } else
+                                displayObject = new MovieClip(item.timeline);
+                            if (null != instance.name)
+                                displayObject.name = instance.name;
+                            displayObject.transform.matrix = matrix.toFlashMatrix();
+                            displayObject.mouseEnabled = !instance.silent;
+                            displayObject.mouseChildren = !instance.hasAccessibleData;
+                            addChild(displayObject);
+                        } else if ("button" == instance.symbolType) {
+                            var button:Sprite;
+                            if (null != instance.libraryItem.linkageClassName) {
+                                className = Type.resolveClass(instance.libraryItem.linkageClassName);
+                                button = Type.createInstance(className, [instance]);
+                            } else
+                                button = new SimpleButton(instance);
+                            if (null != instance.name)
+                                button.name = instance.name;
+                            button.transform.matrix = matrix.toFlashMatrix();
+                            addChild(button);
+                        }
+                    } else if (Std.is(element, DOMText)) {
+                        var instance = cast(element, DOMText);
+                        var displayObject = new TextInstance(instance);
+                        if (null != instance.name)
+                            displayObject.name = instance.name;
+                        addChild(displayObject);
+                    } else if (Std.is(element, DOMShape)) {
+                        var instance = cast(element, DOMShape);
+                        var displayObject = new ShapeInstance(instance);
+                        addChild(displayObject);
+                    }
+                }
                 if (domLayer.parentLayerIndex > 0) {
-                    masklayers.push(layer);
+                    //masklayers.push(layer);
                     maskNums.push(domLayer.parentLayerIndex);
                 }
             }
@@ -137,28 +216,6 @@ class MovieClip extends Sprite
             l.mask = mask;
             n++;
         }
-    }
-
-    override public function getChildByName(name:String):DisplayObject
-    {
-        for (num in 0...numChildren) {
-            var l = cast(super.getChildAt(num));
-            var child = l.getChildByName(name);
-            if (child != null) return child;
-        }
-        return null;
-    }
-
-    override public function getChildAt(index:Int):DisplayObject
-    {
-        var n = 0;
-        for (num in 0...numChildren) {
-            var l = cast(super.getChildAt(num));
-            var child = l.getChildAt(index - n);
-            if (child != null) return child;
-            n += l.numChildren;
-        }
-        return super.getChildAt(index);
     }
 
     // TODO
