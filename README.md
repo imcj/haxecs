@@ -37,22 +37,19 @@ openfl可以运行在Windows, Mac, Linux, iOS, Android, BlackBerry, Tizen, Flash
 
 ## 开发
 
-### TODO
-
-- <del>[#2 画一个矩形](https://github.com/imcj/haxecs/issues/2)</del>
-- <del>[#3 最简单的动画](https://github.com/imcj/haxecs/issues/3)</del>
-
 你可以查看我们的贡献成员列表：
 
 - https://github.com/imcj/haxecs/graphs/contributors
 
 你也可以把你的名字加入到名单中 :)
 
-# 付费贡献（测试）
+## 开始
 
-由上海最游科技支持，提供付费贡献代码，在TODO中选择感兴趣的功能，然后在[Issue](https://github.com/imcj/haxecs/issues)提出报价，Haxecs成员同意后，付费开发人员就可以开始开发提交PR，沟通没有问题后由上海最游支付。
+```haxe
+// Main.hx
+package ;
 
-*这是一次尝试，可能随时终止这种开发方式。*
+```
 
 ## Symbol的扩展
 

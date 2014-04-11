@@ -3,3 +3,4 @@ build/
 example/piratepig/as3
 example/piratepig/export
 example/piratepig/Assets/*.swf
+Makefile
