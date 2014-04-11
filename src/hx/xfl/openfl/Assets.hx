@@ -29,7 +29,7 @@ class Assets
     public function getBitmapByMediaName(name:String):Bitmap
     {
         return new Bitmap(
-            getBitmapDataWithBitmapItem(document.getMedia(name)),
+            getBitmapDataWithBitmapItem(cast(document.getMedia(name), DOMBitmapItem)),
             PixelSnapping.AUTO, true
         );
     }

@@ -51,12 +51,14 @@ class DOMTextAssembler extends DOMElementAssembler
         return textRun;
     }
 
-    function parseTextAttrs(node):DOMTextAttrs
+    function parseTextAttrs(node:Xml):DOMTextAttrs
     {
         var attrs = new DOMTextAttrs();
+        var fillColor:String;
+        fillColor = node.get("fillColor");
         fillProperty(attrs, node, ["fillColor"]);
-        attrs.fillColor = Std.parseInt(
-            node.get("fillColor").replace("#", "0x"));
+        if (null != fillColor)
+            attrs.fillColor = Std.parseInt(fillColor.replace("#", "0x"));
 
         return attrs;
     }

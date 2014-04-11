@@ -8,7 +8,7 @@ class PropertyContainer
     public function new()
     {
         id = "";
-        children = new Map();
+        children = new Map<String, Dynamic>();
     }
 
     public function parse(data:Xml)

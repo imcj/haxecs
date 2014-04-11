@@ -6,7 +6,7 @@ import hx.xfl.openfl.Assets;
 
 class XFLDocument extends DOMDocument
 {
-    var mapMedia:Map<String, DOMBitmapItem>;
+    var mapMedia:Map<String, DOMItem>;
     var mapSymbol:Map<String, DOMSymbolItem>;
 
     public var autoSaveEnabled:Bool;
@@ -15,9 +15,10 @@ class XFLDocument extends DOMDocument
     public var creatorInfo:String;
     public var currentTimeline:Int;
     public var filetypeGUID:String;
+    public var frameRate:Float;
     public var majorVersion:Int;
     public var minorVersion:Int;
-    public var media:Array<DOMBitmapItem>;
+    public var media:Array<DOMItem>;
     public var symbol:Array<DOMSymbolItem>;
     public var nextSceneIdentifier:Int;
     public var objectsSnapTo:Bool;
@@ -27,6 +28,7 @@ class XFLDocument extends DOMDocument
     public var playOptionsPlayPages:Bool;
     public var tabOrderMode:String;
     public var timeLines:Array<DOMTimeLine>;
+    public var timelineLabelWidth:Float;
     public var versionInfo:String;
     public var viewAngle3D:Float;
     public var width:Float;
@@ -49,6 +51,7 @@ class XFLDocument extends DOMDocument
         creatorInfo = "Adobe Flash Professional CS6";
         currentTimeline = 0;
         filetypeGUID = "";
+        frameRate = 12;
         majorVersion = 12;
         minorVersion = 1;
         media = [];
@@ -61,6 +64,7 @@ class XFLDocument extends DOMDocument
         playOptionsPlayPages = false;
         tabOrderMode = null;
         timeLines = [];
+        timelineLabelWidth = 0;
         versionInfo = "Saved by Adobe Flash Macintosh 12.0 build 481";
         viewAngle3D = 0;
         xflVersion = -1;
@@ -75,19 +79,19 @@ class XFLDocument extends DOMDocument
         assets = new Assets(this);
     }
 
-    public function addMedia(bitmapItem:DOMBitmapItem):XFLDocument
+    public function addMedia(libraryItem:DOMItem):XFLDocument
     {
-        media.push(bitmapItem);
-        mapMedia.set(bitmapItem.name, bitmapItem);
+        media.push(libraryItem);
+        mapMedia.set(libraryItem.name, libraryItem);
         return this;
     }
 
-    public function getMedia(name:String):DOMBitmapItem
+    public function getMedia(name:String):DOMItem
     {
         return mapMedia.get(name);
     }
 
-    public function getMediaIterator():Iterator<DOMBitmapItem>
+    public function getMediaIterator():Iterator<DOMItem>
     {
         return media.iterator();
     }

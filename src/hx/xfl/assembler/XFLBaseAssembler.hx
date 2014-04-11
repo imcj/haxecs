@@ -33,7 +33,7 @@ class XFLBaseAssembler
                 continue;
 
             if (~/isSelected/.match(attribute))
-            continue;
+                continue;
 
             if (~/selected/.match(attribute))
                 continue;

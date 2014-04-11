@@ -25,11 +25,18 @@ class XFLDocumentAssembler extends XFLBaseAssembler
 
     function parseMedia(document, data:Xml):Void
     {
-        var bitmapItem;
+        var libraryItem:DOMItem = null;
+
         for (element in data.elements()) {
-            bitmapItem = new DOMBitmapItem();
-            fillProperty(bitmapItem, element);
-            document.addMedia(bitmapItem);
+            if ("DOMBitmapItem" == element.nodeName)
+                libraryItem = new DOMBitmapItem();
+            else if ("DOMSoundItem" == element.nodeName)
+                libraryItem = new DOMSoundItem();
+            else
+                throw "未知的类型";
+
+            fillProperty(libraryItem, element);
+            document.addMedia(libraryItem);
         }
     }
 

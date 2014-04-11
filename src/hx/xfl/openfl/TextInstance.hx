@@ -41,9 +41,9 @@ class TextInstance extends TextField
         //处理文本域类型
         type = switch (dom.type) {
             case "DOMInputText":
-                INPUT;
+                "INPUT";
             default:
-                DYNAMIC;
+                "DYNAMIC";
         }
 
         var matrix = dom.matrix.toFlashMatrix();
