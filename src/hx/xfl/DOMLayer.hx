@@ -28,7 +28,7 @@ class DOMLayer
         animationType = "";
         visible = true;
         layerType = "";
-        parentLayerIndex = 0;
+        parentLayerIndex = -1;
     }
 
     public function addFrame(frame:DOMFrame):DOMLayer
