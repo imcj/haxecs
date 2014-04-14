@@ -13,6 +13,8 @@ class DOMFrame
     public var motionTweenScale:Bool;
     public var isMotionObject:Bool;
     public var visibleAnimationKeyframes:Int;
+    public var name:String;
+    public var labelType:String;
 
     public var elements:Array<IDOMElement>;
     public var animation:DOMAnimationCore;
@@ -29,6 +31,8 @@ class DOMFrame
         elements = [];
         motionTweenRotate = "";
         animation = null;
+        name = "";
+        labelType = "";
     }
 
     public function addElement(element:IDOMElement):DOMFrame
