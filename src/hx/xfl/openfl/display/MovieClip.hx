@@ -81,7 +81,7 @@ class MovieClip extends Sprite
         }
     }
 
-    public function gotoAndStop(?index:Int,label:String):Void 
+    public function gotoAndStop(?index:Int,?label:String):Void 
     {
         if (index != null) {
             currentFrame = index;
