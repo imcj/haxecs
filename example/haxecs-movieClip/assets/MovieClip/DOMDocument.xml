@@ -69,15 +69,27 @@
                     </DOMLayer>
                </layers>
           </DOMTimeline>
-          <DOMTimeline name="场景 2" currentFrame="26">
+          <DOMTimeline name="场景 2" currentFrame="19">
                <layers>
                     <DOMLayer name="图层 1" color="#4F80FF" current="true" isSelected="true">
                          <frames>
-                              <DOMFrame index="0" duration="27" keyMode="9728">
+                              <DOMFrame index="0" duration="26" tweenType="motion" motionTweenSnap="true" keyMode="22017">
                                    <elements>
                                         <DOMSymbolInstance libraryItemName="ceshi" selected="true">
                                              <matrix>
                                                   <Matrix tx="228" ty="146"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point x="39" y="32"/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="26" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="ceshi" selected="true" centerPoint3DX="420" centerPoint3DY="235.95">
+                                             <matrix>
+                                                  <Matrix tx="381" ty="203.95"/>
                                              </matrix>
                                              <transformationPoint>
                                                   <Point x="39" y="32"/>
