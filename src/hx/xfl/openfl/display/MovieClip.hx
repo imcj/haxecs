@@ -82,8 +82,8 @@ class MovieClip extends Sprite
             currentFrame = currentFrame + 1;
             gotoFrame(currentFrame);
         }else if (timelines.length > 1) {
-            currentFrame = 0;
             nextScene();
+            currentFrame = 0;
         }
     }
 
@@ -93,6 +93,9 @@ class MovieClip extends Sprite
         {
             currentFrame = currentFrame - 1;
             gotoFrame(currentFrame);
+        }else if (timelines.length > 1) {
+            prevScene();
+            currentFrame = domTimeLine.totalFrames-1;
         }
     }
 
@@ -100,6 +103,8 @@ class MovieClip extends Sprite
     {
         if (currentSceneIndex < timelines.length-1) {
             changeToScene(currentSceneIndex + 1);
+        }else {
+            changeToScene(0);
         }
     }
 
@@ -107,6 +112,8 @@ class MovieClip extends Sprite
     {
         if (currentSceneIndex > 0) {
             changeToScene(currentSceneIndex - 1);
+        }else {
+            changeToScene(timelines.length-1);
         }
     }
 
@@ -114,8 +121,10 @@ class MovieClip extends Sprite
     {
         if (Std.is(scene,Int)) {
             domTimeLine = timelines[scene];
+            currentSceneIndex = scene;
         }else if (Std.is(scene,String)) {
             domTimeLine = timelinesMap.get(scene);
+            currentSceneIndex = timelines.indexOf(domTimeLine);
         }
     }
 
