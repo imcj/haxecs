@@ -30,6 +30,7 @@ class MovieClip extends Sprite
 {
     public var currentFrame:Int;
     public var totalFrames:Int;
+    public var isLoop:Bool;
 
     var timelines:Array<DOMTimeLine>;
     var timelinesMap:Map<String, DOMTimeLine>;
@@ -41,6 +42,7 @@ class MovieClip extends Sprite
     {
         super();
         name = '';
+        isLoop = true;
         this.timelines = timelines;
         timelinesMap = new Map();
         this.totalFrames = 0;
@@ -62,7 +64,7 @@ class MovieClip extends Sprite
 
     function onFrame(e:Event):Void 
     {
-        nextFrame();
+        prevFrame();
     }
 
     public function play():Void 
@@ -83,7 +85,6 @@ class MovieClip extends Sprite
             gotoFrame(currentFrame);
         }else if (timelines.length > 1) {
             nextScene();
-            currentFrame = 0;
         }
     }
 
@@ -95,7 +96,6 @@ class MovieClip extends Sprite
             gotoFrame(currentFrame);
         }else if (timelines.length > 1) {
             prevScene();
-            currentFrame = domTimeLine.totalFrames-1;
         }
     }
 
@@ -103,8 +103,10 @@ class MovieClip extends Sprite
     {
         if (currentSceneIndex < timelines.length-1) {
             changeToScene(currentSceneIndex + 1);
-        }else {
+            currentFrame = 0;
+        }else if(isLoop) {
             changeToScene(0);
+            currentFrame = 0;
         }
     }
 
@@ -112,8 +114,10 @@ class MovieClip extends Sprite
     {
         if (currentSceneIndex > 0) {
             changeToScene(currentSceneIndex - 1);
-        }else {
-            changeToScene(timelines.length-1);
+            currentFrame = domTimeLine.totalFrames - 1;
+        }else if(isLoop) {
+            changeToScene(timelines.length - 1);
+            currentFrame = domTimeLine.totalFrames - 1;
         }
     }
 
