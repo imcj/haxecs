@@ -48,10 +48,10 @@ class XFLDocumentAssembler extends XFLBaseAssembler
 
             for (timeline in symbolXml.elements()) {
                 if ("timeline" == timeline.nodeName) {
-                    symbolItem.timeline = assemblerTimeLine.parse(timeline)[0];
-                    symbolItem.timeline.document = document;
-
-
+                    symbolItem.timelines = assemblerTimeLine.parse(timeline);
+                    for (tl in symbolItem.timelines) {
+                        tl.document = document;
+                    }
                 }/* else if ("include" == timeline.nodeName.toLowerCase()) {
 
                 }*/

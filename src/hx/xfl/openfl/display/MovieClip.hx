@@ -30,6 +30,7 @@ class MovieClip extends Sprite
 {
     var timelines:Array<DOMTimeLine>;
     var timelinesMap:Map<String, DOMTimeLine>;
+    var domTimeLine:DOMTimeLine;
 
     public var currentFrame:Int;
     public var totalFrames:Int;
@@ -39,8 +40,10 @@ class MovieClip extends Sprite
         super();
         name = '';
         this.timelines = timelines;
+        timelinesMap = new Map();
         this.totalFrames = 0;
         for (timeline in timelines) {
+            timelinesMap.set(timeline.name, timeline);
             var sceneFrames = 0;
             for (layer in timeline.layers) {
                 if (sceneFrames < layer.totalFrames) {
@@ -51,6 +54,7 @@ class MovieClip extends Sprite
         }
 
         currentFrame = 0;
+        domTimeLine = timelines[0];
         play();
     }
 
@@ -246,9 +250,9 @@ class MovieClip extends Sprite
 
                     var displayObject:MovieClip;
                     if (null != instance.libraryItem.linkageClassName) {
-                        displayObject = Type.createInstance(Type.resolveClass(instance.libraryItem.linkageClassName), [item.timeline]);
+                        displayObject = Type.createInstance(Type.resolveClass(instance.libraryItem.linkageClassName), [item.timelines]);
                     } else
-                        displayObject = new MovieClip(item.timeline);
+                        displayObject = new MovieClip(item.timelines);
                     if (null != instance.name)
                         displayObject.name = instance.name;
                     displayObject.transform.matrix = matrix.toFlashMatrix();
@@ -320,7 +324,7 @@ class MovieClip extends Sprite
 
     public function clone():MovieClip
     {
-        var mv = new MovieClip(domTimeLine);
+        var mv = new MovieClip(timelines);
         mv.gotoAndStop(currentFrame);
         return mv;
     }
