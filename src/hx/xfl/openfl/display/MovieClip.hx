@@ -81,6 +81,9 @@ class MovieClip extends Sprite
         {
             currentFrame = currentFrame + 1;
             gotoFrame(currentFrame);
+        }else if (timelines.length > 1) {
+            currentFrame = 0;
+            nextScene();
         }
     }
 
