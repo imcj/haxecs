@@ -257,10 +257,14 @@ class MovieClip extends Sprite
     function freeChildren():Void
     {
         try {
-            removeChildren();
+            while (numChildren > 1) {
+                removeChildAt(0);
+            }
+            // removeChildren();
         } catch (e:Dynamic) {
             // TODO
             // removeChildren
+            trace("here");
         }
     }
 
