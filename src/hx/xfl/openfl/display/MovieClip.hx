@@ -64,7 +64,7 @@ class MovieClip extends Sprite
 
     function onFrame(e:Event):Void 
     {
-        prevFrame();
+        nextFrame();
     }
 
     public function play():Void 
@@ -84,7 +84,9 @@ class MovieClip extends Sprite
             currentFrame = currentFrame + 1;
             gotoFrame(currentFrame);
         }else if (timelines.length > 1) {
-            nextScene();
+            if (currentSceneIndex < timelines.length - 1 || isLoop) {
+                nextScene();
+            }
         }
     }
 
@@ -95,8 +97,10 @@ class MovieClip extends Sprite
             currentFrame = currentFrame - 1;
             gotoFrame(currentFrame);
         }else if (timelines.length > 1) {
-            prevScene();
-            currentFrame = domTimeLine.totalFrames - 1;
+            if (currentSceneIndex > 0 || isLoop) {
+                prevScene();
+                currentFrame = domTimeLine.totalFrames - 1;
+            }
         }
     }
 
