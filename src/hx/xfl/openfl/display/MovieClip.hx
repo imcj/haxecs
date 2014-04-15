@@ -8,6 +8,7 @@ import hx.xfl.DOMLayer;
 import hx.xfl.DOMFrame;
 import hx.xfl.DOMBitmapItem;
 import hx.xfl.DOMBitmapInstance;
+import hx.xfl.DOMTimeLine;
 import hx.xfl.motion.Property;
 import hx.xfl.openfl.MotionObject;
 
@@ -27,16 +28,17 @@ import flash.errors.RangeError;
 
 class MovieClip extends Sprite
 {
-    var domTimeLine:DOMTimeLine;
+    var timelines:Array<DOMTimeLine>;
+    var timelinesMap:Map<String, DOMTimeLine>;
 
     public var currentFrame:Int;
     public var totalFrames:Int;
 
-    public function new(domTimeLine:DOMTimeLine)
+    public function new(timelines:Array<DOMTimeLine>)
     {
         super();
-        name = '';
-        this.domTimeLine = domTimeLine;
+        name = '';dom
+        this.timelines = timelines;
         this.totalFrames = 0;
         for (layer in domTimeLine.layers) {
             if (this.totalFrames < layer.totalFrames) {
@@ -79,6 +81,16 @@ class MovieClip extends Sprite
             currentFrame = currentFrame - 1;
             gotoFrame(currentFrame);
         }
+    }
+
+    public function nextScene():Void 
+    {
+        
+    }
+
+    public function prevScene():Void 
+    {
+        
     }
 
     public function gotoAndPlay(?index:Int,?label:String):Void 
