@@ -50,11 +50,7 @@ class MovieClip extends Sprite
 
     function onFrame(e:Event):Void 
     {
-        if (currentFrame < totalFrames-1) 
-        {
-            currentFrame = currentFrame + 1;
-            gotoFrame(currentFrame);
-        }
+        nextFrame();
     }
 
     public function play():Void 
@@ -65,6 +61,24 @@ class MovieClip extends Sprite
     public function stop():Void 
     {
         gotoAndStop(currentFrame);
+    }
+
+    public function nextFrame():Void 
+    {
+        if (currentFrame < totalFrames-1) 
+        {
+            currentFrame = currentFrame + 1;
+            gotoFrame(currentFrame);
+        }
+    }
+
+    public function prevFrame():Void 
+    {
+        if (currentFrame > 0) 
+        {
+            currentFrame = currentFrame - 1;
+            gotoFrame(currentFrame);
+        }
     }
 
     public function gotoAndPlay(?index:Int,?label:String):Void 
