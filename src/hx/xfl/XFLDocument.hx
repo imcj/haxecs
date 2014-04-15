@@ -2,8 +2,6 @@ package hx.xfl;
 
 import hx.xfl.assembler.XFLDocumentAssembler;
 
-import hx.xfl.openfl.Assets;
-
 class XFLDocument extends DOMDocument
 {
     var mapMedia:Map<String, DOMItem>;
@@ -35,7 +33,10 @@ class XFLDocument extends DOMDocument
     public var height:Float;
     public var xflVersion:Float;
     public var library:DOMLibrary;
+
+    #if lime_native
     public var assets:Assets;
+    #end
 
     public var dir:String;
 
@@ -76,7 +77,10 @@ class XFLDocument extends DOMDocument
         mapTimeLines = new Map();
         
         library = new DOMLibrary();
+
+        #if lime_native
         assets = new Assets(this);
+        #end
     }
 
     public function addMedia(libraryItem:DOMItem):XFLDocument
@@ -108,7 +112,7 @@ class XFLDocument extends DOMDocument
         return mapSymbol.get(name);
     }
 
-    public function getSymbolIterator():Iterator<DOMSymbolItem>
+    public function getSymbolIterators():Iterator<DOMSymbolItem>
     {
         return symbol.iterator();
     }
@@ -194,10 +198,15 @@ class XFLDocument extends DOMDocument
 
     static public function openFromAsset(path:String):XFLDocument
     {
+        #if cstool
+        var text = sys.io.File.getContent(path + "/DOMDocument.xml");
+        var document = new XFLDocumentAssembler().parse(
+            Xml.parse(text), path);
+        #else
         var text = hx.xfl.openfl.Assets.getText(path + "/DOMDocument.xml");
         var document = new XFLDocumentAssembler().parse(
             Xml.parse(text), path);
-
+        #end
         return document;
     }
 }
