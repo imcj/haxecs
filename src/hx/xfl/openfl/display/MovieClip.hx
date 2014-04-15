@@ -137,28 +137,30 @@ class MovieClip extends Sprite
         }
     }
 
-    public function gotoAndPlay(?index:Int,?label:String):Void 
+    public function gotoAndPlay(frame:Dynamic,?scene:String):Void 
     {
-        if (index != null) {
-            currentFrame = index;
+        if (scene != null) changeToScene(scene);
+        if (Std.is(frame,Int)) {
+            currentFrame = frame;
             gotoFrame(currentFrame);
             this.addEventListener(Event.ENTER_FRAME, onFrame);
-        }else if(label != null) {
-            var i = getLabelIndex(label);
+        }else if(Std.is(frame,String)) {
+            var i = getLabelIndex(frame);
             if (i >= 0) currentFrame = i;
             gotoFrame(currentFrame);
             this.addEventListener(Event.ENTER_FRAME, onFrame);
         }
     }
 
-    public function gotoAndStop(?index:Int,?label:String):Void 
+    public function gotoAndStop(frame:Dynamic, ?scene:String):Void 
     {
-        if (index != null) {
-            currentFrame = index;
+        if (scene != null) changeToScene(scene);
+        if (Std.is(frame, Int)) {
+            currentFrame = frame;
             gotoFrame(currentFrame);
             this.removeEventListener(Event.ENTER_FRAME, onFrame);
-        }else if (label != null) {
-            var i = getLabelIndex(label);
+        }else if (Std.is(frame, String)) {
+            var i = getLabelIndex(frame);
             if (i >= 0) currentFrame = i;
             gotoFrame(currentFrame);
             this.removeEventListener(Event.ENTER_FRAME, onFrame);
