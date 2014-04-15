@@ -77,7 +77,7 @@ class MovieClip extends Sprite
 
     public function nextFrame():Void 
     {
-        if (currentFrame < totalFrames-1) 
+        if (currentFrame < domTimeLine.totalFrames-1) 
         {
             currentFrame = currentFrame + 1;
             gotoFrame(currentFrame);
