@@ -37,13 +37,17 @@ class MovieClip extends Sprite
     public function new(timelines:Array<DOMTimeLine>)
     {
         super();
-        name = '';dom
+        name = '';
         this.timelines = timelines;
         this.totalFrames = 0;
-        for (layer in domTimeLine.layers) {
-            if (this.totalFrames < layer.totalFrames) {
-                this.totalFrames = layer.totalFrames;
+        for (timeline in timelines) {
+            var sceneFrames = 0;
+            for (layer in timeline.layers) {
+                if (sceneFrames < layer.totalFrames) {
+                    sceneFrames = layer.totalFrames;
+                }
             }
+            totalFrames += sceneFrames;
         }
 
         currentFrame = 0;
