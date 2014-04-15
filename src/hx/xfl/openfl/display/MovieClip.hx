@@ -28,12 +28,14 @@ import flash.errors.RangeError;
 
 class MovieClip extends Sprite
 {
+    public var currentFrame:Int;
+    public var totalFrames:Int;
+
     var timelines:Array<DOMTimeLine>;
     var timelinesMap:Map<String, DOMTimeLine>;
     var domTimeLine:DOMTimeLine;
+    var currentSceneIndex:Int;
 
-    public var currentFrame:Int;
-    public var totalFrames:Int;
 
     public function new(timelines:Array<DOMTimeLine>)
     {
@@ -54,7 +56,7 @@ class MovieClip extends Sprite
         }
 
         currentFrame = 0;
-        domTimeLine = timelines[0];
+        changeToScene(0);
         play();
     }
 
@@ -99,6 +101,15 @@ class MovieClip extends Sprite
     public function prevScene():Void 
     {
         
+    }
+
+    function changeToScene(scene:Dynamic):Void 
+    {
+        if (Std.is(scene,Int)) {
+            domTimeLine = timelines[scene];
+        }else if (Std.is(scene,String)) {
+            domTimeLine = timelinesMap.get(scene);
+        }
     }
 
     public function gotoAndPlay(?index:Int,?label:String):Void 
