@@ -95,12 +95,16 @@ class MovieClip extends Sprite
 
     public function nextScene():Void 
     {
-        
+        if (currentSceneIndex < timelines.length-1) {
+            changeToScene(currentSceneIndex + 1);
+        }
     }
 
     public function prevScene():Void 
     {
-        
+        if (currentSceneIndex > 0) {
+            changeToScene(currentSceneIndex - 1);
+        }
     }
 
     function changeToScene(scene:Dynamic):Void 
