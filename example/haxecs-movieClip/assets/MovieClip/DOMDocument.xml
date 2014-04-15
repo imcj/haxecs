@@ -69,11 +69,11 @@
                     </DOMLayer>
                </layers>
           </DOMTimeline>
-          <DOMTimeline name="场景 2">
+          <DOMTimeline name="场景 2" currentFrame="26">
                <layers>
                     <DOMLayer name="图层 1" color="#4F80FF" current="true" isSelected="true">
                          <frames>
-                              <DOMFrame index="0" keyMode="9728">
+                              <DOMFrame index="0" duration="27" keyMode="9728">
                                    <elements>
                                         <DOMSymbolInstance libraryItemName="ceshi" selected="true">
                                              <matrix>
