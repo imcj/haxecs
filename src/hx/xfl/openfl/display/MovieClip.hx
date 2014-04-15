@@ -96,6 +96,7 @@ class MovieClip extends Sprite
             gotoFrame(currentFrame);
         }else if (timelines.length > 1) {
             prevScene();
+            currentFrame = domTimeLine.totalFrames - 1;
         }
     }
 
@@ -104,7 +105,7 @@ class MovieClip extends Sprite
         if (currentSceneIndex < timelines.length-1) {
             changeToScene(currentSceneIndex + 1);
             currentFrame = 0;
-        }else if(isLoop) {
+        }else {
             changeToScene(0);
             currentFrame = 0;
         }
@@ -114,10 +115,10 @@ class MovieClip extends Sprite
     {
         if (currentSceneIndex > 0) {
             changeToScene(currentSceneIndex - 1);
-            currentFrame = domTimeLine.totalFrames - 1;
-        }else if(isLoop) {
+            currentFrame = 0;
+        }else {
             changeToScene(timelines.length - 1);
-            currentFrame = domTimeLine.totalFrames - 1;
+            currentFrame = 0;
         }
     }
 
