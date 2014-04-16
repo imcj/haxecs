@@ -11,6 +11,7 @@ class FillStyle
 
     public var matrix:Matrix;
     public var colors:Array<Int>;
+    public var alphas:Array<Float>;
     public var ratios:Array<Float>;
 
     public function new()
@@ -21,6 +22,7 @@ class FillStyle
         alpha = 1;
         colors = [];
         ratios = [];
+        alphas = [];
     }
     
 }

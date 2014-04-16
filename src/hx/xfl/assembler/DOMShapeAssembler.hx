@@ -152,6 +152,11 @@ class DOMShapeAssembler extends DOMElementAssembler
                 }else {
                     fillStyle.ratios.push(0);
                 }
+                if (e.exists("alpha")) {
+                    fillStyle.alphas.push(Std.parseFloat(e.get("alpha")));
+                }else {
+                    fillStyle.alphas.push(1);
+                }
             }
         }
         return fillStyle;
