@@ -35,16 +35,28 @@ class XFLDocumentAssembler extends XFLBaseAssembler
 
     function parseSymbol(document:XFLDocument, data:Xml):Void 
     {
-        var symbolItem;
+
+        //先记录全部Include
         for (element in data.elements()) {
-            symbolItem = new DOMSymbolItem();
+            var symbolItem = new DOMSymbolItem();
             var file = document.dir + "/LIBRARY/" + element.get("href");
             var text = hx.xfl.openfl.Assets.getText(file);
             var symbolXml = Xml.parse(text).firstChild();
 
             fillProperty(symbolItem, symbolXml);
-
             document.library.items.push(symbolItem);
+            document.addSymbol(symbolItem);
+        }
+
+        for (element in data.elements()) {
+            var symbolItem = new DOMSymbolItem();
+            var file = document.dir + "/LIBRARY/" + element.get("href");
+            var text = hx.xfl.openfl.Assets.getText(file);
+            var symbolXml = Xml.parse(text).firstChild();
+
+            fillProperty(symbolItem, symbolXml);
+            var symbolIndex = document.library.findItemIndex(symbolItem.name);
+            symbolItem = cast(document.library.items[symbolIndex]);
 
             for (timeline in symbolXml.elements()) {
                 if ("timeline" == timeline.nodeName) {
@@ -56,8 +68,6 @@ class XFLDocumentAssembler extends XFLBaseAssembler
 
                 }*/
             }
-            
-            document.addSymbol(symbolItem);
         }
     }
 
