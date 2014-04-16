@@ -10,7 +10,8 @@ class FillStyle
     public var alpha:Float;
 
     public var matrix:Matrix;
-    public var gradientEntrys:Array<{color:Int,ratio:Float}>;
+    public var colors:Array<Int>;
+    public var ratio:Array<Float>;
 
     public function new()
     {
