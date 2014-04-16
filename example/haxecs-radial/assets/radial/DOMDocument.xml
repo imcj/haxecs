@@ -20,10 +20,24 @@
                                                   <FillStyle index="2">
                                                        <SolidColor color="#993300"/>
                                                   </FillStyle>
+                                                  <FillStyle index="3">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix a="0.081787109375" d="0.0396728515625" tx="111" ty="334.45"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#0066FD" ratio="0"/>
+                                                            <GradientEntry color="#FFFFFF" ratio="0.376470588235294"/>
+                                                            <GradientEntry color="#FFFFFF" ratio="0.47843137254902"/>
+                                                            <GradientEntry color="#996600" ratio="0.501960784313725"/>
+                                                            <GradientEntry color="#FFCC00" ratio="0.666666666666667"/>
+                                                            <GradientEntry color="#FFFFFF" ratio="1"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
                                              </fills>
                                              <edges>
                                                   <Edge fillStyle1="2" edges="!8540 5539|10320 5539!10320 5539|10320 6819!10320 6819|8540 6819!8540 6819|8540 5539"/>
                                                   <Edge fillStyle1="1" edges="!7780 5200|2860 5200!2860 5200|2860 1441!2860 1441|7780 1441!7780 1441|7780 5200"/>
+                                                  <Edge fillStyle1="3" edges="!880 6039|3560 6039!3560 6039|3560 7339!3560 7339|880 7339!880 7339|880 6039"/>
                                              </edges>
                                         </DOMShape>
                                    </elements>
