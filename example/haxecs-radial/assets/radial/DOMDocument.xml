@@ -1,0 +1,54 @@
+<DOMDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" currentTimeline="1" xflVersion="2.3" creatorInfo="Adobe Flash Professional CC" platform="Windows" versionInfo="Saved by Adobe Flash Windows 13.0 build 808" majorVersion="13" buildNumber="808" objectsSnapTo="false" nextSceneIdentifier="2" playOptionsPlayLoop="false" playOptionsPlayPages="false" playOptionsPlayFrameActions="false">
+     <symbols/>
+     <timelines>
+          <DOMTimeline name="Scene 1" currentFrame="38">
+               <layers>
+                    <DOMLayer name="图层 3" color="#FF800A" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" duration="39" keyMode="9728">
+                                   <elements>
+                                        <DOMShape>
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient>
+                                                            <matrix>
+                                                                 <Matrix a="0.18896484375" d="0.18896484375" tx="266" ty="166"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#FF0000" ratio="0"/>
+                                                            <GradientEntry ratio="1"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle1="1" edges="!7780 5200|2860 5200!2860 5200|2860 1441!2860 1441|7780 1441!7780 1441|7780 5200"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timelines>
+     <PrinterSettings/>
+     <publishHistory>
+          <PublishItem publishSize="1850" publishTime="1396330714"/>
+          <PublishItem publishSize="1858" publishTime="1396330653"/>
+          <PublishItem publishSize="1858" publishTime="1396330603"/>
+          <PublishItem publishSize="1838" publishTime="1396330493"/>
+          <PublishItem publishSize="1843" publishTime="1396329961"/>
+          <PublishItem publishSize="1857" publishTime="1396329658"/>
+          <PublishItem publishSize="1856" publishTime="1396324246"/>
+          <PublishItem publishSize="1835" publishTime="1396324049"/>
+          <PublishItem publishSize="1848" publishTime="1396323998"/>
+          <PublishItem publishSize="1418" publishTime="1396323971"/>
+          <PublishItem publishSize="1803" publishTime="1396255761"/>
+          <PublishItem publishSize="1795" publishTime="1396255668"/>
+          <PublishItem publishSize="1797" publishTime="1396255652"/>
+          <PublishItem publishSize="1417" publishTime="1396255324"/>
+          <PublishItem publishSize="1403" publishTime="1396255118"/>
+          <PublishItem publishSize="1403" publishTime="1396255113"/>
+          <PublishItem publishSize="1657" publishTime="1396254514"/>
+          <PublishItem publishSize="1289" publishTime="1396254466"/>
+     </publishHistory>
+</DOMDocument>
