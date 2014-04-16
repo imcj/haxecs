@@ -1,5 +1,6 @@
 package hx.xfl.assembler;
 
+import hx.geom.Matrix;
 import hx.xfl.DOMShape;
 import hx.xfl.graphic.Edge;
 import hx.xfl.graphic.EdgeCommand;
@@ -35,6 +36,18 @@ class DOMShapeAssembler extends DOMElementAssembler
                         fillStyle.color = Std.parseInt(c);
                         var alpha = fill.firstElement().get("alpha");
                         if(alpha != null)fillStyle.alpha = Std.parseFloat(alpha);
+                        instance.fills.set(fillStyle.index, fillStyle);
+                    }
+                    if ("RadialGradient" == fill.firstElement().nodeName) {
+                        var fillStyle = new FillStyle();
+                        fillStyle.type = fill.firstElement().nodeName;
+                        for (e in fill.firstElement().elements()) {
+                            if ("matrix" == e.nodeName) {
+                                var matrix = new Matrix();
+                                matrix.setByXml(e);
+                                fillStyle.matrix = matrix;
+                            }
+                        }
                         instance.fills.set(fillStyle.index, fillStyle);
                     }
                 }
