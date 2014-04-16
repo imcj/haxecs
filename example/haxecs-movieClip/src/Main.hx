@@ -21,22 +21,13 @@ class Main extends Sprite
         mv = new MovieClip(document.timeLines);
         addChild(mv);
 
-        setButton("下一帧", 0, nextFrame);
-
-        var tfStop = new TextField();
-        tfStop.text = "停止";
-        tfStop.x = 100;
-        addChild(tfStop);
-        tfStop.addEventListener(MouseEvent.CLICK, stop);
-
-        var tfPlay = new TextField();
-        tfPlay.text = "播放";
-        tfPlay.x = 200;
-        addChild(tfPlay);
-        tfPlay.addEventListener(MouseEvent.CLICK, play);
+        bulidButton("下一帧", 0, nextFrame);
+        bulidButton("播放", 100, play);
+        bulidButton("停止", 200, stop);
+        bulidButton("下一场景", 300, nextScene);
     }
 
-    function setButton(name:String,x:Float,fun:MouseEvent->Void):Void 
+    function bulidButton(name:String,x:Float,fun:MouseEvent->Void):Void 
     {
         var btn = new TextField();
         btn.text = name;
@@ -44,6 +35,11 @@ class Main extends Sprite
         btn.x = x;
         addChild(btn);
         btn.addEventListener(MouseEvent.CLICK, fun);
+    }
+
+    function nextScene(e:MouseEvent):Void 
+    {
+        mv.nextScene();
     }
 
     function play(e:MouseEvent):Void
