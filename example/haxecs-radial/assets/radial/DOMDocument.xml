@@ -14,7 +14,7 @@
                                                   <FillStyle index="2">
                                                        <LinearGradient>
                                                             <matrix>
-                                                                 <Matrix a="0.081787109375" d="0.0396728515625" tx="111" ty="334.45"/>
+                                                                 <Matrix a="0.0495758056640625" b="0.0310821533203125" c="-0.0210418701171875" d="0.0335693359375" tx="108.15" ty="337.4"/>
                                                             </matrix>
                                                             <GradientEntry color="#0066FD" ratio="0"/>
                                                             <GradientEntry color="#FFFFFF" ratio="0.376470588235294"/>
@@ -25,9 +25,9 @@
                                                        </LinearGradient>
                                                   </FillStyle>
                                                   <FillStyle index="3">
-                                                       <RadialGradient>
+                                                       <RadialGradient focalPointRatio="-0.674509803921569">
                                                             <matrix>
-                                                                 <Matrix a="0.18896484375" d="0.18896484375" tx="266" ty="166"/>
+                                                                 <Matrix a="0.149459838867188" b="-0.0464935302734375" c="0.0467376708984375" d="0.150222778320313" tx="273" ty="173"/>
                                                             </matrix>
                                                             <GradientEntry color="#FF0000" alpha="0.490196078431373" ratio="0"/>
                                                             <GradientEntry ratio="1"/>
@@ -36,7 +36,7 @@
                                              </fills>
                                              <edges>
                                                   <Edge fillStyle1="1" edges="!8540 5539|10320 5539!10320 5539|10320 6819!10320 6819|8540 6819!8540 6819|8540 5539"/>
-                                                  <Edge fillStyle1="3" edges="!7780 5200|2860 5200!2860 5200|2860 1441!2860 1441|7780 1441!7780 1441|7780 5200"/>
+                                                  <Edge fillStyle1="3" edges="!7780 5200S2|2860 5200!2860 5200|2860 1441!2860 1441|7780 1441!7780 1441|7780 5200"/>
                                                   <Edge fillStyle1="2" edges="!880 6039|3560 6039!3560 6039|3560 7339!3560 7339|880 7339!880 7339|880 6039"/>
                                              </edges>
                                         </DOMShape>
