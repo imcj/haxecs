@@ -39,6 +39,9 @@ class DOMShapeAssembler extends DOMElementAssembler
                         instance.fills.set(fillStyle.index, fillStyle);
                     }else if ("RadialGradient" == fill.firstElement().nodeName) {
                         var fillStyle = parseGradient(fill);
+                        if (fill.firstElement().exists("focalPointRatio")) {
+                            fillStyle.focalPointRatio = Std.parseFloat(fill.firstElement().get("focalPointRatio"));
+                        }
                         instance.fills.set(fillStyle.index, fillStyle);
                     }else if ("LinearGradient" == fill.firstElement().nodeName) {
                         var fillStyle = parseGradient(fill);

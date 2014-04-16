@@ -13,6 +13,7 @@ class FillStyle
     public var colors:Array<Int>;
     public var alphas:Array<Float>;
     public var ratios:Array<Float>;
+    public var focalPointRatio:Float;
 
     public function new()
     {
@@ -20,9 +21,11 @@ class FillStyle
         type = "";
         color = 0;
         alpha = 1;
+        matrix = new Matrix();
         colors = [];
         ratios = [];
         alphas = [];
+        focalPointRatio = 0;
     }
     
 }
