@@ -47,6 +47,19 @@ class DOMShapeAssembler extends DOMElementAssembler
                                 matrix.setByXml(e);
                                 fillStyle.matrix = matrix;
                             }
+                            if ("GradientEntry" == e.nodeName) {
+                                var gradient:Dynamic = { };
+                                gradient.color = 0;
+                                gradient.ratio = 0;
+                                if (e.exists("color")) {
+                                    var c = "0x" + e.get("color").substring(1);
+                                    gradient.color = Std.parseInt(c);
+                                }
+                                if (e.exists("ratio")) {
+                                    gradient.ratio = Std.parseFloat(e.get("ratio"));
+                                }
+                                fillStyle.gradientEntrys.push(gradient);
+                            }
                         }
                         instance.fills.set(fillStyle.index, fillStyle);
                     }
