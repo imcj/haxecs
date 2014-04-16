@@ -39,28 +39,11 @@ class DOMShapeAssembler extends DOMElementAssembler
                         instance.fills.set(fillStyle.index, fillStyle);
                     }
                     if ("RadialGradient" == fill.firstElement().nodeName) {
-                        var fillStyle = new FillStyle();
-                        fillStyle.type = fill.firstElement().nodeName;
-                        for (e in fill.firstElement().elements()) {
-                            if ("matrix" == e.nodeName) {
-                                var matrix = new Matrix();
-                                matrix.setByXml(e);
-                                fillStyle.matrix = matrix;
-                            }
-                            if ("GradientEntry" == e.nodeName) {
-                                var gradient:Dynamic = { };
-                                gradient.color = 0;
-                                gradient.ratio = 0;
-                                if (e.exists("color")) {
-                                    var c = "0x" + e.get("color").substring(1);
-                                    gradient.color = Std.parseInt(c);
-                                }
-                                if (e.exists("ratio")) {
-                                    gradient.ratio = Std.parseFloat(e.get("ratio"));
-                                }
-                                fillStyle.gradientEntrys.push(gradient);
-                            }
-                        }
+                        var fillStyle = parseGradient(fill);
+                        instance.fills.set(fillStyle.index, fillStyle);
+                    }
+                    if ("LinearGradient" == fill.firstElement().nodeName) {
+                        var fillStyle = parseGradient(fill);
                         instance.fills.set(fillStyle.index, fillStyle);
                     }
                 }
@@ -145,6 +128,33 @@ class DOMShapeAssembler extends DOMElementAssembler
         }
 
         return instance;
+    }
+
+    function parseGradient(fill:Xml):FillStyle 
+    {
+        var fillStyle = new FillStyle();
+        fillStyle.type = fill.firstElement().nodeName;
+        for (e in fill.firstElement().elements()) {
+            if ("matrix" == e.nodeName) {
+                var matrix = new Matrix();
+                matrix.setByXml(e);
+                fillStyle.matrix = matrix;
+            }
+            if ("GradientEntry" == e.nodeName) {
+                if (e.exists("color")) {
+                    var c = "0x" + e.get("color").substring(1);
+                    fillStyle.colors.push(Std.parseInt(c));
+                }else {
+                    fillStyle.colors.push(0);
+                }
+                if (e.exists("ratio")) {
+                    fillStyle.ratios.push(Std.parseFloat(e.get("ratio")));
+                }else {
+                    fillStyle.ratios.push(0);
+                }
+            }
+        }
+        return fillStyle;
     }
 
     function parseNumbers(str:String):Array<Float>

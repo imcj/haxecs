@@ -11,7 +11,7 @@ class FillStyle
 
     public var matrix:Matrix;
     public var colors:Array<Int>;
-    public var ratio:Array<Float>;
+    public var ratios:Array<Float>;
 
     public function new()
     {
@@ -19,7 +19,8 @@ class FillStyle
         type = "";
         color = 0;
         alpha = 1;
-        gradientEntrys = [];
+        colors = [];
+        ratios = [];
     }
     
 }
