@@ -21,11 +21,7 @@ class Main extends Sprite
         mv = new MovieClip(document.timeLines);
         addChild(mv);
 
-        var tfNextFrame = new TextField();
-        tfNextFrame.text = "下一帧";
-        tfNextFrame.selectable = false;
-        addChild(tfNextFrame);
-        tfNextFrame.addEventListener(MouseEvent.CLICK, nextFrame);
+        setButton("下一帧", 0, nextFrame);
 
         var tfStop = new TextField();
         tfStop.text = "停止";
@@ -40,8 +36,9 @@ class Main extends Sprite
         tfPlay.addEventListener(MouseEvent.CLICK, play);
     }
 
-    function setButton(btn:TextField,name:String,x:Float,fun:MouseEvent->Void):Void 
+    function setButton(name:String,x:Float,fun:MouseEvent->Void):Void 
     {
+        var btn = new TextField();
         btn.text = name;
         btn.selectable = false;
         btn.x = x;
