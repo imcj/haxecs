@@ -1,13 +1,13 @@
-<DOMDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" currentTimeline="1" xflVersion="2.3" creatorInfo="Adobe Flash Professional CC" platform="Windows" versionInfo="Saved by Adobe Flash Windows 13.0 build 808" majorVersion="13" buildNumber="808" objectsSnapTo="false" nextSceneIdentifier="3" playOptionsPlayLoop="false" playOptionsPlayPages="false" playOptionsPlayFrameActions="false">
+<DOMDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" currentTimeline="2" xflVersion="2.3" creatorInfo="Adobe Flash Professional CC" platform="Windows" versionInfo="Saved by Adobe Flash Windows 13.0 build 808" majorVersion="13" buildNumber="808" objectsSnapTo="false" nextSceneIdentifier="3" playOptionsPlayLoop="false" playOptionsPlayPages="false" playOptionsPlayFrameActions="false">
      <symbols>
           <Include href="ceshi.xml" loadImmediate="false" itemID="534cacad-00000086" lastModified="1397533869"/>
      </symbols>
      <timelines>
-          <DOMTimeline name="Scene 1" currentFrame="24">
+          <DOMTimeline name="Scene 1" currentFrame="43">
                <layers>
                     <DOMLayer name="图层 4" color="#FF4FFF" current="true" isSelected="true">
                          <frames>
-                              <DOMFrame index="0" duration="24" keyMode="9728">
+                              <DOMFrame index="0" duration="11" tweenType="motion" motionTweenSnap="true" keyMode="22017">
                                    <elements>
                                         <DOMSymbolInstance libraryItemName="ceshi">
                                              <matrix>
@@ -19,11 +19,23 @@
                                         </DOMSymbolInstance>
                                    </elements>
                               </DOMFrame>
+                              <DOMFrame index="11" duration="13" tweenType="motion" motionTweenSnap="true" keyMode="22017">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="ceshi" selected="true" centerPoint3DX="475" centerPoint3DY="173">
+                                             <matrix>
+                                                  <Matrix tx="436" ty="141"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point x="39" y="32"/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
                               <DOMFrame index="24" duration="10" tweenType="motion" motionTweenSnap="true" keyMode="22017">
                                    <elements>
-                                        <DOMSymbolInstance libraryItemName="ceshi" selected="true" centerPoint3DX="64" centerPoint3DY="88">
+                                        <DOMSymbolInstance libraryItemName="ceshi" centerPoint3DX="96" centerPoint3DY="213.95">
                                              <matrix>
-                                                  <Matrix tx="25" ty="56"/>
+                                                  <Matrix tx="57" ty="181.95"/>
                                              </matrix>
                                              <transformationPoint>
                                                   <Point x="39" y="32"/>
@@ -33,9 +45,9 @@
                               </DOMFrame>
                               <DOMFrame index="34" duration="9" tweenType="motion" motionTweenSnap="true" keyMode="22017">
                                    <elements>
-                                        <DOMSymbolInstance libraryItemName="ceshi" centerPoint3DX="137" centerPoint3DY="57">
+                                        <DOMSymbolInstance libraryItemName="ceshi" centerPoint3DX="276" centerPoint3DY="75">
                                              <matrix>
-                                                  <Matrix tx="98" ty="25"/>
+                                                  <Matrix tx="237" ty="43"/>
                                              </matrix>
                                              <transformationPoint>
                                                   <Point x="39" y="32"/>
@@ -45,14 +57,35 @@
                               </DOMFrame>
                               <DOMFrame index="43" keyMode="9728">
                                    <elements>
-                                        <DOMSymbolInstance libraryItemName="ceshi" centerPoint3DX="223" centerPoint3DY="175">
+                                        <DOMSymbolInstance libraryItemName="ceshi" centerPoint3DX="479" centerPoint3DY="176">
                                              <matrix>
-                                                  <Matrix tx="184" ty="143"/>
+                                                  <Matrix tx="440" ty="144"/>
                                              </matrix>
                                              <transformationPoint>
                                                   <Point x="39" y="32"/>
                                              </transformationPoint>
                                         </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="图层 2" color="#9933CC">
+                         <frames>
+                              <DOMFrame index="0" duration="44" keyMode="9728">
+                                   <elements>
+                                        <DOMInputText fontRenderingMode="standard" width="71" height="31.9">
+                                             <matrix>
+                                                  <Matrix tx="258" ty="326.05"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>场景1</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" size="22" bitmapSize="440" face="SimHei" fillColor="#660099"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMInputText>
                                    </elements>
                               </DOMFrame>
                          </frames>
@@ -71,11 +104,32 @@
           </DOMTimeline>
           <DOMTimeline name="场景 2" currentFrame="26">
                <layers>
+                    <DOMLayer name="图层 2" color="#9933CC">
+                         <frames>
+                              <DOMFrame index="0" duration="27" keyMode="9728">
+                                   <elements>
+                                        <DOMInputText fontRenderingMode="standard" width="71" height="31.9">
+                                             <matrix>
+                                                  <Matrix tx="258" ty="326.05"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>场景2</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" size="22" bitmapSize="440" face="SimHei" fillColor="#660099"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMInputText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
                     <DOMLayer name="图层 1" color="#4F80FF" current="true" isSelected="true">
                          <frames>
-                              <DOMFrame index="0" duration="26" tweenType="motion" motionTweenSnap="true" keyMode="22017">
+                              <DOMFrame index="0" duration="13" tweenType="motion" motionTweenSnap="true" keyMode="22017">
                                    <elements>
-                                        <DOMSymbolInstance libraryItemName="ceshi" selected="true">
+                                        <DOMSymbolInstance libraryItemName="ceshi">
                                              <matrix>
                                                   <Matrix tx="228" ty="146"/>
                                              </matrix>
@@ -85,14 +139,26 @@
                                         </DOMSymbolInstance>
                                    </elements>
                               </DOMFrame>
-                              <DOMFrame index="26" keyMode="9728">
+                              <DOMFrame index="13" duration="13" tweenType="motion" motionTweenSnap="true" keyMode="22017">
                                    <elements>
-                                        <DOMSymbolInstance libraryItemName="ceshi" selected="true" centerPoint3DX="420" centerPoint3DY="235.95">
+                                        <DOMSymbolInstance libraryItemName="ceshi" centerPoint3DX="273.5" centerPoint3DY="60">
                                              <matrix>
-                                                  <Matrix tx="381" ty="203.95"/>
+                                                  <Matrix tx="234.5" ty="28"/>
                                              </matrix>
                                              <transformationPoint>
                                                   <Point x="39" y="32"/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="26" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="ceshi" selected="true" centerPoint3DX="280" centerPoint3DY="257.95">
+                                             <matrix>
+                                                  <Matrix a="0.999984741210938" b="1.52587890625e-005" c="-1.52587890625e-005" d="0.999984741210938" tx="241" ty="225.9"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point x="39" y="32.05"/>
                                              </transformationPoint>
                                         </DOMSymbolInstance>
                                    </elements>
