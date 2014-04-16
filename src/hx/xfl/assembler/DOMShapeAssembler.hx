@@ -37,12 +37,10 @@ class DOMShapeAssembler extends DOMElementAssembler
                         var alpha = fill.firstElement().get("alpha");
                         if(alpha != null)fillStyle.alpha = Std.parseFloat(alpha);
                         instance.fills.set(fillStyle.index, fillStyle);
-                    }
-                    if ("RadialGradient" == fill.firstElement().nodeName) {
+                    }else if ("RadialGradient" == fill.firstElement().nodeName) {
                         var fillStyle = parseGradient(fill);
                         instance.fills.set(fillStyle.index, fillStyle);
-                    }
-                    if ("LinearGradient" == fill.firstElement().nodeName) {
+                    }else if ("LinearGradient" == fill.firstElement().nodeName) {
                         var fillStyle = parseGradient(fill);
                         instance.fills.set(fillStyle.index, fillStyle);
                     }
@@ -133,6 +131,7 @@ class DOMShapeAssembler extends DOMElementAssembler
     function parseGradient(fill:Xml):FillStyle 
     {
         var fillStyle = new FillStyle();
+        fillProperty(fillStyle, fill);
         fillStyle.type = fill.firstElement().nodeName;
         for (e in fill.firstElement().elements()) {
             if ("matrix" == e.nodeName) {
