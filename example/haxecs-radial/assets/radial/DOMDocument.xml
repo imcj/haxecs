@@ -1,5 +1,4 @@
 <DOMDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" currentTimeline="1" xflVersion="2.3" creatorInfo="Adobe Flash Professional CC" platform="Windows" versionInfo="Saved by Adobe Flash Windows 13.0 build 808" majorVersion="13" buildNumber="808" objectsSnapTo="false" nextSceneIdentifier="2" playOptionsPlayLoop="false" playOptionsPlayPages="false" playOptionsPlayFrameActions="false">
-     <symbols/>
      <timelines>
           <DOMTimeline name="Scene 1" currentFrame="38">
                <layers>
@@ -18,8 +17,12 @@
                                                             <GradientEntry ratio="1"/>
                                                        </RadialGradient>
                                                   </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#993300"/>
+                                                  </FillStyle>
                                              </fills>
                                              <edges>
+                                                  <Edge fillStyle1="2" edges="!8540 5539|10320 5539!10320 5539|10320 6819!10320 6819|8540 6819!8540 6819|8540 5539"/>
                                                   <Edge fillStyle1="1" edges="!7780 5200|2860 5200!2860 5200|2860 1441!2860 1441|7780 1441!7780 1441|7780 5200"/>
                                              </edges>
                                         </DOMShape>
