@@ -108,10 +108,8 @@ class MovieClip extends Sprite
     {
         if (currentSceneIndex < timelines.length-1) {
             changeToScene(currentSceneIndex + 1);
-            currentFrame = 0;
         }else {
             changeToScene(0);
-            currentFrame = 0;
         }
     }
 
@@ -119,10 +117,8 @@ class MovieClip extends Sprite
     {
         if (currentSceneIndex > 0) {
             changeToScene(currentSceneIndex - 1);
-            currentFrame = 0;
         }else {
             changeToScene(timelines.length - 1);
-            currentFrame = 0;
         }
     }
 
@@ -131,9 +127,13 @@ class MovieClip extends Sprite
         if (Std.is(scene,Int)) {
             domTimeLine = timelines[scene];
             currentSceneIndex = scene;
+            currentFrame = 0;
+            displayFrame();
         }else if (Std.is(scene,String)) {
             domTimeLine = timelinesMap.get(scene);
             currentSceneIndex = timelines.indexOf(domTimeLine);
+            currentFrame = 0;
+            displayFrame();
         }
     }
 
