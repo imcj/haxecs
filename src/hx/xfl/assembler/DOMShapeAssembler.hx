@@ -150,7 +150,7 @@ class DOMShapeAssembler extends DOMElementAssembler
                     fillStyle.colors.push(0);
                 }
                 if (e.exists("ratio")) {
-                    fillStyle.ratios.push(Std.parseFloat(e.get("ratio")));
+                    fillStyle.ratios.push(Std.parseFloat(e.get("ratio"))*100);
                 }else {
                     fillStyle.ratios.push(0);
                 }
