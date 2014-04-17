@@ -139,6 +139,7 @@ class MovieClip extends Sprite
 
     public function gotoAndPlay(frame:Dynamic,?scene:String):Void 
     {
+        this.removeEventListener(Event.ENTER_FRAME, onFrame);
         if (scene != null) changeToScene(scene);
         if (Std.is(frame,Int)) {
             currentFrame = frame;
