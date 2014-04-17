@@ -1,4 +1,6 @@
 package hx.xfl.graphic;
+import flash.display.InterpolationMethod;
+import flash.display.SpreadMethod;
 import hx.geom.Matrix;
 
 class FillStyle
@@ -14,8 +16,8 @@ class FillStyle
     public var alphas:Array<Float>;
     public var ratios:Array<Float>;
     public var focalPointRatio:Float;
-    public var spreadMethod:String;
-    public var interpolationMethod:String;
+    public var spreadMethod:SpreadMethod;
+    public var interpolationMethod:InterpolationMethod;
 
     public function new()
     {
@@ -28,8 +30,8 @@ class FillStyle
         ratios = [];
         alphas = [];
         focalPointRatio = 0;
-        spreadMethod = "pad";
-        interpolationMethod = "rgb";
+        spreadMethod = PAD;
+        interpolationMethod = RGB;
     }
     
 }

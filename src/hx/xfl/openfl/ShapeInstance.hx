@@ -24,9 +24,9 @@ class ShapeInstance extends Shape
                     case "SolidColor":
                         this.graphics.beginFill(fill.color, fill.alpha);
                     case "RadialGradient":
-                        this.graphics.beginGradientFill(GradientType.RADIAL, fill.colors, fill.alphas, fill.ratios, fill.matrix.toFlashMatrix(), fill.focalPointRatio);
+                        this.graphics.beginGradientFill(GradientType.RADIAL, fill.colors, fill.alphas, fill.ratios, fill.matrix.toFlashMatrix(), fill.spreadMethod, fill.interpolationMethod, fill.focalPointRatio);
                     case "LinearGradient":
-                        this.graphics.beginGradientFill(GradientType.LINEAR, fill.colors, fill.alphas, fill.ratios, fill.matrix.toFlashMatrix());
+                        this.graphics.beginGradientFill(GradientType.LINEAR, fill.colors, fill.alphas, fill.ratios, fill.matrix.toFlashMatrix(), fill.spreadMethod, fill.interpolationMethod, fill.focalPointRatio);
 
                 }
             }
