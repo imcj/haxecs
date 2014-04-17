@@ -47,12 +47,17 @@ class DOMShapeAssembler extends DOMElementAssembler
                     }else if ("BitmapFill" == fill.firstElement().nodeName) {
                         var fillStyle = new FillStyle();
                         fillProperty(fillStyle, fill);
+                        fillStyle.type = fill.firstElement().nodeName;
                         var bmpUrl = document.dir + "/LIBRARY/" + fill.firstElement().get("bitmapPath");
                         fillStyle.bitmapData = Assets.getBitmapData(bmpUrl);
                         for (e in fill.firstElement().elements()) {
                             if ("matrix" == e.nodeName) {
                                 var matrix = new Matrix();
                                 matrix.setByXml(e);
+                                matrix.a = matrix.a / 20;
+                                matrix.b = matrix.b / 20;
+                                matrix.c = matrix.c / 20;
+                                matrix.d = matrix.d / 20;
                                 fillStyle.matrix = matrix;
                             }
                         }
