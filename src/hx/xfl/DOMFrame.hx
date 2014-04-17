@@ -55,6 +55,8 @@ class DOMFrame
         elements = [];
         motionTweenRotate = "";
         animation = null;
+        name = "";
+        labelType = "";
     }
 
     public function addElement(element:IDOMElement):DOMFrame

@@ -1,0 +1,85 @@
+<DOMDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" currentTimeline="1" xflVersion="2.3" creatorInfo="Adobe Flash Professional CC" platform="Windows" versionInfo="Saved by Adobe Flash Windows 13.0 build 808" majorVersion="13" buildNumber="808" objectsSnapTo="false" nextSceneIdentifier="2" playOptionsPlayLoop="false" playOptionsPlayPages="false" playOptionsPlayFrameActions="false">
+     <folders>
+          <DOMFolderItem name="xx" itemID="534f3da4-00000010"/>
+     </folders>
+     <media>
+          <DOMBitmapItem name="xx/foundation.jpg" itemID="534f3878-0000000c" sourceExternalFilepath="./LIBRARY/foundation.jpg" sourceLastImported="1397700677" externalFileSize="16228" allowSmoothing="true" quality="50" href="xx/foundation.jpg" bitmapDataHRef="M 1 1397700695.dat" frameRight="2700" frameBottom="2700" isJPEG="true"/>
+     </media>
+     <timelines>
+          <DOMTimeline name="Scene 1" currentFrame="18">
+               <layers>
+                    <DOMLayer name="图层 3" color="#FF800A" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" duration="38" keyMode="9728">
+                                   <elements>
+                                        <DOMShape>
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#993300"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix a="0.0495758056640625" b="0.0310821533203125" c="-0.0210418701171875" d="0.0335693359375" tx="108.15" ty="337.4"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#0066FD" ratio="0"/>
+                                                            <GradientEntry color="#FFFFFF" ratio="0.376470588235294"/>
+                                                            <GradientEntry color="#FFFFFF" ratio="0.47843137254902"/>
+                                                            <GradientEntry color="#996600" ratio="0.501960784313725"/>
+                                                            <GradientEntry color="#FFCC00" ratio="0.666666666666667"/>
+                                                            <GradientEntry color="#FFFFFF" ratio="1"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="3">
+                                                       <RadialGradient spreadMethod="reflect" interpolationMethod="linearRGB" focalPointRatio="-0.666666666666667">
+                                                            <matrix>
+                                                                 <Matrix a="0.149459838867188" b="-0.0464935302734375" c="0.0467376708984375" d="0.150222778320313" tx="152" ty="124"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#FF0000" alpha="0.486274509803922" ratio="0"/>
+                                                            <GradientEntry ratio="1"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="4">
+                                                       <BitmapFill bitmapPath="xx/foundation.jpg">
+                                                            <matrix>
+                                                                 <Matrix a="20" c="-4.71366882324219" d="13.7313842773438" tx="347.8" ty="88.45"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle1="4" edges="!9480 1140S2|9480 4259!9480 4259|6500 4259!6500 4259|6500 1140!6500 1140|9480 1140"/>
+                                                  <Edge fillStyle1="1" edges="!8540 5539|10320 5539!10320 5539|10320 6819!10320 6819|8540 6819!8540 6819|8540 5539"/>
+                                                  <Edge fillStyle1="2" edges="!880 6039|3560 6039!3560 6039|3560 7339!3560 7339|880 7339!880 7339|880 6039"/>
+                                                  <Edge fillStyle1="3" edges="!5360 461|5360 4220!5360 4220|440 4220!440 4220|440 461!440 461|5360 461"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timelines>
+     <PrinterSettings/>
+     <publishHistory>
+          <PublishItem publishSize="1850" publishTime="1396330714"/>
+          <PublishItem publishSize="1858" publishTime="1396330653"/>
+          <PublishItem publishSize="1858" publishTime="1396330603"/>
+          <PublishItem publishSize="1838" publishTime="1396330493"/>
+          <PublishItem publishSize="1843" publishTime="1396329961"/>
+          <PublishItem publishSize="1857" publishTime="1396329658"/>
+          <PublishItem publishSize="1856" publishTime="1396324246"/>
+          <PublishItem publishSize="1835" publishTime="1396324049"/>
+          <PublishItem publishSize="1848" publishTime="1396323998"/>
+          <PublishItem publishSize="1418" publishTime="1396323971"/>
+          <PublishItem publishSize="1803" publishTime="1396255761"/>
+          <PublishItem publishSize="1795" publishTime="1396255668"/>
+          <PublishItem publishSize="1797" publishTime="1396255652"/>
+          <PublishItem publishSize="1417" publishTime="1396255324"/>
+          <PublishItem publishSize="1403" publishTime="1396255118"/>
+          <PublishItem publishSize="1403" publishTime="1396255113"/>
+          <PublishItem publishSize="1657" publishTime="1396254514"/>
+          <PublishItem publishSize="1289" publishTime="1396254466"/>
+     </publishHistory>
+</DOMDocument>

@@ -62,8 +62,9 @@ class XFLDocumentAssembler extends XFLBaseAssembler
     {
         var symbolItem;
         var xml:Map<String, Xml> = new Map();
+
         for (element in data.elements()) {
-            symbolItem = new DOMSymbolItem();
+            var symbolItem = new DOMSymbolItem();
             var file = document.dir + "/LIBRARY/" + element.get("href");
             var text:String;
             #if cstool
@@ -77,8 +78,8 @@ class XFLDocumentAssembler extends XFLBaseAssembler
             xml.set(symbolItem.name, symbolXml);
 
             fillProperty(symbolItem, symbolXml);
-
             document.library.items.push(symbolItem);
+            document.addSymbol(symbolItem);
 
             /*
             for (timeline in symbolXml.elements()) {
@@ -93,7 +94,6 @@ class XFLDocumentAssembler extends XFLBaseAssembler
             document.addSymbol(symbolItem);
         }
 
-        // trace(xml);
         for (element in data.elements()) {
             var symbol_item_name = element.get("href").substr(0, -4);
             symbolItem = document.getSymbol(symbol_item_name);
@@ -112,14 +112,23 @@ class XFLDocumentAssembler extends XFLBaseAssembler
                 if ("timeline" == timeline.nodeName) {
                     symbolItem.timeline = assemblerTimeLine.parse(timeline)[0];
                     symbolItem.timeline.document = document;
+                }
+            }
 
+            fillProperty(symbolItem, symbolXml);
+            var symbolIndex = document.library.findItemIndex(symbolItem.name);
+            symbolItem = cast(document.library.items[symbolIndex]);
 
+            for (timeline in symbolXml.elements()) {
+                if ("timeline" == timeline.nodeName) {
+                    symbolItem.timelines = assemblerTimeLine.parse(timeline);
+                    for (tl in symbolItem.timelines) {
+                        tl.document = document;
+                    }
                 }/* else if ("include" == timeline.nodeName.toLowerCase()) {
 
                 }*/
             }
-            
-            document.addSymbol(symbolItem);
         }
     }
 

@@ -8,6 +8,7 @@ import hx.xfl.DOMLayer;
 import hx.xfl.DOMFrame;
 import hx.xfl.DOMBitmapItem;
 import hx.xfl.DOMBitmapInstance;
+import hx.xfl.DOMTimeLine;
 import hx.xfl.motion.Property;
 import hx.xfl.openfl.MotionObject;
 
@@ -27,34 +28,43 @@ import flash.errors.RangeError;
 
 class MovieClip extends Sprite
 {
-    var domTimeLine:DOMTimeLine;
-
     public var currentFrame:Int;
     public var totalFrames:Int;
+    public var isLoop:Bool;
 
-    public function new(domTimeLine:DOMTimeLine)
+    var timelines:Array<DOMTimeLine>;
+    var timelinesMap:Map<String, DOMTimeLine>;
+    var domTimeLine:DOMTimeLine;
+    var currentSceneIndex:Int;
+
+
+    public function new(timelines:Array<DOMTimeLine>)
     {
         super();
         name = '';
-        this.domTimeLine = domTimeLine;
+        isLoop = true;
+        this.timelines = timelines;
+        timelinesMap = new Map();
         this.totalFrames = 0;
-        for (layer in domTimeLine.layers) {
-            if (this.totalFrames < layer.totalFrames) {
-                this.totalFrames = layer.totalFrames;
+        for (timeline in timelines) {
+            timelinesMap.set(timeline.name, timeline);
+            var sceneFrames = 0;
+            for (layer in timeline.layers) {
+                if (sceneFrames < layer.totalFrames) {
+                    sceneFrames = layer.totalFrames;
+                }
             }
+            totalFrames += sceneFrames;
         }
 
         currentFrame = 0;
+        changeToScene(0);
         play();
     }
 
     function onFrame(e:Event):Void 
     {
-        if (currentFrame < totalFrames-1) 
-        {
-            currentFrame = currentFrame + 1;
-            gotoFrame(currentFrame);
-        }
+        nextFrame();
     }
 
     public function play():Void 
@@ -67,18 +77,104 @@ class MovieClip extends Sprite
         gotoAndStop(currentFrame);
     }
 
-    public function gotoAndPlay(index:Int):Void 
+    public function nextFrame():Void 
     {
-        currentFrame = index;
-        gotoFrame(currentFrame);
-        this.addEventListener(Event.ENTER_FRAME, onFrame);
+        if (currentFrame < domTimeLine.totalFrames-1) 
+        {
+            currentFrame = currentFrame + 1;
+            gotoFrame(currentFrame);
+        }else if (timelines.length > 1) {
+            if (currentSceneIndex < timelines.length - 1 || isLoop) {
+                nextScene();
+            }
+        }
     }
 
-    public function gotoAndStop(index:Int):Void 
+    public function prevFrame():Void 
     {
-        currentFrame = index;
-        gotoFrame(currentFrame);
-        this.removeEventListener(Event.ENTER_FRAME, onFrame);
+        if (currentFrame > 0) 
+        {
+            currentFrame = currentFrame - 1;
+            gotoFrame(currentFrame);
+        }else if (timelines.length > 1) {
+            if (currentSceneIndex > 0 || isLoop) {
+                prevScene();
+                currentFrame = domTimeLine.totalFrames - 1;
+            }
+        }
+    }
+
+    public function nextScene():Void 
+    {
+        if (currentSceneIndex < timelines.length-1) {
+            changeToScene(currentSceneIndex + 1);
+        }else {
+            changeToScene(0);
+        }
+    }
+
+    public function prevScene():Void 
+    {
+        if (currentSceneIndex > 0) {
+            changeToScene(currentSceneIndex - 1);
+        }else {
+            changeToScene(timelines.length - 1);
+        }
+    }
+
+    function changeToScene(scene:Dynamic):Void 
+    {
+        if (Std.is(scene,Int)) {
+            domTimeLine = timelines[scene];
+            currentSceneIndex = scene;
+            currentFrame = 0;
+            displayFrame();
+        }else if (Std.is(scene,String)) {
+            domTimeLine = timelinesMap.get(scene);
+            currentSceneIndex = timelines.indexOf(domTimeLine);
+            currentFrame = 0;
+            displayFrame();
+        }
+    }
+
+    public function gotoAndPlay(frame:Dynamic,?scene:String):Void 
+    {
+        if (scene != null) changeToScene(scene);
+        if (Std.is(frame,Int)) {
+            currentFrame = frame;
+            gotoFrame(currentFrame);
+            this.addEventListener(Event.ENTER_FRAME, onFrame);
+        }else if(Std.is(frame,String)) {
+            var i = getLabelIndex(frame);
+            if (i >= 0) currentFrame = i;
+            gotoFrame(currentFrame);
+            this.addEventListener(Event.ENTER_FRAME, onFrame);
+        }
+    }
+
+    public function gotoAndStop(frame:Dynamic, ?scene:String):Void 
+    {
+        if (scene != null) changeToScene(scene);
+        if (Std.is(frame, Int)) {
+            currentFrame = frame;
+            gotoFrame(currentFrame);
+            this.removeEventListener(Event.ENTER_FRAME, onFrame);
+        }else if (Std.is(frame, String)) {
+            var i = getLabelIndex(frame);
+            if (i >= 0) currentFrame = i;
+            gotoFrame(currentFrame);
+            this.removeEventListener(Event.ENTER_FRAME, onFrame);
+        }
+    }
+
+    function getLabelIndex(label:String):Int
+    {
+        for (domLayer in domTimeLine.getLayersIterator(false)) {
+            for (frame in domLayer.frames) {
+                if (frame.name == label) return frame.index;
+            }
+        }
+        return -1;
     }
 
     function gotoFrame(index:Int):Void
@@ -192,9 +288,9 @@ class MovieClip extends Sprite
 
                     var displayObject:MovieClip;
                     if (null != instance.libraryItem.linkageClassName) {
-                        displayObject = Type.createInstance(Type.resolveClass(instance.libraryItem.linkageClassName), [item.timeline]);
+                        displayObject = Type.createInstance(Type.resolveClass(instance.libraryItem.linkageClassName), [item.timelines]);
                     } else
-                        displayObject = new MovieClip(item.timeline);
+                        displayObject = new MovieClip(item.timelines);
                     if (null != instance.name)
                         displayObject.name = instance.name;
                     displayObject.transform.matrix = matrix.toFlashMatrix();
@@ -270,7 +366,7 @@ class MovieClip extends Sprite
 
     public function clone():MovieClip
     {
-        var mv = new MovieClip(domTimeLine);
+        var mv = new MovieClip(timelines);
         mv.gotoAndStop(currentFrame);
         return mv;
     }

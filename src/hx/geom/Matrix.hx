@@ -19,6 +19,39 @@ class Matrix
         this.ty = ty;
     }
 
+    public function setByXml(xml:Xml):Void 
+    {
+        var matrix_a:String, matrix_b:String, matrix_c:String, matrix_d:String,
+            matrix_tx:String, matrix_ty:String;
+
+        if ("matrix" == xml.nodeName) {
+            matrix_a  = xml.firstElement().get('a');
+            matrix_b  = xml.firstElement().get('b');
+            matrix_c  = xml.firstElement().get('c');
+            matrix_d  = xml.firstElement().get('d');
+            matrix_tx = xml.firstElement().get('tx');
+            matrix_ty = xml.firstElement().get('ty');
+
+            if (null != matrix_a)
+                a = Std.parseFloat(matrix_a);
+
+            if (null != matrix_b)
+                b = Std.parseFloat(matrix_b);
+
+            if (null != matrix_c)
+                c = Std.parseFloat(matrix_c);
+
+            if (null != matrix_d)
+                d = Std.parseFloat(matrix_d);
+
+            if (null != matrix_tx)
+                tx = Std.parseFloat(matrix_tx);
+
+            if (null != matrix_ty)
+                ty = Std.parseFloat(matrix_ty);
+        }
+    }
+
     public function rotate(angle:Float):Void 
     {
         var cos = Math.cos(angle);

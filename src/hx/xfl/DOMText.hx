@@ -29,6 +29,7 @@ class DOMText extends DOMElement
     public var useDeviceFonts:Bool;
     public var variableName:String;
     public var type:String;
+    public var fontRenderingMode:String;
 
     var _textRuns:Array<DOMTextRun>;
     
@@ -38,6 +39,7 @@ class DOMText extends DOMElement
 
         _textRuns = [];
         isSelectable = true;
+        fontRenderingMode = "";
     }
 
     public function addTextRun(textRun)

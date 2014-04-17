@@ -1,10 +1,12 @@
 package hx.xfl.assembler;
 
+import hx.geom.Matrix;
 import hx.xfl.DOMShape;
 import hx.xfl.graphic.Edge;
 import hx.xfl.graphic.EdgeCommand;
 import hx.xfl.graphic.FillStyle;
 import hx.xfl.graphic.StrokeStyle;
+import openfl.Assets;
 
 class DOMShapeAssembler extends DOMElementAssembler
                         implements IDOMElementAssembler
@@ -35,6 +37,30 @@ class DOMShapeAssembler extends DOMElementAssembler
                         fillStyle.color = Std.parseInt(c);
                         var alpha = fill.firstElement().get("alpha");
                         if(alpha != null)fillStyle.alpha = Std.parseFloat(alpha);
+                        instance.fills.set(fillStyle.index, fillStyle);
+                    }else if ("RadialGradient" == fill.firstElement().nodeName) {
+                        var fillStyle = parseGradient(fill);
+                        instance.fills.set(fillStyle.index, fillStyle);
+                    }else if ("LinearGradient" == fill.firstElement().nodeName) {
+                        var fillStyle = parseGradient(fill);
+                        instance.fills.set(fillStyle.index, fillStyle);
+                    }else if ("BitmapFill" == fill.firstElement().nodeName) {
+                        var fillStyle = new FillStyle();
+                        fillProperty(fillStyle, fill);
+                        fillStyle.type = fill.firstElement().nodeName;
+                        var bmpUrl = document.dir + "/LIBRARY/" + fill.firstElement().get("bitmapPath");
+                        fillStyle.bitmapData = Assets.getBitmapData(bmpUrl);
+                        for (e in fill.firstElement().elements()) {
+                            if ("matrix" == e.nodeName) {
+                                var matrix = new Matrix();
+                                matrix.setByXml(e);
+                                matrix.a = matrix.a / 20;
+                                matrix.b = matrix.b / 20;
+                                matrix.c = matrix.c / 20;
+                                matrix.d = matrix.d / 20;
+                                fillStyle.matrix = matrix;
+                            }
+                        }
                         instance.fills.set(fillStyle.index, fillStyle);
                     }
                 }
@@ -119,6 +145,56 @@ class DOMShapeAssembler extends DOMElementAssembler
         }
 
         return instance;
+    }
+
+    function parseGradient(fill:Xml):FillStyle 
+    {
+        var fillStyle = new FillStyle();
+        fillProperty(fillStyle, fill);
+        fillStyle.type = fill.firstElement().nodeName;
+        if (fill.firstElement().exists("spreadMethod")) {
+            switch (fill.firstElement().get("spreadMethod")) {
+                case "reflect":
+                    fillStyle.spreadMethod = REFLECT;
+                case "repeat":
+                    fillStyle.spreadMethod = REPEAT;
+            }
+        }
+        if (fill.firstElement().exists("interpolationMethod")) {
+            switch (fill.firstElement().get("interpolationMethod")) {
+                case "linearRGB":
+                    fillStyle.interpolationMethod = LINEAR_RGB;
+            }
+        }
+        if (fill.firstElement().exists("focalPointRatio")) {
+            fillStyle.focalPointRatio = Std.parseFloat(fill.firstElement().get("focalPointRatio"));
+        }
+        for (e in fill.firstElement().elements()) {
+            if ("matrix" == e.nodeName) {
+                var matrix = new Matrix();
+                matrix.setByXml(e);
+                fillStyle.matrix = matrix;
+            }
+            if ("GradientEntry" == e.nodeName) {
+                if (e.exists("color")) {
+                    var c = "0x" + e.get("color").substring(1);
+                    fillStyle.colors.push(Std.parseInt(c));
+                }else {
+                    fillStyle.colors.push(0);
+                }
+                if (e.exists("ratio")) {
+                    fillStyle.ratios.push(Std.parseFloat(e.get("ratio"))*255);
+                }else {
+                    fillStyle.ratios.push(0);
+                }
+                if (e.exists("alpha")) {
+                    fillStyle.alphas.push(Std.parseFloat(e.get("alpha")));
+                }else {
+                    fillStyle.alphas.push(1);
+                }
+            }
+        }
+        return fillStyle;
     }
 
     function parseNumbers(str:String):Array<Float>

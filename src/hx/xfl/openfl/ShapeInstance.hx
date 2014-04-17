@@ -1,5 +1,6 @@
 package hx.xfl.openfl;
 
+import flash.display.GradientType;
 import flash.display.Shape;
 import hx.xfl.DOMShape;
 import hx.xfl.DOMSymbolInstance;
@@ -22,6 +23,12 @@ class ShapeInstance extends Shape
                 switch (fill.type) {
                     case "SolidColor":
                         this.graphics.beginFill(fill.color, fill.alpha);
+                    case "RadialGradient":
+                        this.graphics.beginGradientFill(GradientType.RADIAL, fill.colors, fill.alphas, fill.ratios, fill.matrix.toFlashMatrix(), fill.spreadMethod, fill.interpolationMethod, fill.focalPointRatio);
+                    case "LinearGradient":
+                        this.graphics.beginGradientFill(GradientType.LINEAR, fill.colors, fill.alphas, fill.ratios, fill.matrix.toFlashMatrix(), fill.spreadMethod, fill.interpolationMethod, fill.focalPointRatio);
+                    case "BitmapFill":
+                        this.graphics.beginBitmapFill(fill.bitmapData, fill.matrix.toFlashMatrix());
                 }
             }
             for (draw in edge.edges) {
