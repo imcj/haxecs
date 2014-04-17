@@ -6,7 +6,6 @@ import hx.xfl.graphic.Edge;
 import hx.xfl.graphic.EdgeCommand;
 import hx.xfl.graphic.FillStyle;
 import hx.xfl.graphic.StrokeStyle;
-import openfl.Assets;
 
 class DOMShapeAssembler extends DOMElementAssembler
                         implements IDOMElementAssembler
@@ -49,7 +48,9 @@ class DOMShapeAssembler extends DOMElementAssembler
                         fillProperty(fillStyle, fill);
                         fillStyle.type = fill.firstElement().nodeName;
                         var bmpUrl = document.dir + "/LIBRARY/" + fill.firstElement().get("bitmapPath");
-                        fillStyle.bitmapData = Assets.getBitmapData(bmpUrl);
+                        #if openfl
+                        fillStyle.bitmapData = document.assets.getBitmapData(bmpUrl);
+                        #end
                         for (e in fill.firstElement().elements()) {
                             if ("matrix" == e.nodeName) {
                                 var matrix = new Matrix();
@@ -147,11 +148,12 @@ class DOMShapeAssembler extends DOMElementAssembler
         return instance;
     }
 
-    function parseGradient(fill:Xml):FillStyle 
+    function parseGradient(fill:Xml):FillStyle
     {
         var fillStyle = new FillStyle();
         fillProperty(fillStyle, fill);
         fillStyle.type = fill.firstElement().nodeName;
+        #if openfl
         if (fill.firstElement().exists("spreadMethod")) {
             switch (fill.firstElement().get("spreadMethod")) {
                 case "reflect":
@@ -166,6 +168,7 @@ class DOMShapeAssembler extends DOMElementAssembler
                     fillStyle.interpolationMethod = LINEAR_RGB;
             }
         }
+        #end
         if (fill.firstElement().exists("focalPointRatio")) {
             fillStyle.focalPointRatio = Std.parseFloat(fill.firstElement().get("focalPointRatio"));
         }

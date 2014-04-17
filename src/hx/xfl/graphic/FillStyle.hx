@@ -1,7 +1,10 @@
 package hx.xfl.graphic;
+
+#if openfl
 import flash.display.BitmapData;
 import flash.display.InterpolationMethod;
 import flash.display.SpreadMethod;
+#end
 import hx.geom.Matrix;
 
 class FillStyle
@@ -17,10 +20,11 @@ class FillStyle
     public var alphas:Array<Float>;
     public var ratios:Array<Float>;
     public var focalPointRatio:Float;
+    #if openfl
     public var spreadMethod:SpreadMethod;
     public var interpolationMethod:InterpolationMethod;
-
     public var bitmapData:BitmapData;
+    #end
 
     public function new()
     {
@@ -33,9 +37,11 @@ class FillStyle
         ratios = [];
         alphas = [];
         focalPointRatio = 0;
+        #if openfl
         spreadMethod = PAD;
         interpolationMethod = RGB;
         bitmapData = null;
+        #end
     }
     
 }

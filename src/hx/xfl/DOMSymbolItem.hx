@@ -4,13 +4,13 @@ class DOMSymbolItem extends DOMItem
 {
     public var itemID:String;
     public var symbolType:String;
-    public var timelines:Array<DOMTimeLine>;
+    public var timeline:DOMTimeLine;
 
     public function new() 
     {
         itemID = null;
         symbolType = "movie clip";
-        timelines = [];
+        timeline = null;
 
         super();
     }

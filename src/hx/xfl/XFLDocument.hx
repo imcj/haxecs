@@ -4,6 +4,10 @@ import hx.xfl.assembler.XFLDocumentAssembler;
 import hx.xfl.assembler.DOMPublishSettingAssembler;
 import hx.xfl.setting.publish.DOMFlashProfiles;
 
+#if openfl
+import hx.xfl.openfl.Assets;
+#end
+
 class XFLDocument extends DOMDocument
 {
     var mapMedia:Map<String, DOMItem>;
@@ -36,8 +40,7 @@ class XFLDocument extends DOMDocument
     public var xflVersion:Float;
     public var library:DOMLibrary;
     public var flashProfiles:DOMFlashProfiles;
-
-    #if lime_native
+    #if openfl
     public var assets:Assets;
     #end
 
@@ -81,7 +84,7 @@ class XFLDocument extends DOMDocument
         
         library = new DOMLibrary();
 
-        #if lime_native
+        #if openfl
         assets = new Assets(this);
         #end
     }
