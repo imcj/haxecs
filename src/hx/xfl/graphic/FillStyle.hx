@@ -19,6 +19,8 @@ class FillStyle
     public var spreadMethod:SpreadMethod;
     public var interpolationMethod:InterpolationMethod;
 
+    public var bitmapPath:String;
+
     public function new()
     {
         index = 1;
@@ -32,6 +34,7 @@ class FillStyle
         focalPointRatio = 0;
         spreadMethod = PAD;
         interpolationMethod = RGB;
+        bitmapPath = "";
     }
     
 }
