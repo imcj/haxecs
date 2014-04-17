@@ -7,6 +7,7 @@ class DOMTimeLine
     public var layers:Array<DOMLayer>;
     public var mapLayers:Map<String, DOMLayer>;
     public var currentFrame:Int;
+    public var totalFrames:Int;
     
     public function new()
     {
@@ -14,6 +15,7 @@ class DOMTimeLine
         name = null;
         layers = [];
         mapLayers = new Map();
+        totalFrames = 0;
     }
 
     public function addLayer(layer:DOMLayer):DOMTimeLine
@@ -21,6 +23,7 @@ class DOMTimeLine
         layer.timeLine = this;
         layers.push(layer);
         mapLayers.set(layer.name, layer);
+        if (totalFrames < layer.totalFrames) totalFrames = layer.totalFrames;
         return this;
     }
 

@@ -8,6 +8,8 @@ class DOMSymbolInstance extends DOMInstance
     public var symbolType:String;
     public var loop:String;
     public var isVisible:Bool;
+    public var silent:Bool;
+    public var hasAccessibleData:Bool;
 
     public function new()
     {
@@ -16,5 +18,7 @@ class DOMSymbolInstance extends DOMInstance
         selected = false;
         symbolType = "";
         loop = "";
+        silent = false;
+        hasAccessibleData = false;
     }
 }

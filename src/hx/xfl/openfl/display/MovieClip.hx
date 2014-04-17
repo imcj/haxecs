@@ -1,5 +1,6 @@
 package hx.xfl.openfl.display;
 
+import flash.display.DisplayObject;
 import flash.events.Event;
 import hx.geom.Matrix;
 import hx.geom.Point;
@@ -7,6 +8,7 @@ import hx.xfl.DOMLayer;
 import hx.xfl.DOMFrame;
 import hx.xfl.DOMBitmapItem;
 import hx.xfl.DOMBitmapInstance;
+import hx.xfl.DOMTimeLine;
 import hx.xfl.motion.Property;
 import hx.xfl.openfl.MotionObject;
 
@@ -26,34 +28,43 @@ import flash.errors.RangeError;
 
 class MovieClip extends Sprite
 {
-    var domTimeLine:DOMTimeLine;
-
     public var currentFrame:Int;
     public var totalFrames:Int;
+    public var isLoop:Bool;
 
-    public function new(domTimeLine:DOMTimeLine)
+    var timelines:Array<DOMTimeLine>;
+    var timelinesMap:Map<String, DOMTimeLine>;
+    var domTimeLine:DOMTimeLine;
+    var currentSceneIndex:Int;
+
+
+    public function new(timelines:Array<DOMTimeLine>)
     {
         super();
         name = '';
-        this.domTimeLine = domTimeLine;
+        isLoop = true;
+        this.timelines = timelines;
+        timelinesMap = new Map();
         this.totalFrames = 0;
-        for (layer in domTimeLine.layers) {
-            if (this.totalFrames < layer.totalFrames) {
-                this.totalFrames = layer.totalFrames;
+        for (timeline in timelines) {
+            timelinesMap.set(timeline.name, timeline);
+            var sceneFrames = 0;
+            for (layer in timeline.layers) {
+                if (sceneFrames < layer.totalFrames) {
+                    sceneFrames = layer.totalFrames;
+                }
             }
+            totalFrames += sceneFrames;
         }
 
         currentFrame = 0;
+        changeToScene(0);
         play();
     }
 
     function onFrame(e:Event):Void 
     {
-        if (currentFrame < totalFrames-1) 
-        {
-            currentFrame = currentFrame + 1;
-            gotoFrame(currentFrame);
-        }
+        nextFrame();
     }
 
     public function play():Void 
@@ -66,18 +77,104 @@ class MovieClip extends Sprite
         gotoAndStop(currentFrame);
     }
 
-    public function gotoAndPlay(index:Int):Void 
+    public function nextFrame():Void 
     {
-        currentFrame = index;
-        gotoFrame(currentFrame);
-        this.addEventListener(Event.ENTER_FRAME, onFrame);
+        if (currentFrame < domTimeLine.totalFrames-1) 
+        {
+            currentFrame = currentFrame + 1;
+            gotoFrame(currentFrame);
+        }else if (timelines.length > 1) {
+            if (currentSceneIndex < timelines.length - 1 || isLoop) {
+                nextScene();
+            }
+        }
     }
 
-    public function gotoAndStop(index:Int):Void 
+    public function prevFrame():Void 
     {
-        currentFrame = index;
-        gotoFrame(currentFrame);
-        this.removeEventListener(Event.ENTER_FRAME, onFrame);
+        if (currentFrame > 0) 
+        {
+            currentFrame = currentFrame - 1;
+            gotoFrame(currentFrame);
+        }else if (timelines.length > 1) {
+            if (currentSceneIndex > 0 || isLoop) {
+                prevScene();
+                currentFrame = domTimeLine.totalFrames - 1;
+            }
+        }
+    }
+
+    public function nextScene():Void 
+    {
+        if (currentSceneIndex < timelines.length-1) {
+            changeToScene(currentSceneIndex + 1);
+        }else {
+            changeToScene(0);
+        }
+    }
+
+    public function prevScene():Void 
+    {
+        if (currentSceneIndex > 0) {
+            changeToScene(currentSceneIndex - 1);
+        }else {
+            changeToScene(timelines.length - 1);
+        }
+    }
+
+    function changeToScene(scene:Dynamic):Void 
+    {
+        if (Std.is(scene,Int)) {
+            domTimeLine = timelines[scene];
+            currentSceneIndex = scene;
+            currentFrame = 0;
+            displayFrame();
+        }else if (Std.is(scene,String)) {
+            domTimeLine = timelinesMap.get(scene);
+            currentSceneIndex = timelines.indexOf(domTimeLine);
+            currentFrame = 0;
+            displayFrame();
+        }
+    }
+
+    public function gotoAndPlay(frame:Dynamic,?scene:String):Void 
+    {
+        if (scene != null) changeToScene(scene);
+        if (Std.is(frame,Int)) {
+            currentFrame = frame;
+            gotoFrame(currentFrame);
+            this.addEventListener(Event.ENTER_FRAME, onFrame);
+        }else if(Std.is(frame,String)) {
+            var i = getLabelIndex(frame);
+            if (i >= 0) currentFrame = i;
+            gotoFrame(currentFrame);
+            this.addEventListener(Event.ENTER_FRAME, onFrame);
+        }
+    }
+
+    public function gotoAndStop(frame:Dynamic, ?scene:String):Void 
+    {
+        if (scene != null) changeToScene(scene);
+        if (Std.is(frame, Int)) {
+            currentFrame = frame;
+            gotoFrame(currentFrame);
+            this.removeEventListener(Event.ENTER_FRAME, onFrame);
+        }else if (Std.is(frame, String)) {
+            var i = getLabelIndex(frame);
+            if (i >= 0) currentFrame = i;
+            gotoFrame(currentFrame);
+            this.removeEventListener(Event.ENTER_FRAME, onFrame);
+        }
+    }
+
+    function getLabelIndex(label:String):Int
+    {
+        for (domLayer in domTimeLine.getLayersIterator(false)) {
+            for (frame in domLayer.frames) {
+                if (frame.name == label) return frame.index;
+            }
+        }
+        return -1;
     }
 
     function gotoFrame(index:Int):Void
@@ -108,89 +205,128 @@ class MovieClip extends Sprite
     {
         freeChildren();
 
-        var frame;
-        var className:Class<Dynamic>;
-        for (layer in domTimeLine.getLayersIterator(false)) {
-            frame = layer.getFrameAt(currentFrame);
-            if (frame == null) continue;
-            for (element in frame.getElementsIterator()) {
-                if (Std.is(element, DOMBitmapInstance)) {
-                    var bitmap_instance = cast(element, DOMBitmapInstance);
-                    addChild(createBitmapInstance(bitmap_instance));
-                } else if (Std.is(element, DOMSymbolInstance)) {
-                    var instance = cast(element, DOMSymbolInstance);
-
-                    // 动画
-                    var matrix = instance.matrix;
-                    if (frame.tweenType == "motion") {
-                        var nextFrame = frame;
-                        for (n in 0...layer.frames.length) {
-                            if (layer.frames[n] == frame) {
-                                nextFrame = layer.frames[n + 1];
-                            }
-                        }
-                        var starMatrix = frame.elements[0].matrix;
-                        var endMatrix = nextFrame.elements[0].matrix;
-                        var perAddMatrix = endMatrix.sub(starMatrix).div(frame.duration);
-                        var deltaMatrix = perAddMatrix.multi(currentFrame-frame.index);
-                        matrix = starMatrix.add(deltaMatrix);
-                    }else if (frame.tweenType == "motion object") {
-                        var motion = new MotionObject(instance, frame.animation);
-                        var prePosition = new Point(matrix.tx, matrix.ty);
-                        var preTransform = matrix.transformPoint(instance.transformPoint);
-                        motion.animate(currentFrame);
-                        //对形变中心引起的偏移做处理
-                        var deltaPosition = new Point(matrix.tx - prePosition.x, matrix.ty - prePosition.y);
-                        var nowTransform = matrix.transformPoint(instance.transformPoint);
-                        var deltaTransform = new Point(nowTransform.x - preTransform.x, nowTransform.y - preTransform.y);
-                        var revise = deltaPosition.sub(deltaTransform);
-                        matrix.translate(revise);
-                    }
-                    
-                    if ("movie clip" == instance.symbolType ||
-                        "" == instance.symbolType ||
-                        "graphic" == instance.symbolType) {
-
-                        var item = cast(instance.libraryItem, DOMSymbolItem);
-
-                        if (!Std.is(item, DOMSymbolItem)) {
-                            throw '现在我还不清楚是不是只能是SymbolItem';
-                        }
-
-                        var displayObject:MovieClip;
-                        if (null != instance.libraryItem.linkageClassName) {
-                            displayObject = Type.createInstance(Type.resolveClass(instance.libraryItem.linkageClassName), [item.timeline]);
-                        } else
-                            displayObject = new MovieClip(item.timeline);
-                        if (null != instance.name)
-                            displayObject.name = instance.name;
-                        displayObject.transform.matrix = matrix.toFlashMatrix();
-                        addChild(displayObject);
-                    } else if ("button" == instance.symbolType) {
-                        var button:Sprite;
-                        if (null != instance.libraryItem.linkageClassName) {
-                            className = Type.resolveClass(instance.libraryItem.linkageClassName);
-                            button = Type.createInstance(className, [instance]);
-                        } else
-                            button = new SimpleButton(instance);
-                        if (null != instance.name)
-                            button.name = instance.name;
-                        button.transform.matrix = matrix.toFlashMatrix();
-                        addChild(button);
-                    }
-                } else if (Std.is(element, DOMText)) {
-                    var instance = cast(element, DOMText);
-                    var displayObject = new TextInstance(instance);
-                    if (null != instance.name)
-                        displayObject.name = instance.name;
-                    addChild(displayObject);
-                } else if (Std.is(element, DOMShape)) {
-                    var instance = cast(element, DOMShape);
-                    var displayObject = new ShapeInstance(instance);
-                    addChild(displayObject);
+        var maskDoms:Map<Int, DOMLayer> = new Map();
+        var masklayers:Array<Array<DisplayObject>> = [];
+        var maskNums = [];
+        var numLayer = 0;
+        for (domLayer in domTimeLine.getLayersIterator(false)) {
+            if ("mask" == domLayer.layerType) {
+                maskDoms.set(numLayer, domLayer);
+            }else {
+                var layer = displayLayer(domLayer,this);
+                if (domLayer.parentLayerIndex >= 0) {
+                    masklayers.push(layer);
+                    maskNums.push(domLayer.parentLayerIndex);
                 }
             }
+            numLayer++;
         }
+        var n = 0;
+        for (l in masklayers) {
+            for (o in l) {
+                var dom = maskDoms.get(numLayer - 1 - maskNums[n]);
+                var mask = new Sprite();
+                displayLayer(dom, mask);
+                o.mask = mask;
+                addChild(mask);
+            }
+            n++;
+        }
+    }
+
+    function displayLayer(domLayer:DOMLayer, parent:Sprite):Array<DisplayObject> 
+    {
+        var className:Class<Dynamic>;
+        var layer:Array<DisplayObject> = [];
+        var frame = domLayer.getFrameAt(currentFrame);
+        if (frame == null) return null;
+        for (element in frame.getElementsIterator()) {
+            if (Std.is(element, DOMBitmapInstance)) {
+                var bitmap_instance = cast(element, DOMBitmapInstance);
+                var bitmap = createBitmapInstance(bitmap_instance);
+                parent.addChild(bitmap);
+                layer.push(bitmap);
+            } else if (Std.is(element, DOMSymbolInstance)) {
+                var instance = cast(element, DOMSymbolInstance);
+
+                // 动画
+                var matrix = instance.matrix;
+                if (frame.tweenType == "motion") {
+                    var nextFrame = frame;
+                    for (n in 0...domLayer.frames.length) {
+                        if (domLayer.frames[n] == frame) {
+                            nextFrame = domLayer.frames[n + 1];
+                        }
+                    }
+                    var starMatrix = frame.elements[0].matrix;
+                    var endMatrix = nextFrame.elements[0].matrix;
+                    var perAddMatrix = endMatrix.sub(starMatrix).div(frame.duration);
+                    var deltaMatrix = perAddMatrix.multi(currentFrame-frame.index);
+                    matrix = starMatrix.add(deltaMatrix);
+                }else if (frame.tweenType == "motion object") {
+                    var motion = new MotionObject(instance, frame.animation);
+                    var prePosition = new Point(matrix.tx, matrix.ty);
+                    var preTransform = matrix.transformPoint(instance.transformPoint);
+                    motion.animate(currentFrame);
+                    //对形变中心引起的偏移做处理
+                    var deltaPosition = new Point(matrix.tx - prePosition.x, matrix.ty - prePosition.y);
+                    var nowTransform = matrix.transformPoint(instance.transformPoint);
+                    var deltaTransform = new Point(nowTransform.x - preTransform.x, nowTransform.y - preTransform.y);
+                    var revise = deltaPosition.sub(deltaTransform);
+                    matrix.translate(revise);
+                }
+                
+                if ("movie clip" == instance.symbolType ||
+                    "" == instance.symbolType ||
+                    "graphic" == instance.symbolType) {
+
+                    var item = cast(instance.libraryItem, DOMSymbolItem);
+
+                    if (!Std.is(item, DOMSymbolItem)) {
+                        throw '现在我还不清楚是不是只能是SymbolItem';
+                    }
+
+                    var displayObject:MovieClip;
+                    if (null != instance.libraryItem.linkageClassName) {
+                        displayObject = Type.createInstance(Type.resolveClass(instance.libraryItem.linkageClassName), [item.timelines]);
+                    } else
+                        displayObject = new MovieClip(item.timelines);
+                    if (null != instance.name)
+                        displayObject.name = instance.name;
+                    displayObject.transform.matrix = matrix.toFlashMatrix();
+                    displayObject.mouseEnabled = !instance.silent;
+                    displayObject.mouseChildren = !instance.hasAccessibleData;
+                    parent.addChild(displayObject);
+                    layer.push(displayObject);
+                } else if ("button" == instance.symbolType) {
+                    var button:Sprite;
+                    if (null != instance.libraryItem.linkageClassName) {
+                        className = Type.resolveClass(instance.libraryItem.linkageClassName);
+                        button = Type.createInstance(className, [instance]);
+                    } else
+                        button = new SimpleButton(instance);
+                    if (null != instance.name)
+                        button.name = instance.name;
+                    button.transform.matrix = matrix.toFlashMatrix();
+                    parent.addChild(button);
+                    layer.push(button);
+                }
+            } else if (Std.is(element, DOMText)) {
+                var instance = cast(element, DOMText);
+                var displayObject = new TextInstance(instance);
+                if (null != instance.name)
+                    displayObject.name = instance.name;
+                parent.addChild(displayObject);
+                layer.push(displayObject);
+            } else if (Std.is(element, DOMShape)) {
+                var instance = cast(element, DOMShape);
+                var displayObject = new ShapeInstance(instance);
+                parent.addChild(displayObject);
+                layer.push(displayObject);
+            }
+        }
+
+        return layer;
     }
 
     // TODO
@@ -222,5 +358,12 @@ class MovieClip extends Sprite
             // TODO
             // removeChildren
         }
+    }
+
+    public function clone():MovieClip
+    {
+        var mv = new MovieClip(timelines);
+        mv.gotoAndStop(currentFrame);
+        return mv;
     }
 }

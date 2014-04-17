@@ -6,6 +6,7 @@ class DOMText extends DOMElement
     public var isSelectable:Bool;
     public var textAttrs:DOMTextAttrs;
     public var type:String;
+    public var fontRenderingMode:String;
 
     var _textRuns:Array<DOMTextRun>;
     
@@ -15,6 +16,7 @@ class DOMText extends DOMElement
 
         _textRuns = [];
         isSelectable = true;
+        fontRenderingMode = "";
     }
 
     public function addTextRun(textRun)

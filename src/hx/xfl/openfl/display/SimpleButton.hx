@@ -12,7 +12,7 @@ class SimpleButton extends MovieClip
     {
         this.symbol = symbol;
         __document  = symbol.frame.layer.timeLine.document;
-        super(__document.getSymbol(symbol.libraryItem.name).timeline);
+        super(__document.getSymbol(symbol.libraryItem.name).timelines);
 
         this.transform.matrix = symbol.matrix.toFlashMatrix();
         gotoAndStop(0);
