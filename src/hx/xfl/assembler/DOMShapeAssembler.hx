@@ -6,6 +6,7 @@ import hx.xfl.graphic.Edge;
 import hx.xfl.graphic.EdgeCommand;
 import hx.xfl.graphic.FillStyle;
 import hx.xfl.graphic.StrokeStyle;
+import openfl.Assets;
 
 class DOMShapeAssembler extends DOMElementAssembler
                         implements IDOMElementAssembler
@@ -39,12 +40,22 @@ class DOMShapeAssembler extends DOMElementAssembler
                         instance.fills.set(fillStyle.index, fillStyle);
                     }else if ("RadialGradient" == fill.firstElement().nodeName) {
                         var fillStyle = parseGradient(fill);
-                        if (fill.firstElement().exists("focalPointRatio")) {
-                            fillStyle.focalPointRatio = Std.parseFloat(fill.firstElement().get("focalPointRatio"));
-                        }
                         instance.fills.set(fillStyle.index, fillStyle);
                     }else if ("LinearGradient" == fill.firstElement().nodeName) {
                         var fillStyle = parseGradient(fill);
+                        instance.fills.set(fillStyle.index, fillStyle);
+                    }else if ("BitmapFill" == fill.firstElement().nodeName) {
+                        var fillStyle = new FillStyle();
+                        fillProperty(fillStyle, fill);
+                        var bmpUrl = document.dir + "/LIBRARY/" + fill.firstElement().get("bitmapPath");
+                        fillStyle.bitmapData = Assets.getBitmapData(bmpUrl);
+                        for (e in fill.firstElement().elements()) {
+                            if ("matrix" == e.nodeName) {
+                                var matrix = new Matrix();
+                                matrix.setByXml(e);
+                                fillStyle.matrix = matrix;
+                            }
+                        }
                         instance.fills.set(fillStyle.index, fillStyle);
                     }
                 }
@@ -149,6 +160,9 @@ class DOMShapeAssembler extends DOMElementAssembler
                 case "linearRGB":
                     fillStyle.interpolationMethod = LINEAR_RGB;
             }
+        }
+        if (fill.firstElement().exists("focalPointRatio")) {
+            fillStyle.focalPointRatio = Std.parseFloat(fill.firstElement().get("focalPointRatio"));
         }
         for (e in fill.firstElement().elements()) {
             if ("matrix" == e.nodeName) {

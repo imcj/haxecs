@@ -1,4 +1,5 @@
 package hx.xfl.graphic;
+import flash.display.BitmapData;
 import flash.display.InterpolationMethod;
 import flash.display.SpreadMethod;
 import hx.geom.Matrix;
@@ -19,7 +20,7 @@ class FillStyle
     public var spreadMethod:SpreadMethod;
     public var interpolationMethod:InterpolationMethod;
 
-    public var bitmapPath:String;
+    public var bitmapData:BitmapData;
 
     public function new()
     {
@@ -34,7 +35,7 @@ class FillStyle
         focalPointRatio = 0;
         spreadMethod = PAD;
         interpolationMethod = RGB;
-        bitmapPath = "";
+        bitmapData = null;
     }
     
 }
