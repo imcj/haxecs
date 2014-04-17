@@ -14,6 +14,8 @@ class FillStyle
     public var alphas:Array<Float>;
     public var ratios:Array<Float>;
     public var focalPointRatio:Float;
+    public var spreadMethod:String;
+    public var interpolationMethod:String;
 
     public function new()
     {
@@ -26,6 +28,8 @@ class FillStyle
         ratios = [];
         alphas = [];
         focalPointRatio = 0;
+        spreadMethod = "pad";
+        interpolationMethod = "rgb";
     }
     
 }
