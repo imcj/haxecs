@@ -136,6 +136,20 @@ class DOMShapeAssembler extends DOMElementAssembler
         var fillStyle = new FillStyle();
         fillProperty(fillStyle, fill);
         fillStyle.type = fill.firstElement().nodeName;
+        if (fill.firstElement().exists("spreadMethod")) {
+            switch (fill.firstElement().get("spreadMethod")) {
+                case "reflect":
+                    fillStyle.spreadMethod = REFLECT;
+                case "repeat":
+                    fillStyle.spreadMethod = REPEAT;
+            }
+        }
+        if (fill.firstElement().exists("interpolationMethod")) {
+            switch (fill.firstElement().get("interpolationMethod")) {
+                case "linearRGB":
+                    fillStyle.interpolationMethod = LINEAR_RGB;
+            }
+        }
         for (e in fill.firstElement().elements()) {
             if ("matrix" == e.nodeName) {
                 var matrix = new Matrix();
