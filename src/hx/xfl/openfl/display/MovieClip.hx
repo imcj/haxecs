@@ -335,7 +335,7 @@ class MovieClip extends Sprite
     // removeChidlren方法。
     // 把removeChildren方法移到openfl-html5项目中并pr。
     #if html5
-    public function removeChildren (beginIndex:Int = 0, endIndex:Int = 0x7fffffff):Void {
+    override function removeChildren (beginIndex:Int = 0, endIndex:Int = 0x7fffffff):Void {
 
         if (endIndex == 0x7fffffff) endIndex = __children.length;
         if (endIndex < beginIndex) throw new RangeError("removeChildren : endIndex must not be less than beginIndex");
