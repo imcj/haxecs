@@ -20,23 +20,23 @@
     <pngDefaultName>1</pngDefaultName>
     <rnwkDefaultName>1</rnwkDefaultName>
     <swcDefaultName>1</swcDefaultName>
-    <flashFileName>radial.swf</flashFileName>
-    <projectorWinFileName>radial.exe</projectorWinFileName>
-    <projectorMacFileName>radial.app</projectorMacFileName>
-    <htmlFileName>radial.html</htmlFileName>
-    <gifFileName>radial.gif</gifFileName>
-    <jpegFileName>radial.jpg</jpegFileName>
-    <pngFileName>radial.png</pngFileName>
-    <rnwkFileName>radial.smil</rnwkFileName>
-    <swcFileName>radial.swc</swcFileName>
+    <flashFileName>gradient.swf</flashFileName>
+    <projectorWinFileName>gradient.exe</projectorWinFileName>
+    <projectorMacFileName>gradient.app</projectorMacFileName>
+    <htmlFileName>gradient.html</htmlFileName>
+    <gifFileName>gradient.gif</gifFileName>
+    <jpegFileName>gradient.jpg</jpegFileName>
+    <pngFileName>gradient.png</pngFileName>
+    <rnwkFileName>gradient.smil</rnwkFileName>
+    <swcFileName>gradient.swc</swcFileName>
   </PublishFormatProperties>
   <PublishHtmlProperties enabled="true">
     <VersionDetectionIfAvailable>0</VersionDetectionIfAvailable>
     <VersionInfo>11,7,0,0;11,6,0,0;11,5,0,0;11,4,0,0;11,3,0,0;11,2,0,0;11,1,0,0;10,3,0,0;10,2,153,0;10,1,52,0;9,0,124,0;8,0,24,0;7,0,14,0;6,0,79,0;5,0,58,0;4,0,32,0;3,0,8,0;2,0,1,12;1,0,0,1;</VersionInfo>
     <UsingDefaultContentFilename>1</UsingDefaultContentFilename>
     <UsingDefaultAlternateFilename>1</UsingDefaultAlternateFilename>
-    <ContentFilename>radial_content.html</ContentFilename>
-    <AlternateFilename>radial_alternate.html</AlternateFilename>
+    <ContentFilename>gradient_content.html</ContentFilename>
+    <AlternateFilename>gradient_alternate.html</AlternateFilename>
     <UsingOwnAlternateFile>0</UsingOwnAlternateFile>
     <OwnAlternateFilename></OwnAlternateFilename>
     <Width>550</Width>

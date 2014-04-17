@@ -25,18 +25,18 @@
                                                        </LinearGradient>
                                                   </FillStyle>
                                                   <FillStyle index="3">
-                                                       <RadialGradient focalPointRatio="-0.674509803921569">
+                                                       <RadialGradient spreadMethod="reflect" interpolationMethod="linearRGB" focalPointRatio="-0.670588235294118">
                                                             <matrix>
                                                                  <Matrix a="0.149459838867188" b="-0.0464935302734375" c="0.0467376708984375" d="0.150222778320313" tx="273" ty="173"/>
                                                             </matrix>
-                                                            <GradientEntry color="#FF0000" alpha="0.490196078431373" ratio="0"/>
+                                                            <GradientEntry color="#FF0000" alpha="0.486274509803922" ratio="0"/>
                                                             <GradientEntry ratio="1"/>
                                                        </RadialGradient>
                                                   </FillStyle>
                                              </fills>
                                              <edges>
                                                   <Edge fillStyle1="1" edges="!8540 5539|10320 5539!10320 5539|10320 6819!10320 6819|8540 6819!8540 6819|8540 5539"/>
-                                                  <Edge fillStyle1="3" edges="!7780 5200S2|2860 5200!2860 5200|2860 1441!2860 1441|7780 1441!7780 1441|7780 5200"/>
+                                                  <Edge fillStyle1="3" edges="!7780 5200|2860 5200!2860 5200|2860 1441!2860 1441|7780 1441!7780 1441|7780 5200"/>
                                                   <Edge fillStyle1="2" edges="!880 6039|3560 6039!3560 6039|3560 7339!3560 7339|880 7339!880 7339|880 6039"/>
                                              </edges>
                                         </DOMShape>
