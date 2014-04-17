@@ -1,6 +1,8 @@
 package hx.xfl;
 
 import hx.xfl.assembler.XFLDocumentAssembler;
+import hx.xfl.assembler.DOMPublishSettingAssembler;
+import hx.xfl.setting.publish.DOMFlashProfiles;
 
 class XFLDocument extends DOMDocument
 {
@@ -33,6 +35,7 @@ class XFLDocument extends DOMDocument
     public var height:Float;
     public var xflVersion:Float;
     public var library:DOMLibrary;
+    public var flashProfiles:DOMFlashProfiles;
 
     #if lime_native
     public var assets:Assets;
@@ -202,6 +205,12 @@ class XFLDocument extends DOMDocument
         var text = sys.io.File.getContent(path + "/DOMDocument.xml");
         var document = new XFLDocumentAssembler().parse(
             Xml.parse(text), path);
+
+        if (sys.FileSystem.exists(Path.join(path, ["PublishSettings.xml"]))) {
+            document.flashProfiles = new DOMPublishSettingAssembler().parse(
+                Xml.parse(sys.io.File.getContent(
+                    Path.join(path, ["PublishSettings.xml"]))));
+        }
         #else
         var text = hx.xfl.openfl.Assets.getText(path + "/DOMDocument.xml");
         var document = new XFLDocumentAssembler().parse(

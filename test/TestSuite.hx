@@ -1,5 +1,6 @@
 import massive.munit.TestSuite;
 
+import hx.xfl.PublishSettingTest;
 import hx.xfl.utils.ArrayIteratorTest;
 
 /**
@@ -14,6 +15,7 @@ class TestSuite extends massive.munit.TestSuite
 	{
 		super();
 
+		add(hx.xfl.PublishSettingTest);
 		add(hx.xfl.utils.ArrayIteratorTest);
 	}
 }

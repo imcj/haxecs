@@ -40,8 +40,10 @@ class DOMFrameAssembler extends XFLBaseAssembler
                         var animation_assembler = new DOMAnimationCoreAssembler(document);
                         frame.animation = animation_assembler.parse(ani_element);
                     }
-                    
-                }else {
+                } else if ("actionscript" == element.nodeName.toLowerCase()) {
+                    var scriptNode = element.firstElement();
+                    frame.actionScript = scriptNode.firstChild().nodeValue;
+                } else {
                     for (dom_element in element.elements()) {
                         assembler = assemblers.get(dom_element.nodeName);
                         if (null == assembler)

@@ -1,5 +1,6 @@
 package hx.xfl.openfl;
 
+#if (flash||cpp)
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.PixelSnapping;
@@ -58,3 +59,4 @@ class Assets
         return openfl.Assets.getText(name);
     }
 }
+#end

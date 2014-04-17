@@ -7,10 +7,28 @@ class XFLDocumentAssembler extends XFLBaseAssembler
 {
     public var assemblerTimeLine:DOMTimeLineAssembler;
 
+    var cached:Map<String, String>;
+
     public function new()
     {
         super(new XFLDocument());
         assemblerTimeLine = new DOMTimeLineAssembler(document);
+        cached = new Map();
+    }
+
+    function read(file:String, ?cache:Bool=false)
+    {
+        var content:String;
+        if (cache) {
+            content = cached.get(file);
+            if (null != content)
+                return content;
+        }
+
+        content = sys.io.File.getContent(file);
+        if (cache)
+            cached.set(file, content);
+        return content;
     }
 
     function parseFolders(data:Xml):Array<DOMFolderItem>
@@ -43,15 +61,52 @@ class XFLDocumentAssembler extends XFLBaseAssembler
     function parseSymbol(document:XFLDocument, data:Xml):Void 
     {
         var symbolItem;
+        var xml:Map<String, Xml> = new Map();
         for (element in data.elements()) {
             symbolItem = new DOMSymbolItem();
             var file = document.dir + "/LIBRARY/" + element.get("href");
-            var text = hx.xfl.openfl.Assets.getText(file);
+            var text:String;
+            #if cstool
+            text = read(file, true);
+            #else
+            text = hx.xfl.openfl.Assets.getText(file);
+            #end
             var symbolXml = Xml.parse(text).firstChild();
+            symbolItem.name = symbolXml.get("name");
+
+            xml.set(symbolItem.name, symbolXml);
 
             fillProperty(symbolItem, symbolXml);
 
             document.library.items.push(symbolItem);
+
+            /*
+            for (timeline in symbolXml.elements()) {
+                if ("timeline" == timeline.nodeName) {
+                    symbolItem.timeline = assemblerTimeLine.parse(timeline)[0];
+                    symbolItem.timeline.document = document;
+
+
+                }
+            }*/
+            
+            document.addSymbol(symbolItem);
+        }
+
+        // trace(xml);
+        for (element in data.elements()) {
+            var symbol_item_name = element.get("href").substr(0, -4);
+            symbolItem = document.getSymbol(symbol_item_name);
+            var file = document.dir + "/LIBRARY/" + element.get("href");
+            var text:String;
+            #if cstool
+            text = read(file, true);
+            #else
+            text = hx.xfl.openfl.Assets.getText(file);
+            #end
+            var symbolXml = Xml.parse(text).firstChild();
+
+            fillProperty(symbolItem, symbolXml);
 
             for (timeline in symbolXml.elements()) {
                 if ("timeline" == timeline.nodeName) {
