@@ -1,10 +1,13 @@
 <DOMDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" currentTimeline="1" xflVersion="2.3" creatorInfo="Adobe Flash Professional CC" platform="Windows" versionInfo="Saved by Adobe Flash Windows 13.0 build 808" majorVersion="13" buildNumber="808" objectsSnapTo="false" nextSceneIdentifier="2" playOptionsPlayLoop="false" playOptionsPlayPages="false" playOptionsPlayFrameActions="false">
+     <media>
+          <DOMBitmapItem name="foundation.jpg" itemID="534f3878-0000000c" sourceExternalFilepath="./LIBRARY/foundation.jpg" sourceLastImported="1397700677" externalFileSize="16228" allowSmoothing="true" quality="50" href="foundation.jpg" bitmapDataHRef="M 1 1397700695.dat" frameRight="2700" frameBottom="2700" isJPEG="true"/>
+     </media>
      <timelines>
-          <DOMTimeline name="Scene 1" currentFrame="38">
+          <DOMTimeline name="Scene 1" currentFrame="18">
                <layers>
                     <DOMLayer name="图层 3" color="#FF800A" current="true" isSelected="true">
                          <frames>
-                              <DOMFrame index="0" duration="39" keyMode="9728">
+                              <DOMFrame index="0" duration="38" keyMode="9728">
                                    <elements>
                                         <DOMShape>
                                              <fills>
@@ -25,19 +28,27 @@
                                                        </LinearGradient>
                                                   </FillStyle>
                                                   <FillStyle index="3">
-                                                       <RadialGradient spreadMethod="reflect" interpolationMethod="linearRGB" focalPointRatio="-0.670588235294118">
+                                                       <RadialGradient spreadMethod="reflect" interpolationMethod="linearRGB" focalPointRatio="-0.666666666666667">
                                                             <matrix>
-                                                                 <Matrix a="0.149459838867188" b="-0.0464935302734375" c="0.0467376708984375" d="0.150222778320313" tx="273" ty="173"/>
+                                                                 <Matrix a="0.149459838867188" b="-0.0464935302734375" c="0.0467376708984375" d="0.150222778320313" tx="152" ty="124"/>
                                                             </matrix>
                                                             <GradientEntry color="#FF0000" alpha="0.486274509803922" ratio="0"/>
                                                             <GradientEntry ratio="1"/>
                                                        </RadialGradient>
                                                   </FillStyle>
+                                                  <FillStyle index="4">
+                                                       <BitmapFill bitmapPath="foundation.jpg">
+                                                            <matrix>
+                                                                 <Matrix a="20" b="0.88226318359375" d="14.3283081054688" tx="350" ty="78.45"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
                                              </fills>
                                              <edges>
                                                   <Edge fillStyle1="1" edges="!8540 5539|10320 5539!10320 5539|10320 6819!10320 6819|8540 6819!8540 6819|8540 5539"/>
-                                                  <Edge fillStyle1="3" edges="!7780 5200|2860 5200!2860 5200|2860 1441!2860 1441|7780 1441!7780 1441|7780 5200"/>
+                                                  <Edge fillStyle1="4" edges="!9880 1220S2|9880 3979!9880 3979|6820 3979!6820 3979|6820 1220!6820 1220|9880 1220"/>
                                                   <Edge fillStyle1="2" edges="!880 6039|3560 6039!3560 6039|3560 7339!3560 7339|880 7339!880 7339|880 6039"/>
+                                                  <Edge fillStyle1="3" edges="!5360 461|5360 4220!5360 4220|440 4220!440 4220|440 461!440 461|5360 461"/>
                                              </edges>
                                         </DOMShape>
                                    </elements>
