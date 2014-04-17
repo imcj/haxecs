@@ -1,6 +1,9 @@
 <DOMDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" currentTimeline="1" xflVersion="2.3" creatorInfo="Adobe Flash Professional CC" platform="Windows" versionInfo="Saved by Adobe Flash Windows 13.0 build 808" majorVersion="13" buildNumber="808" objectsSnapTo="false" nextSceneIdentifier="2" playOptionsPlayLoop="false" playOptionsPlayPages="false" playOptionsPlayFrameActions="false">
+     <folders>
+          <DOMFolderItem name="xx" itemID="534f3da4-00000010"/>
+     </folders>
      <media>
-          <DOMBitmapItem name="foundation.jpg" itemID="534f3878-0000000c" sourceExternalFilepath="./LIBRARY/foundation.jpg" sourceLastImported="1397700677" externalFileSize="16228" allowSmoothing="true" quality="50" href="foundation.jpg" bitmapDataHRef="M 1 1397700695.dat" frameRight="2700" frameBottom="2700" isJPEG="true"/>
+          <DOMBitmapItem name="xx/foundation.jpg" itemID="534f3878-0000000c" sourceExternalFilepath="./LIBRARY/foundation.jpg" sourceLastImported="1397700677" externalFileSize="16228" allowSmoothing="true" quality="50" href="xx/foundation.jpg" bitmapDataHRef="M 1 1397700695.dat" frameRight="2700" frameBottom="2700" isJPEG="true"/>
      </media>
      <timelines>
           <DOMTimeline name="Scene 1" currentFrame="18">
@@ -37,7 +40,7 @@
                                                        </RadialGradient>
                                                   </FillStyle>
                                                   <FillStyle index="4">
-                                                       <BitmapFill bitmapPath="foundation.jpg">
+                                                       <BitmapFill bitmapPath="xx/foundation.jpg">
                                                             <matrix>
                                                                  <Matrix a="20" b="0.88226318359375" d="14.3283081054688" tx="350" ty="78.45"/>
                                                             </matrix>
