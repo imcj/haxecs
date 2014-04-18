@@ -9,7 +9,8 @@ class DOMSymbolInstance extends DOMInstance
     public var loop:String;
     public var isVisible:Bool;
     public var silent:Bool;
-    public var hasAccessibleData:Bool;
+    public var hasAccessibleData:Bool;  //尚不清楚功能
+    public var forceSimple:Bool;
 
     public function new()
     {
@@ -20,5 +21,6 @@ class DOMSymbolInstance extends DOMInstance
         loop = "";
         silent = false;
         hasAccessibleData = false;
+        forceSimple = false;
     }
 }

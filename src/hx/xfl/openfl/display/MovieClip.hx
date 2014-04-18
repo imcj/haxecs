@@ -295,8 +295,13 @@ class MovieClip extends Sprite
                     if (null != instance.name)
                         displayObject.name = instance.name;
                     displayObject.transform.matrix = matrix.toFlashMatrix();
-                    displayObject.mouseEnabled = !instance.silent;
-                    displayObject.mouseChildren = !instance.hasAccessibleData;
+                    if (instance.silent) {
+                        displayObject.mouseEnabled = false;
+                        displayObject.mouseChildren = false;
+                    }
+                    if (instance.forceSimple) {
+                        displayObject.mouseChildren = false;
+                    }
                     parent.addChild(displayObject);
                     layer.push(displayObject);
                 } else if ("button" == instance.symbolType) {
@@ -309,6 +314,7 @@ class MovieClip extends Sprite
                     if (null != instance.name)
                         button.name = instance.name;
                     button.transform.matrix = matrix.toFlashMatrix();
+                    button.mouseChildren = false;
                     parent.addChild(button);
                     layer.push(button);
                 }
