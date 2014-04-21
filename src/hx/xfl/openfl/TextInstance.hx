@@ -35,7 +35,8 @@ class TextInstance extends TextField
 
         text   = dom.getTextRunAt(0).characters;
         width  = dom.width;
-        height = dom.height + 10;
+        height = dom.height;
+        height += 10;
         selectable = dom.isSelectable;
 
         //处理文本域类型
