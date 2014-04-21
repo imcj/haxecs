@@ -23,4 +23,9 @@ class Path
     {
         return Path.path.abspath(path);
     }
+
+    static public function dirname(path:String):String
+    {
+        return Path.path.dirname(path);
+    }
 }

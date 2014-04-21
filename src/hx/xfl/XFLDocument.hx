@@ -218,6 +218,7 @@ class XFLDocument extends DOMDocument
         var text = hx.xfl.openfl.Assets.getText(path + "/DOMDocument.xml");
         var document = new XFLDocumentAssembler().parse(
             Xml.parse(text), path);
+        document.dir = path;
         #end
         return document;
     }

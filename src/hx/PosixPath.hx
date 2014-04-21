@@ -1,6 +1,7 @@
 package hx;
 
 using StringTools;
+using hx.helper.StringHelper;
 
 class PosixPath implements IPath
 {
@@ -81,5 +82,18 @@ class PosixPath implements IPath
             path = join(Sys.getCwd(), [path]);
         #end
         return normpath(path);
+    }
+
+    public function dirname(path:String):String
+    {
+        var i = path.lastIndexOf("/") + 1;
+        var head = path.substring(0, i);
+
+        var slash = "";
+        for (i in 0...head.length)
+            slash += "/";
+        if (!(null == head && "" == head && head == head.repeat(head.length)))
+            head = head.rstrip("/");
+        return head;
     }
 }
