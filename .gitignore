@@ -5,4 +5,4 @@ example/piratepig/export
 example/piratepig/Assets/*.swf
 Makefile
 run.n
-report/
+report/*

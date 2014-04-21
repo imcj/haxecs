@@ -37,6 +37,7 @@ class MovieClip extends Sprite
     var domTimeLine:DOMTimeLine;
     var currentSceneIndex:Int;
 
+    var frameIndices:Map<Int, Bool>;
 
     public function new(timelines:Array<DOMTimeLine>)
     {
@@ -57,14 +58,33 @@ class MovieClip extends Sprite
             totalFrames += sceneFrames;
         }
 
+        frameIndices = new Map();
+
         currentFrame = 0;
         changeToScene(0);
         play();
     }
 
+    function addFrame(index:Int):Void
+    {
+        frameIndices.set(index, true);
+    }
+
+    function addFrames(indices:Array<Int>):Void
+    {
+        for (i in indices)
+            addFrame(i);
+    }
+
     function onFrame(e:Event):Void 
     {
         nextFrame();
+
+        var i = currentFrame - 1;
+
+        if (frameIndices.exists(i)) {
+            Reflect.callMethod(this, "_haxecs_frame_" + Std.string(i));
+        }
     }
 
     public function play():Void 
