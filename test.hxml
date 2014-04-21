@@ -40,6 +40,7 @@
 -cp src
 
 -cp test
+-D cstool
 -neko build/neko_test.n
 
 --next
