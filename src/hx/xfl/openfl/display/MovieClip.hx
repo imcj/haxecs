@@ -45,6 +45,10 @@ class MovieClip extends Sprite
         super();
         name = '';
         isLoop = true;
+        currentFrame = 0;
+        currentFrameLabel = "";
+        isPlaying = false;
+
         this.timelines = timelines;
         timelinesMap = new Map();
         this.totalFrames = 0;
@@ -59,10 +63,8 @@ class MovieClip extends Sprite
             totalFrames += sceneFrames;
         }
 
-        currentFrame = 0;
         changeToScene(0);
-        if (totalFrames == 1) displayFrame();
-        else play();
+        if(totalFrames != 1) play();
     }
 
     function onFrame(e:Event):Void 
