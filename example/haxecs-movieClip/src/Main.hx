@@ -25,7 +25,7 @@ class Main extends Sprite
         bulidButton("播放", 100, play);
         bulidButton("停止", 200, stop);
         bulidButton("下一场景", 300, nextScene);
-        bulidButton("跳到场景1播放", 400, toScene1);
+        bulidButton("跳到场景1jump", 400, toLabel);
         bulidButton("跳到场景2播放", 500, toScene2);
         bulidButton("上一帧", 600, prevFrame);
     }
@@ -38,6 +38,11 @@ class Main extends Sprite
         btn.x = x;
         addChild(btn);
         btn.addEventListener(MouseEvent.CLICK, fun);
+    }
+
+    function toLabel(e:MouseEvent):Void 
+    {
+        mv.gotoAndPlay("jump", "Scene 1");
     }
 
     function toScene2(e:MouseEvent):Void
