@@ -61,7 +61,8 @@ class MovieClip extends Sprite
 
         currentFrame = 0;
         changeToScene(0);
-        play();
+        if (totalFrames == 1) displayFrame();
+        else play();
     }
 
     function onFrame(e:Event):Void 
