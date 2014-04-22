@@ -28,9 +28,10 @@ import flash.errors.RangeError;
 
 class MovieClip extends Sprite
 {
-    public var currentFrame:Int;
-    public var currentFrameLabel:String;
-    public var totalFrames:Int;
+    public var currentFrame(default, null):Int;
+    public var currentFrameLabel(default, null):String;
+    public var totalFrames(default, null):Int;
+    public var isPlaying(default, null):Bool;
     public var isLoop:Bool;
 
     var timelines:Array<DOMTimeLine>;
@@ -146,11 +147,13 @@ class MovieClip extends Sprite
             currentFrame = frame;
             gotoFrame(currentFrame);
             this.addEventListener(Event.ENTER_FRAME, onFrame);
+            isPlaying = true;
         }else if(Std.is(frame,String)) {
             var i = getLabelIndex(frame);
             if (i >= 0) currentFrame = i;
             gotoFrame(currentFrame);
             this.addEventListener(Event.ENTER_FRAME, onFrame);
+            isPlaying = true;
         }
     }
 
@@ -161,11 +164,13 @@ class MovieClip extends Sprite
             currentFrame = frame;
             gotoFrame(currentFrame);
             this.removeEventListener(Event.ENTER_FRAME, onFrame);
+            isPlaying = false;
         }else if (Std.is(frame, String)) {
             var i = getLabelIndex(frame);
             if (i >= 0) currentFrame = i;
             gotoFrame(currentFrame);
             this.removeEventListener(Event.ENTER_FRAME, onFrame);
+            isPlaying = false;
         }
     }
 
