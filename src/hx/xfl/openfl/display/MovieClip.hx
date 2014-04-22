@@ -323,7 +323,6 @@ class MovieClip extends Sprite
                 var displayObject = new TextInstance(instance);
                 if (null != instance.name)
                     displayObject.name = instance.name;
-                displayObject.transform.matrix = instance.matrix.toFlashMatrix();
                 parent.addChild(displayObject);
                 layer.push(displayObject);
             } else if (Std.is(element, DOMShape)) {
