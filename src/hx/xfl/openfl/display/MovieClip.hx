@@ -29,6 +29,7 @@ import flash.errors.RangeError;
 class MovieClip extends Sprite
 {
     public var currentFrame:Int;
+    public var currentFrameLabel:String;
     public var totalFrames:Int;
     public var isLoop:Bool;
 
@@ -240,6 +241,7 @@ class MovieClip extends Sprite
         var className:Class<Dynamic>;
         var layer:Array<DisplayObject> = [];
         var frame = domLayer.getFrameAt(currentFrame);
+        currentFrameLabel = frame.name;
         if (frame == null) return null;
         for (element in frame.getElementsIterator()) {
             if (Std.is(element, DOMBitmapInstance)) {
