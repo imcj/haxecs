@@ -29,7 +29,7 @@ import flash.errors.RangeError;
 class MovieClip extends Sprite
 {
     public var currentFrame(default, null):Int;
-    public var currentFrameLabel(default, null):FrameLabel;
+    public var currentFrameLabel(default, null):String;
     public var currentLabels(default, null):Array<FrameLabel>;
     public var currentScene(default, null):Scene;
     public var totalFrames(default, null):Int;
