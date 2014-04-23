@@ -30,7 +30,7 @@ class MovieClip extends Sprite
 {
     public var currentFrame(default, null):Int;
     public var currentFrameLabel(default, null):String;
-    public var currentLabels(default, null):Array<FrameLabel>;
+    public var currentLabels(get, null):Array<FrameLabel>;
     public var currentScene(default, null):Scene;
     public var totalFrames(default, null):Int;
     public var isPlaying(default, null):Bool;
@@ -340,6 +340,11 @@ class MovieClip extends Sprite
         }
 
         return layer;
+    }
+
+    function get_currentLabels():Array<FrameLabel>
+    {
+        return currentScene.labels;
     }
 
     // TODO
