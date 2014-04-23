@@ -48,7 +48,7 @@ class MovieClip extends Sprite
         name = '';
         isLoop = true;
         currentFrame = 0;
-        currentFrameLabel = "";
+        currentFrameLabel = null;
         isPlaying = false;
 
         this.timelines = timelines;
