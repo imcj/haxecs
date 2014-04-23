@@ -43,7 +43,7 @@ class XFLDocumentAssembler extends XFLBaseAssembler
             var text = hx.xfl.openfl.Assets.getText(file);
             var symbolXml = Xml.parse(text).firstChild();
 
-            fillProperty(symbolItem, symbolXml);
+            fillProperty(symbolItem, symbolXml, ["lastUniqueIdentifier"]);
             document.library.items.push(symbolItem);
             document.addSymbol(symbolItem);
         }
@@ -54,7 +54,7 @@ class XFLDocumentAssembler extends XFLBaseAssembler
             var text = hx.xfl.openfl.Assets.getText(file);
             var symbolXml = Xml.parse(text).firstChild();
 
-            fillProperty(symbolItem, symbolXml);
+            fillProperty(symbolItem, symbolXml, ["lastUniqueIdentifier"]);
             var symbolIndex = document.library.findItemIndex(symbolItem.name);
             symbolItem = cast(document.library.items[symbolIndex]);
 
