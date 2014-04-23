@@ -34,13 +34,13 @@ class MovieClip extends Sprite
     public var currentScene(default, null):Scene;
     public var totalFrames(default, null):Int;
     public var isPlaying(default, null):Bool;
+    public var scenes(default, null):Array<Scene>;
     public var isLoop:Bool;
 
     var timelines:Array<DOMTimeLine>;
     var timelinesMap:Map<String, DOMTimeLine>;
     var domTimeLine:DOMTimeLine;
     var currentSceneIndex:Int;
-    var scenes:Array<Scene>;
 
 
     public function new(timelines:Array<DOMTimeLine>)
@@ -68,6 +68,7 @@ class MovieClip extends Sprite
             }
             totalFrames += sceneFrames;
         }
+        gainScenes();
 
         changeToScene(scenes[0]);
         if(totalFrames != 1) play();
