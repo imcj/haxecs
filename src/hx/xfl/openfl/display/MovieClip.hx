@@ -85,7 +85,9 @@ class MovieClip extends Sprite
                 if (numFrames < layer.totalFrames)
                     numFrames = layer.totalFrames;
                 for (f in layer.frames) {
-                    labels.push(new FrameLabel(f.name,f.index));
+                    var name = f.name;
+                    if(name != null)
+                        labels.push(new FrameLabel(name,f.index));
                 }
             }
             s.setValue(name, numFrames, labels);
@@ -373,9 +375,11 @@ class MovieClip extends Sprite
 
     function get_currentFrameLabel():String
     {
+        var frameLabel = null;
         for (label in currentLabels) {
-            if (currentFrame > label.frame) return label.name;
+            if (currentFrame > label.frame) frameLabel = label.name;
         }
+        return frameLabel;
     }
 
     // TODO
