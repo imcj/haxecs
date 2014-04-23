@@ -29,7 +29,9 @@ import flash.errors.RangeError;
 class MovieClip extends Sprite
 {
     public var currentFrame(default, null):Int;
-    public var currentFrameLabel(default, null):String;
+    public var currentFrameLabel(default, null):FrameLabel;
+    public var currentLabels(default, null):Array<FrameLabel>;
+    public var currentScene(default, null):Scene;
     public var totalFrames(default, null):Int;
     public var isPlaying(default, null):Bool;
     public var isLoop:Bool;
@@ -127,22 +129,15 @@ class MovieClip extends Sprite
         }
     }
 
-    function changeToScene(scene:Dynamic):Void 
+    function changeToScene(scene:Scene):Void 
     {
-        if (Std.is(scene,Int)) {
-            domTimeLine = timelines[scene];
-            currentSceneIndex = scene;
-            currentFrame = 0;
-            displayFrame();
-        }else if (Std.is(scene,String)) {
-            domTimeLine = timelinesMap.get(scene);
-            currentSceneIndex = timelines.indexOf(domTimeLine);
-            currentFrame = 0;
-            displayFrame();
-        }
+        domTimeLine = timelinesMap.get(scene.name);
+        currentSceneIndex = timelines.indexOf(domTimeLine);
+        currentFrame = 0;
+        displayFrame();
     }
 
-    public function gotoAndPlay(frame:Dynamic,?scene:String):Void 
+    public function gotoAndPlay(frame:Dynamic,?scene:Scene):Void 
     {
         this.removeEventListener(Event.ENTER_FRAME, onFrame);
         if (scene != null) changeToScene(scene);
@@ -160,7 +155,7 @@ class MovieClip extends Sprite
         }
     }
 
-    public function gotoAndStop(frame:Dynamic, ?scene:String):Void 
+    public function gotoAndStop(frame:Dynamic, ?scene:Scene):Void 
     {
         if (scene != null) changeToScene(scene);
         if (Std.is(frame, Int)) {
