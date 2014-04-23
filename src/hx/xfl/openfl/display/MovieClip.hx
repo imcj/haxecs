@@ -40,6 +40,7 @@ class MovieClip extends Sprite
     var timelinesMap:Map<String, DOMTimeLine>;
     var domTimeLine:DOMTimeLine;
     var currentSceneIndex:Int;
+    var scenes:Array<Scene>;
 
 
     public function new(timelines:Array<DOMTimeLine>)
@@ -50,6 +51,7 @@ class MovieClip extends Sprite
         currentFrame = 0;
         currentFrameLabel = null;
         isPlaying = false;
+        scenes = [];
 
         this.timelines = timelines;
         timelinesMap = new Map();
@@ -67,6 +69,22 @@ class MovieClip extends Sprite
 
         changeToScene(0);
         if(totalFrames != 1) play();
+    }
+
+    function gainScenes()
+    {
+        for (timeline in timelines) {
+            var s = new Scene();
+            s.name = timeline.name;
+            for (layer in timeline.layers) {
+                if (s.numFrames < layer.totalFrames)
+                    s.numFrames = layer.totalFrames;
+                for (f in layer.frames) {
+                    s.labels.push(f.name);
+                }
+            }
+            scenes.push(s);
+        }
     }
 
     function onFrame(e:Event):Void 
