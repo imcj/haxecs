@@ -2,13 +2,24 @@ package hx.xfl.openfl;
 import flash.events.Event;
 import flash.Lib;
 import hx.xfl.DOMTimeLine;
+import hx.xfl.openfl.display.MovieClip;
 
 class Render
 {
-    var timelines:Map<String, Array<DOMTimeLine>>;
+    static public var instance(get, null):Render;
+    static function get_instance():Render
+    {
+        if (instance == null) {
+            instance = new Render();
+        }
+        return instance;
+    }
+
+    var timelines:Map<Dynamic, Array<DOMTimeLine>>;
 
     public function new()
     {
+        timelines = new Map();
         init();
     }
 
@@ -20,5 +31,15 @@ class Render
     function render(e:Event):Void
     {
         
+    }
+
+    public function addMvTimeLine(mv:MovieClip, timelines:Array<DOMTimeLine>):Void 
+    {
+        this.timelines.set(mv, timelines);
+    }
+
+    public function removeMvTimeLine(mv:MovieClip):Void 
+    {
+        this.timelines.remove(mv);
     }
 }

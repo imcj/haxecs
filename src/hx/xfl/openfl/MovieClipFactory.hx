@@ -1,4 +1,6 @@
 package hx.xfl.openfl;
+import hx.xfl.DOMTimeLine;
+import hx.xfl.openfl.display.MovieClip;
 
 class MovieClipFactory
 {
@@ -16,8 +18,14 @@ class MovieClipFactory
         if (instance != null) throw "MovieClipFactory是单列类";
     }
 
-    public function create():Void 
+    public function create(domTimeLine:Dynamic):MovieClip 
     {
-        
+        var lines = [];
+        if (Std.is(domTimeLine, Array)) lines = domTimeLine;
+        if (Std.is(domTimeLine, DOMTimeLine)) lines = [domTimeLine];
+        var mv = new MovieClip(lines);
+
+        Render.instance.addMvTimeLine(mv , lines);
+        return mv;
     }
 }
