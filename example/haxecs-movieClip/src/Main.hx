@@ -42,17 +42,17 @@ class Main extends Sprite
 
     function toLabel(e:MouseEvent):Void 
     {
-        mv.gotoAndPlay("jump", "Scene 1");
+        mv.gotoAndPlay("jump", mv.scenes[0]);
     }
 
     function toScene2(e:MouseEvent):Void
     {
-        mv.gotoAndPlay(0, "场景 2");
+        mv.gotoAndPlay(0, mv.scenes[1]);
     }
 
     function toScene1(e:MouseEvent):Void
     {
-        mv.gotoAndPlay(0, "Scene 1");
+        mv.gotoAndPlay(0, mv.scenes[1]);
     }
 
     function nextScene(e:MouseEvent):Void 
