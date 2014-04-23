@@ -4,6 +4,8 @@ import hx.xfl.assembler.XFLDocumentAssembler;
 import hx.xfl.assembler.DOMPublishSettingAssembler;
 import hx.xfl.setting.publish.DOMFlashProfiles;
 
+using StringTools;
+
 #if openfl
 import hx.xfl.openfl.Assets;
 #end
@@ -175,6 +177,9 @@ class XFLDocument extends DOMDocument
 
     static public function open(path:String):XFLDocument
     {
+        if (path.endsWith(".xfl")) {
+            path = Path.abspath(Path.join(path, [".."]));
+        }
         #if flash
         return openFromAsset(path);
         #end
