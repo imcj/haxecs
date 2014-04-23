@@ -29,7 +29,7 @@ import flash.errors.RangeError;
 class MovieClip extends Sprite
 {
     public var currentFrame(default, null):Int;
-    public var currentFrameLabel(default, null):String;
+    public var currentFrameLabel(get, null):String;
     public var currentLabels(get, null):Array<FrameLabel>;
     public var currentScene(default, null):Scene;
     public var totalFrames(default, null):Int;
@@ -269,7 +269,6 @@ class MovieClip extends Sprite
         var className:Class<Dynamic>;
         var layer:Array<DisplayObject> = [];
         var frame = domLayer.getFrameAt(currentFrame);
-        currentFrameLabel = frame.name;
         if (frame == null) return null;
         for (element in frame.getElementsIterator()) {
             if (Std.is(element, DOMBitmapInstance)) {
@@ -370,6 +369,13 @@ class MovieClip extends Sprite
     function get_currentLabels():Array<FrameLabel>
     {
         return currentScene.labels;
+    }
+
+    function get_currentFrameLabel():String
+    {
+        for (label in currentLabels) {
+            if (currentFrame > label.frame) return label.name;
+        }
     }
 
     // TODO
