@@ -157,6 +157,7 @@ class MovieClip extends Sprite
     {
         domTimeLine = timelinesMap.get(scene.name);
         currentSceneIndex = timelines.indexOf(domTimeLine);
+        currentScene = scene;
         currentFrame = 0;
         displayFrame();
     }
