@@ -50,6 +50,8 @@ class MovieClip extends Sprite
         isLoop = true;
         currentFrame = 0;
         currentFrameLabel = null;
+        currentLabels = [];
+        currentScene = null;
         isPlaying = false;
         scenes = [];
 
@@ -67,7 +69,7 @@ class MovieClip extends Sprite
             totalFrames += sceneFrames;
         }
 
-        changeToScene(0);
+        changeToScene(scenes[0]);
         if(totalFrames != 1) play();
     }
 
@@ -75,14 +77,17 @@ class MovieClip extends Sprite
     {
         for (timeline in timelines) {
             var s = new Scene();
-            s.name = timeline.name;
+            var name = timeline.name;
+            var numFrames = 0;
+            var labels = [];
             for (layer in timeline.layers) {
-                if (s.numFrames < layer.totalFrames)
-                    s.numFrames = layer.totalFrames;
+                if (numFrames < layer.totalFrames)
+                    numFrames = layer.totalFrames;
                 for (f in layer.frames) {
-                    s.labels.push(f.name);
+                    labels.push(new FrameLabel(f.name,f.index));
                 }
             }
+            s.setValue(name, numFrames, labels);
             scenes.push(s);
         }
     }
@@ -132,18 +137,18 @@ class MovieClip extends Sprite
     public function nextScene():Void 
     {
         if (currentSceneIndex < timelines.length-1) {
-            changeToScene(currentSceneIndex + 1);
+            changeToScene(scenes[currentSceneIndex + 1]);
         }else {
-            changeToScene(0);
+            changeToScene(scenes[0]);
         }
     }
 
     public function prevScene():Void 
     {
         if (currentSceneIndex > 0) {
-            changeToScene(currentSceneIndex - 1);
+            changeToScene(scenes[currentSceneIndex - 1]);
         }else {
-            changeToScene(timelines.length - 1);
+            changeToScene(scenes[timelines.length - 1]);
         }
     }
 

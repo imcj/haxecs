@@ -1,4 +1,4 @@
-package ;
+package hx.xfl.openfl;
 
 
 class Scene
@@ -9,7 +9,15 @@ class Scene
 
     public function new()
     {
-        
+        labels = [];
+        name = null;
+        numFrames = 0;
     }
-    
+
+    public function setValue(name, numFrames, labels):Void 
+    {
+        this.name = name;
+        this.numFrames = numFrames;
+        this.labels = labels;
+    }
 }
