@@ -74,10 +74,10 @@ class MovieClip extends Sprite
     {
         var n = scenes.indexOf(currentScene);
         if (n + 1 < scenes.length) {
-            currentScene = scenes[n + 1];
+            changeToScene(scenes[n + 1]);
             return;
         }else {
-            if (isLoop) currentScene = scenes[0];
+            if (isLoop)changeToScene(scenes[0]);
             return;
         }
     }
@@ -86,10 +86,10 @@ class MovieClip extends Sprite
     {
         var n = scenes.indexOf(currentScene);
         if (n - 1 >= 0) {
-            currentScene = scenes[n - 1];
+            changeToScene(scenes[n - 1]);
             return;
         }else {
-            if (isLoop) currentScene = scenes[scenes.length - 1];
+            if (isLoop)changeToScene(scenes[scenes.length - 1]);
             return;
         }
     }
