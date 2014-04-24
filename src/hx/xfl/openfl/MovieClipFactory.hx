@@ -28,8 +28,6 @@ class MovieClipFactory
         if (Std.is(domTimeLine, DOMTimeLine)) lines = [domTimeLine];
         var mv = new MovieClip();
         Render.addMvTimeLine(mv , lines);
-        mv.gainScenes();
-        Render.renderFrame(mv, mv.currentFrame);
         return mv;
     }
 
@@ -39,7 +37,6 @@ class MovieClipFactory
         var lines = document.getSymbol(symbol.libraryItem.name).timelines;
         var button = new SimpleButton();
         Render.addMvTimeLine(button, lines);
-        button.gainScenes();
         return button;
     }
 }

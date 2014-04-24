@@ -215,6 +215,8 @@ class Render
     static public function addMvTimeLine(mv:MovieClip, timelines:Array<DOMTimeLine>):Void 
     {
         instance.mvTimelines.set(mv, timelines);
+        mv.gainScenes();
+        instance.displayFrame(mv, mv.currentFrame);
     }
 
     static public function removeMvTimeLine(mv:MovieClip):Void 
