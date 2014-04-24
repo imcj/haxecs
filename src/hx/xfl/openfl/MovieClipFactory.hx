@@ -18,7 +18,7 @@ class MovieClipFactory
         if (instance != null) throw "MovieClipFactory是单列类";
     }
 
-    public function create(domTimeLine:Dynamic):MovieClip 
+    static public function create(domTimeLine:Dynamic):MovieClip 
     {
         var lines = [];
         if (Std.is(domTimeLine, Array)) lines = domTimeLine;

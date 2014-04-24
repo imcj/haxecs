@@ -1,11 +1,17 @@
 package hx.xfl.openfl;
 import flash.display.DisplayObject;
+import flash.display.PixelSnapping;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.Lib;
+import hx.geom.Point;
+import hx.xfl.DOMBitmapInstance;
+import hx.xfl.DOMBitmapItem;
 import hx.xfl.DOMLayer;
 import hx.xfl.DOMTimeLine;
 import flash.display.MovieClip;
+import hx.xfl.openfl.display.BitmapInstance;
+import hx.xfl.openfl.display.SimpleButton;
 
 class Render
 {
@@ -22,7 +28,7 @@ class Render
 
     public function new()
     {
-        mvTimelines = new Map();
+        mvTimelines = new Map<Dynamic, Array<DOMTimeLine>>();
         init();
     }
 
@@ -51,7 +57,7 @@ class Render
             if ("mask" == domLayer.layerType) {
                 maskDoms.set(numLayer, domLayer);
             }else {
-                var layer = displayLayer(domLayer, mv, mv.currentFrame);
+                var layer = displayLayer(domLayer, mv, mv.currentFrame, domTimeLine);
                 if (domLayer.parentLayerIndex >= 0) {
                     masklayers.push(layer);
                     maskNums.push(domLayer.parentLayerIndex);
@@ -64,7 +70,7 @@ class Render
             for (o in l) {
                 var dom = maskDoms.get(numLayer - 1 - maskNums[n]);
                 var mask = new Sprite();
-                displayLayer(dom, mask, mv.currentFrame);
+                displayLayer(dom, mask, mv.currentFrame, domTimeLine);
                 o.mask = mask;
                 mv.addChild(mask);
             }
@@ -72,7 +78,7 @@ class Render
         }
     }
 
-    function displayLayer(domLayer:DOMLayer, parent:Sprite, currentFrame:Int):Array<DisplayObject> 
+    function displayLayer(domLayer:DOMLayer, parent:Sprite, currentFrame:Int, line:DOMTimeLine):Array<DisplayObject> 
     {
         var className:Class<Dynamic>;
         var layer:Array<DisplayObject> = [];
@@ -81,7 +87,7 @@ class Render
         for (element in frame.getElementsIterator()) {
             if (Std.is(element, DOMBitmapInstance)) {
                 var bitmap_instance = cast(element, DOMBitmapInstance);
-                var bitmap = createBitmapInstance(bitmap_instance);
+                var bitmap = createBitmapInstance(bitmap_instance, line);
                 parent.addChild(bitmap);
                 layer.push(bitmap);
             } else if (Std.is(element, DOMSymbolInstance)) {
@@ -128,7 +134,7 @@ class Render
                     if (null != instance.libraryItem.linkageClassName) {
                         displayObject = Type.createInstance(Type.resolveClass(instance.libraryItem.linkageClassName), [item.timelines]);
                     } else
-                        displayObject = new MovieClip(item.timelines);
+                        displayObject = MovieClipFactory.create(item.timelines);
                     if (null != instance.name)
                         displayObject.name = instance.name;
                     displayObject.transform.matrix = matrix.toFlashMatrix();
@@ -180,6 +186,21 @@ class Render
             if (line.name == scene.name) return line;
         }
         return null;
+    }
+
+    function createBitmapInstance(bitmap_instance:DOMBitmapInstance, domTimeLine:DOMTimeLine)
+    {
+        var bitmapItem = cast(bitmap_instance.libraryItem, DOMBitmapItem);
+        var bitmap = new BitmapInstance(
+            bitmapItem,
+            domTimeLine.document.assets.getBitmapDataWithBitmapItem(bitmapItem),
+            PixelSnapping.AUTO, true);
+        bitmap.transform.matrix = bitmap_instance.matrix.toFlashMatrix();
+        
+        if (null != bitmap_instance.name)
+            bitmap.name = bitmap_instance.name;
+
+        return bitmap;
     }
 
     public function addMvTimeLine(mv:MovieClip, timelines:Array<DOMTimeLine>):Void 
