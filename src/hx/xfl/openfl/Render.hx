@@ -24,12 +24,12 @@ class Render
         return instance;
     }
 
-    var mvTimelines:Map<Dynamic, Array<DOMTimeLine>>;
+    var mvTimelines:Map<MovieClip, Array<DOMTimeLine>>;
 
     public function new()
     {
-        mvTimelines = new Map<Dynamic, Array<DOMTimeLine>>();
-        init();
+        mvTimelines = new Map();
+        init(); 
     }
 
     function init():Void 
@@ -39,7 +39,7 @@ class Render
     
     function render(e:Event):Void
     {
-        for (mv in mvTimelines.keys()) {
+        for (mv in instance.mvTimelines.keys()) {
             displayFrame(mv);
         }
     }
