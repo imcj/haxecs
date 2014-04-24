@@ -1,6 +1,7 @@
 package hx.xfl.openfl.display;
 
 import flash.display.Sprite;
+import flash.events.Event;
 import hx.xfl.openfl.MovieClipFactory;
 import hx.xfl.openfl.Render;
 
@@ -28,6 +29,12 @@ class MovieClip extends Sprite
         scenes = [];
 
         this.totalFrames = 0;
+        addEventListener(Event.REMOVED_FROM_STAGE, onRemove);
+    }
+    
+    private function onRemove(e:Event):Void {
+        removeEventListener(Event.REMOVED_FROM_STAGE, onRemove);
+        Render.removeMvTimeLine(this);
     }
 
     public function gainScenes():Void 
