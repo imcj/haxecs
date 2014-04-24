@@ -19,7 +19,7 @@ class MovieClip extends Sprite
     {
         super();
         name = '';
-        isLoop = false;
+        isLoop = true;
         currentFrame = 0;
         currentFrameLabel = null;
         currentLabels = [];
@@ -32,6 +32,7 @@ class MovieClip extends Sprite
 
     public function setScenes(sceneArr:Array<Scene>):Void 
     {
+        scenes = sceneArr;
         currentScene = scenes[0];
         for (s in scenes) {
             totalFrames += s.numFrames;
