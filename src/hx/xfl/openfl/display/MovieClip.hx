@@ -19,7 +19,7 @@ class MovieClip extends Sprite
     {
         super();
         name = '';
-        isLoop = true;
+        isLoop = false;
         currentFrame = 0;
         currentFrameLabel = null;
         currentLabels = [];
@@ -28,14 +28,16 @@ class MovieClip extends Sprite
         scenes = [];
 
         this.totalFrames = 0;
-
-        if(totalFrames != 1) play();
     }
 
     public function gainScenes():Void 
     {
         scenes = Render.getScenes(this);
         currentScene = scenes[0];
+        for (s in scenes) {
+            totalFrames += s.numFrames;
+        }
+        if (totalFrames != 1) play();
     }
 
     public function play():Void 
@@ -75,7 +77,7 @@ class MovieClip extends Sprite
             currentScene = scenes[n + 1];
             return;
         }else {
-            currentScene = scenes[0];
+            if (isLoop) currentScene = scenes[0];
             return;
         }
     }
@@ -87,7 +89,7 @@ class MovieClip extends Sprite
             currentScene = scenes[n - 1];
             return;
         }else {
-            currentScene = scenes[scenes.length-1];
+            if (isLoop) currentScene = scenes[scenes.length - 1];
             return;
         }
     }

@@ -29,6 +29,7 @@ class MovieClipFactory
         var mv = new MovieClip();
         Render.addMvTimeLine(mv , lines);
         mv.gainScenes();
+        Render.renderFrame(mv, mv.currentFrame);
         return mv;
     }
 

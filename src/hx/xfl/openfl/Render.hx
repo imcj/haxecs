@@ -41,11 +41,11 @@ class Render
     function render(e:Event):Void
     {
         for (mv in instance.mvTimelines.keys()) {
-            if(mv.isPlaying)displayFrame(mv);
+            if(mv.isPlaying)displayFrame(mv, mv.currentFrame);
         }
     }
 
-    function displayFrame(mv:MovieClip):Void 
+    function displayFrame(mv:MovieClip, frameIndex:Int):Void 
     {
         mv.removeChildren();
         var timelines = mvTimelines.get(mv);
@@ -60,7 +60,7 @@ class Render
             if ("mask" == domLayer.layerType) {
                 maskDoms.set(numLayer, domLayer);
             }else {
-                var layer = displayLayer(domLayer, mv, mv.currentFrame, domTimeLine);
+                var layer = displayLayer(domLayer, mv, frameIndex, domTimeLine);
                 if (domLayer.parentLayerIndex >= 0) {
                     masklayers.push(layer);
                     maskNums.push(domLayer.parentLayerIndex);
@@ -73,7 +73,7 @@ class Render
             for (o in l) {
                 var dom = maskDoms.get(numLayer - 1 - maskNums[n]);
                 var mask = new Sprite();
-                displayLayer(dom, mask, mv.currentFrame, domTimeLine);
+                displayLayer(dom, mask, frameIndex, domTimeLine);
                 o.mask = mask;
                 mv.addChild(mask);
             }
@@ -205,6 +205,11 @@ class Render
             bitmap.name = bitmap_instance.name;
 
         return bitmap;
+    }
+
+    static public function renderFrame(mv:MovieClip, frameIndex:Int):Void 
+    {
+        instance.displayFrame(mv, frameIndex);
     }
 
     static public function addMvTimeLine(mv:MovieClip, timelines:Array<DOMTimeLine>):Void 
