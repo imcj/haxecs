@@ -1,4 +1,6 @@
 package hx.xfl.openfl;
+import flash.display.DisplayObject;
+import flash.display.Sprite;
 import flash.events.Event;
 import flash.Lib;
 import hx.xfl.DOMTimeLine;
@@ -19,7 +21,7 @@ class Render
 
     public function new()
     {
-        timelines = new Map();
+        mvTimelines = new Map();
         init();
     }
 
@@ -30,7 +32,51 @@ class Render
     
     function render(e:Event):Void
     {
-        
+        for (mv in mvTimelines.keys()) {
+            displayFrame(mv);
+        }
+    }
+
+    function displayFrame(mv:MovieClip):Void 
+    {
+        var timelines = mvTimelines.get(mv);
+        var domTimeLine = getTimeline(timelines, mv.currentScene);
+
+        var maskDoms:Map<Int, DOMLayer> = new Map();
+        var masklayers:Array<Array<DisplayObject>> = [];
+        var maskNums = [];
+        var numLayer = 0;
+        for (domLayer in domTimeLine.getLayersIterator(false)) {
+            if ("mask" == domLayer.layerType) {
+                maskDoms.set(numLayer, domLayer);
+            }else {
+                var layer = displayLayer(domLayer,this);
+                if (domLayer.parentLayerIndex >= 0) {
+                    masklayers.push(layer);
+                    maskNums.push(domLayer.parentLayerIndex);
+                }
+            }
+            numLayer++;
+        }
+        var n = 0;
+        for (l in masklayers) {
+            for (o in l) {
+                var dom = maskDoms.get(numLayer - 1 - maskNums[n]);
+                var mask = new Sprite();
+                displayLayer(dom, mask);
+                o.mask = mask;
+                mv.addChild(mask);
+            }
+            n++;
+        }
+    }
+
+    function getTimeline(lines:Array<DOMTimeLine>, scene:Scene):DOMTimeLine 
+    {
+        for (line in lines) {
+            if (line.name == scene.name) return line;
+        }
+        return null;
     }
 
     public function addMvTimeLine(mv:MovieClip, timelines:Array<DOMTimeLine>):Void 

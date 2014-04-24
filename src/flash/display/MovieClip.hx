@@ -54,7 +54,8 @@ class MovieClip extends Sprite
 
     public function gainScenes()
     {
-        scenes = Render.instance.getScenes();
+        scenes = Render.instance.getScenes(this);
+        currentScene = scenes[0];
     }
 
     function onFrame(e:Event):Void 
@@ -74,7 +75,7 @@ class MovieClip extends Sprite
 
     public function nextFrame():Void 
     {
-        if (currentFrame < domTimeLine.totalFrames-1) 
+        if (currentFrame < totalFrames) 
         {
             currentFrame = currentFrame + 1;
             gotoFrame(currentFrame);
