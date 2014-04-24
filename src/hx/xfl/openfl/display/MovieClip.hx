@@ -56,7 +56,7 @@ class MovieClip extends Sprite
         {
             currentFrame = currentFrame + 1;
         }else {
-            nextScene();
+            if(scenes.indexOf(currentScene) < scenes.length - 1 || isLoop) nextScene();
         }
     }
 
@@ -77,7 +77,7 @@ class MovieClip extends Sprite
             changeToScene(scenes[n + 1]);
             return;
         }else {
-            if (isLoop)changeToScene(scenes[0]);
+            changeToScene(scenes[0]);
             return;
         }
     }
@@ -89,7 +89,7 @@ class MovieClip extends Sprite
             changeToScene(scenes[n - 1]);
             return;
         }else {
-            if (isLoop)changeToScene(scenes[scenes.length - 1]);
+            changeToScene(scenes[scenes.length - 1]);
             return;
         }
     }
