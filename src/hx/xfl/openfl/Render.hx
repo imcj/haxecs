@@ -15,7 +15,7 @@ class Render
         return instance;
     }
 
-    var timelines:Map<Dynamic, Array<DOMTimeLine>>;
+    var mvTimelines:Map<Dynamic, Array<DOMTimeLine>>;
 
     public function new()
     {
@@ -35,11 +35,11 @@ class Render
 
     public function addMvTimeLine(mv:MovieClip, timelines:Array<DOMTimeLine>):Void 
     {
-        this.timelines.set(mv, timelines);
+        this.mvTimelines.set(mv, timelines);
     }
 
     public function removeMvTimeLine(mv:MovieClip):Void 
     {
-        this.timelines.remove(mv);
+        this.mvTimelines.remove(mv);
     }
 }

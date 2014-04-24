@@ -1,6 +1,6 @@
 package hx.xfl.openfl;
 import hx.xfl.DOMTimeLine;
-import hx.xfl.openfl.display.MovieClip;
+import flash.display.MovieClip;
 
 class MovieClipFactory
 {
@@ -23,7 +23,7 @@ class MovieClipFactory
         var lines = [];
         if (Std.is(domTimeLine, Array)) lines = domTimeLine;
         if (Std.is(domTimeLine, DOMTimeLine)) lines = [domTimeLine];
-        var mv = new MovieClip(lines);
+        var mv = new MovieClip();
 
         Render.instance.addMvTimeLine(mv , lines);
         return mv;
