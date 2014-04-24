@@ -4,8 +4,8 @@ import flash.events.MouseEvent;
 import flash.Lib;
 import flash.text.TextField;
 import haxe.Timer;
-import flash.display.MovieClip;
 import flash.display.Sprite;
+import hx.xfl.openfl.display.MovieClip;
 import hx.xfl.openfl.MovieClipFactory;
 
 

@@ -1,6 +1,5 @@
 package hx.xfl.openfl;
 
-
 class Scene
 {
     public var labels(default, null):Array <FrameLabel>;
