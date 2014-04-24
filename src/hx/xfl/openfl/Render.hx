@@ -41,7 +41,7 @@ class Render
     function render(e:Event):Void
     {
         for (mv in instance.mvTimelines.keys()) {
-            if (mv.parent != null && mv.totalFrames != 1) 
+            if (mv.isPlaying && mv.parent != null && mv.totalFrames != 1) 
                 displayFrame(mv, mv.currentFrame);
         }
     }
