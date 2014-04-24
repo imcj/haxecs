@@ -19,14 +19,24 @@ import cpp.Lib;
 import neko.Lib;
 #end
 
+/* TODO
+ *
+ * 读取外部文档类和帧代码合并
+ * 生成构造DOM对象的代码，代替XML的解析方法
+ */
+         
 class Run
 {
     var document:XFLDocument;
     var fla_path:String;
     var target:String;
 
+    var process:Map<String, Bool>;
+
     public function new()
     {
+        process = new Map();
+
         var arguments:Array<String> = [];
         var options:Array<String> = [];
         for (argument in Sys.args())
@@ -133,7 +143,6 @@ class Run
         for (dir in cast(document.flashProfiles.Default.flashProperties
                          .as3PackagePaths, Array<Dynamic>)) {
             var file = Path.abspath(Path.join(document.dir, ["../", dir, class_name]));
-            // trace(file);
             if (sys.FileSystem.exists(file)) {
                 return file;
             }
@@ -160,6 +169,11 @@ class Run
         };
     }
 
+    inline function clearId(class_name:String):String
+    {
+        return ~/([^A-Za-z_])/g.replace(class_name, "_");
+    }
+
     function emptyClass(class_name:String, base_class_name:String):String
     {
         var package_and_class_name = splitClassName(class_name);
@@ -178,39 +192,38 @@ class Run
 
     function exportAsSources(document:XFLDocument)
     {
-        // Feature
-        // 生成构造DOM对象的代码，代替XML的解析方法
-
         emptyClass("Main", "flash.display.MovieClip");
 
-        for (timeline in document.getTimeLinesIterator()) {
-            var class_name:String = "Main";
-            var base_class_name = "flash.display.MovieClip";
+        var class_name:String = "Main";
+        var base_class_name = "flash.display.MovieClip";
+        var document_frame_indexes = new Map<String, Array<Int>>();
+        var document_frame_code = generateMainMovieClipFrameCode(
+            document.getTimeLinesIterator(),
+            class_name, base_class_name, document_frame_indexes);
 
-            var class_content = emptyClass(class_name, base_class_name);
+        var document_frame_ast = CSParser.toAST(document_frame_code);
+        var document_fields = document_frame_ast.typesDefd[0].fields;
 
-            generateFrameCode(timeline)
+        addFrameCodeIntoMovieClipConstructor(document_fields,
+            document_frame_indexes, class_name);
 
-        }
-
-        var class_name:String;
-        var base_class_name:String;
+        File.saveContent(
+            Path.join(Sys.getCwd(), [target, "Source", "Main.hx"]),
+            CSParser.toString(document_frame_ast)
+        );
 
         
         for (symbol in document.getSymbolIterators()) {
-            var loadFromFile = false;
-
-            // exportAsSource(timeline, )
-            var frames:Array<Int> = [];
+            var frames:Map<String, Array<Int>> = new Map();
 
             var frame_code:String = generateFrameCode(symbol.timeline, frames);
             var needExport:Bool =
-                symbol.linkageExportForAS || frames.length > 0;
+                symbol.linkageExportForAS || frames.keys().hasNext();
 
             var class_content:String = null;
 
-            if (!symbol.linkageExportForAS && frames.length > 0) {
-                class_name = ~/([^A-Za-z_])/g.replace(symbol.name, "_");
+            if (!symbol.linkageExportForAS && frames.keys().hasNext()) {
+                class_name = clearId(symbol.name);
                 base_class_name = "flash.display.MovieClip";
                 class_content = emptyClass(class_name, base_class_name);
             } else if (symbol.linkageExportForAS) {
@@ -228,20 +241,74 @@ class Run
                 exportAsSource(class_name, frame_code, class_content, frames);
             }
         }
+
+        for (class_name in process.keys()) {
+            if (null != process.get(class_name) &&
+                process.get(class_name) == false) {
+
+                var file =  getClassFile(class_name);
+
+                if (null == file)
+                    continue;
+
+                astToFile(class_name,
+                    CSParser.toAST(sys.io.File.getContent(file)));
+            }
+        }
+    }
+
+    inline function astToFile(class_name:String, ast:Program)
+    {
+        var complex = splitClassName(class_name);
+        var class_directory = null;
+        if (complex.package_name != "")
+            class_directory = complex.package_name.replace(".", "/")
+        else 
+            class_directory = complex.package_name;
+
+        var haxe_class_file = Path.join(Sys.getCwd(), [target, "Source", 
+            class_directory, complex.class_name + ".hx"]);
+
+        process.set(class_name, true);
+
+        File.saveContent(haxe_class_file, CSParser.toString(ast));
     }
 
     inline function exportAsSource(class_name:String, frame_code:String,
-        class_content:String, frames:Array<Int>)
+        class_content:String, frames:Map<String, Array<Int>>)
     {
         var complex = splitClassName(class_name);
         var ast:Program;
         ast = CSParser.toAST(class_content);
 
+        var meta:Array<Expr> = ast.typesDefd[0].meta;
+        
+        for (i in meta) {
+            switch(i) {
+                case EImport(v):
+                    var n = v.join(".");
+                    if (process.get(n) == null)
+                        process.set(n, false);
+                default:
+            }
+        }
+
+        for (type in ast.typesSeen) {
+            switch(type) {
+                case TPath(v):
+                    var n = v.join(".");
+                    if (process.get(n) == null)
+                        process.set(n, false);
+                default:
+            }
+        }
+
         var frame_ast = CSParser.toAST(frame_code);
         ast.typesDefd[0].fields = ast.typesDefd[0].fields.concat(
             frame_ast.typesDefd[0].fields);
 
-        if (0 < frames.length) {
+
+        if (frames.keys().hasNext()) {
             var fields:Array<ClassField> = cast ast.typesDefd[0].fields;
             addFrameCodeIntoMovieClipConstructor(fields, frames,
                 complex.class_name);
@@ -256,11 +323,13 @@ class Run
         var haxe_class_file = Path.join(Sys.getCwd(), [target, "Source", 
             class_directory, complex.class_name + ".hx"]);
 
-        trace(haxe_class_file);
+        process.set(class_name, true);
+
         File.saveContent(haxe_class_file, CSParser.toString(ast));
     }
 
-    inline function generateFrameCode(timeline:DOMTimeLine, frames:Array<Int>)
+    inline function generateFrameCode(timeline:DOMTimeLine,
+        frames:Map<String, Array<Int>>)
     {
         var frame_codes:Map<Int, Array<String>> = getFrameCodes(timeline);
         var pack_frame_codes:Array<String>;
@@ -272,7 +341,11 @@ class Run
             if (null != codes) {
                 text_code += '\nfunction _haxecs_frame_${index}()\n{\n'+
                     codes.join("\n") + "\n}\n";
-                frames.push(index);
+
+                if (frames.get("") == null)
+                    frames.set("", new Array<Int>());
+
+                frames.get("").push(index);
             }
         }
 
@@ -281,28 +354,33 @@ class Run
 
     inline function generateMainMovieClipFrameCode(
         timelines:Iterator<DOMTimeLine>, class_name:String, 
-        base_class_name:String, frames:Array<Int>)
+        base_class_name:String, frames:Map<String, Array<Int>>)
     {
             
 
         var main_code = "package {\nclass " + class_name + " extends " + 
-            base_class_name + "\n{\n";
+            base_class_name + "\n{\n" + "    public function " + class_name + 
+            "()\n    {\n        super();\n    }\n";
         for (timeline in timelines) {
             var frame_codes:Map<Int, Array<String>> = getFrameCodes(timeline);
-            var sceneName:String = ~/[\s]+/g.replace(timeline.name, "_");
+            var scene_name:String = clearId(timeline.name);
 
             for (index in frame_codes.keys()) {
                 var codes = frame_codes.get(index);
 
                 if (null != codes) {
-                    text_code += '\nfunction _haxecs_frame_${index}()\n{\n'+
-                        codes.join("\n") + "\n}\n";
-                    frames.push(index);
+                    main_code += '\nfunction _haxecs_frame_${scene_name}' + 
+                        '_${index}()\n{\n' + codes.join("\n") + "\n}\n";
+
+
+                    if (!frames.exists(scene_name))
+                        frames.set(scene_name, new Array<Int>());
+                    frames.get(scene_name).push(index);
                 }
             }
         }
 
-        return text_code + "\n}\n}";
+        return main_code + "\n}\n}";
     }
 
     inline function getFrameCodes(timeline:DOMTimeLine):Map<Int, Array<String>>
@@ -326,19 +404,40 @@ class Run
     }
 
     inline function addFrameCodeIntoMovieClipConstructor(
-        fields:Array<ClassField>, frame_indexes:Array<Int>, class_name:String)
+        fields:Array<ClassField>, frame_indexes:Map<String, Array<Int>>,
+        class_name:String)
     {
         var frames:Array<Expr> = [];
         for (index in frame_indexes)
             frames.push(EConst(CInt(Std.string(index))));
+
+        var path_movie_clip:T = TPath(["hx", "xfl", "openfl", "display", 
+            "MovieClipHelper"]);
+        var new_helper_instance = EVars([
+            {
+                name: "helper",
+                t: path_movie_clip,
+                val: ENew(path_movie_clip, [EIdent("this")])
+            }
+        ]);
+
+        var expressions:Array<Expr> = [];
+        expressions.push(new_helper_instance);
+
+        for (scene in frame_indexes.keys()) {
+            for (index in frame_indexes.get(scene))
+                expressions.push(ECall(EIdent("helper.addFrame"), 
+                    [EConst(CInt(Std.string(index))), EConst(CString(scene))]));
+        }
+
         for (field in fields) {
             switch (field.kind) {
             case FFun(f):
                 if (field.name == class_name) {
                     switch(f.expr) {
                     case EBlock(e):
-                        e.push(ECall(EIdent("addFrames"),
-                            [EArrayDecl(frames)]));
+                        for (expression in expressions)
+                            e.push(expression);
                     default:
                     }
                 }
