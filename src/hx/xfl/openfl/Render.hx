@@ -15,7 +15,7 @@ import hx.xfl.openfl.display.SimpleButton;
 
 class Render
 {
-    static public var instance(get, null):Render;
+    static var instance(get, null):Render;
     static function get_instance():Render
     {
         if (instance == null) {
@@ -180,7 +180,7 @@ class Render
         return layer;
     }
 
-    function getTimeline(lines:Array<DOMTimeLine>, scene:Scene):DOMTimeLine 
+    static public function getTimeline(lines:Array<DOMTimeLine>, scene:Scene):DOMTimeLine 
     {
         for (line in lines) {
             if (line.name == scene.name) return line;
@@ -203,22 +203,22 @@ class Render
         return bitmap;
     }
 
-    public function addMvTimeLine(mv:MovieClip, timelines:Array<DOMTimeLine>):Void 
+    static public function addMvTimeLine(mv:MovieClip, timelines:Array<DOMTimeLine>):Void 
     {
-        this.mvTimelines.set(mv, timelines);
+        instance.mvTimelines.set(mv, timelines);
     }
 
-    public function removeMvTimeLine(mv:MovieClip):Void 
+    static public function removeMvTimeLine(mv:MovieClip):Void 
     {
-        this.mvTimelines.remove(mv);
+        instance.mvTimelines.remove(mv);
     }
 
-    public function getTimelines(mv:MovieClip):Array<DOMTimeLine> 
+    static public function getTimelines(mv:MovieClip):Array<DOMTimeLine> 
     {
-        return mvTimelines.get(mv);
+        return instance.mvTimelines.get(mv);
     }
 
-    public function getScenes(mv:MovieClip):Array<Scene>
+    static public function getScenes(mv:MovieClip):Array<Scene>
     {
         var scenes = [];
         var lines = getTimelines(mv);

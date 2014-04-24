@@ -48,19 +48,13 @@ class MovieClip extends Sprite
 
         this.totalFrames = 0;
 
-        changeToScene(scenes[0]);
         if(totalFrames != 1) play();
     }
 
     public function gainScenes()
     {
-        scenes = Render.instance.getScenes(this);
+        scenes = Render.getScenes(this);
         currentScene = scenes[0];
-    }
-
-    function onFrame(e:Event):Void 
-    {
-        nextFrame();
     }
 
     public function play():Void 
@@ -75,12 +69,11 @@ class MovieClip extends Sprite
 
     public function nextFrame():Void 
     {
-        if (currentFrame < totalFrames) 
+        if (currentFrame < currentScene.numFrames) 
         {
             currentFrame = currentFrame + 1;
-            gotoFrame(currentFrame);
         }else {
-
+            nextScene();
         }
     }
 
@@ -89,9 +82,8 @@ class MovieClip extends Sprite
         if (currentFrame > 0) 
         {
             currentFrame = currentFrame - 1;
-            gotoFrame(currentFrame);
         }else {
-
+            prevScene();
         }
     }
 
@@ -109,37 +101,45 @@ class MovieClip extends Sprite
     {
         currentScene = scene;
         currentFrame = 0;
-        displayFrame();
     }
 
     public function gotoAndPlay(frame:Dynamic,?scene:Scene):Void 
     {
-
+        if (scene != null) currentScene = scene;
+        if (Std.is(frame, Int)) {
+            currentFrame = frame;
+            isPlaying = true;
+        }
+        if (Std.is(frame,String)) {
+            var i = getLabelIndex(frame);
+            if (i >= 0) currentFrame = i;
+            isPlaying = true;
+        }
     }
 
     public function gotoAndStop(frame:Dynamic, ?scene:Scene):Void 
     {
-
+        if (scene != null) currentScene = scene;
+        if (Std.is(frame, Int)) {
+            currentFrame = frame;
+            isPlaying = false;
+        }
+        if (Std.is(frame,String)) {
+            var i = getLabelIndex(frame);
+            if (i >= 0) currentFrame = i;
+            isPlaying = false;
+        }
     }
 
     function getLabelIndex(label:String):Int
     {
-
+        var domTimeLine = Render.getTimeline(Render.getTimelines(this), currentScene);
+        for (domLayer in domTimeLine.getLayersIterator(false)) {
+            for (frame in domLayer.frames) {
+                if (frame.name == label) return frame.index;
+            }
+        }
         return -1;
-    }
-
-    function gotoFrame(index:Int):Void
-    {
-        if (index < 0)
-            return;
-
-        // TODO
-        displayFrame();
-    }
-
-    function displayFrame():Void
-    {
-        freeChildren();
     }
 
     function get_currentLabels():Array<FrameLabel>
@@ -156,20 +156,9 @@ class MovieClip extends Sprite
         return frameLabel;
     }
 
-    function freeChildren():Void
-    {
-        try {
-            removeChildren();
-        } catch (e:Dynamic) {
-            // TODO
-            // removeChildren
-        }
-    }
-
     public function clone():MovieClip
     {
-        var mv = new MovieClip();
-        mv.gotoAndStop(currentFrame);
+        var mv = MovieClipFactory.create(Render.getTimelines(this));
         return mv;
     }
 }

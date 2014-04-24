@@ -24,7 +24,7 @@ class MovieClipFactory
         if (Std.is(domTimeLine, Array)) lines = domTimeLine;
         if (Std.is(domTimeLine, DOMTimeLine)) lines = [domTimeLine];
         var mv = new MovieClip();
-        Render.instance.addMvTimeLine(mv , lines);
+        Render.addMvTimeLine(mv , lines);
         mv.gainScenes();
         return mv;
     }
