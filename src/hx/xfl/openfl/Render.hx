@@ -1,4 +1,5 @@
 package hx.xfl.openfl;
+
 import flash.display.DisplayObject;
 import flash.display.PixelSnapping;
 import flash.display.Sprite;
@@ -9,7 +10,7 @@ import hx.xfl.DOMBitmapInstance;
 import hx.xfl.DOMBitmapItem;
 import hx.xfl.DOMLayer;
 import hx.xfl.DOMTimeLine;
-import flash.display.MovieClip;
+import hx.xfl.openfl.display.MovieClip;
 import hx.xfl.openfl.display.BitmapInstance;
 import hx.xfl.openfl.display.SimpleButton;
 
@@ -40,7 +41,7 @@ class Render
     function render(e:Event):Void
     {
         for (mv in instance.mvTimelines.keys()) {
-            displayFrame(mv);
+            if(mv.isPlaying)displayFrame(mv);
         }
     }
 
@@ -49,6 +50,7 @@ class Render
         var timelines = mvTimelines.get(mv);
         var domTimeLine = getTimeline(timelines, mv.currentScene);
 
+        if (domTimeLine == null) return;
         var maskDoms:Map<Int, DOMLayer> = new Map();
         var masklayers:Array<Array<DisplayObject>> = [];
         var maskNums = [];
@@ -153,7 +155,7 @@ class Render
                         className = Type.resolveClass(instance.libraryItem.linkageClassName);
                         button = Type.createInstance(className, [instance]);
                     } else
-                        button = new SimpleButton(instance);
+                        button = MovieClipFactory.createButton(instance);
                     if (null != instance.name)
                         button.name = instance.name;
                     button.transform.matrix = matrix.toFlashMatrix();

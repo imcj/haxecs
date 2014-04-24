@@ -1,6 +1,9 @@
 package hx.xfl.openfl;
+
+import hx.xfl.DOMSymbolInstance;
 import hx.xfl.DOMTimeLine;
-import flash.display.MovieClip;
+import hx.xfl.openfl.display.MovieClip;
+import hx.xfl.openfl.display.SimpleButton;
 
 class MovieClipFactory
 {
@@ -27,5 +30,15 @@ class MovieClipFactory
         Render.addMvTimeLine(mv , lines);
         mv.gainScenes();
         return mv;
+    }
+
+    static public function createButton(symbol:DOMSymbolInstance):SimpleButton
+    {
+        var document  = symbol.frame.layer.timeLine.document;
+        var lines = document.getSymbol(symbol.libraryItem.name).timelines;
+        var button = new SimpleButton();
+        Render.addMvTimeLine(button, lines);
+        button.gainScenes();
+        return button;
     }
 }
