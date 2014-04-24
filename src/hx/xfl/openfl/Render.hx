@@ -47,10 +47,11 @@ class Render
 
     function displayFrame(mv:MovieClip):Void 
     {
+        mv.removeChildren();
         var timelines = mvTimelines.get(mv);
         var domTimeLine = getTimeline(timelines, mv.currentScene);
-
         if (domTimeLine == null) return;
+        
         var maskDoms:Map<Int, DOMLayer> = new Map();
         var masklayers:Array<Array<DisplayObject>> = [];
         var maskNums = [];
@@ -78,6 +79,7 @@ class Render
             }
             n++;
         }
+        mv.nextFrame();
     }
 
     function displayLayer(domLayer:DOMLayer, parent:Sprite, currentFrame:Int, line:DOMTimeLine):Array<DisplayObject> 
