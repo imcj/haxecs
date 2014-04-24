@@ -89,12 +89,36 @@ class MovieClip extends Sprite
 
     public function nextScene():Void 
     {
-
+        var n = 0;
+        for (s in scenes) {
+            if (s == currentScene) {
+                if (n + 1 < scenes.length) {
+                    currentScene = scenes[n + 1];
+                    return;
+                }else {
+                    currentScene = scenes[0];
+                    return;
+                }
+            }
+            n++;
+        }
     }
 
     public function prevScene():Void 
     {
-
+        var n = 0;
+        for (s in scenes) {
+            if (s == currentScene) {
+                if (n - 1 >= 0) {
+                    currentScene = scenes[n - 1];
+                    return;
+                }else {
+                    currentScene = scenes[scenes.length-1];
+                    return;
+                }
+            }
+            n++;
+        }
     }
 
     function changeToScene(scene:Scene):Void 
