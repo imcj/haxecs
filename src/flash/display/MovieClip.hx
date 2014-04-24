@@ -47,15 +47,14 @@ class MovieClip extends Sprite
         scenes = [];
 
         this.totalFrames = 0;
-        gainScenes();
 
         changeToScene(scenes[0]);
         if(totalFrames != 1) play();
     }
 
-    function gainScenes()
+    public function gainScenes()
     {
-
+        scenes = Render.instance.getScenes();
     }
 
     function onFrame(e:Event):Void 
