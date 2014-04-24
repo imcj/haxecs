@@ -4,8 +4,9 @@ import flash.events.MouseEvent;
 import flash.Lib;
 import flash.text.TextField;
 import haxe.Timer;
-import hx.xfl.openfl.display.MovieClip;
+import flash.display.MovieClip;
 import flash.display.Sprite;
+import hx.xfl.openfl.MovieClipFactory;
 
 
 class Main extends Sprite
@@ -18,7 +19,7 @@ class Main extends Sprite
         trace("hello");
         var document = hx.xfl.XFLDocument.open("assets/MovieClip");
         trace(document);
-        mv = new MovieClip(document.timeLines);
+        mv = MovieClipFactory.create(document.timeLines);
         addChild(mv);
 
         bulidButton("下一帧", 0, nextFrame);
