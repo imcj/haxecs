@@ -41,7 +41,8 @@ class Render
     function render(e:Event):Void
     {
         for (mv in instance.mvTimelines.keys()) {
-            if(mv.isPlaying)displayFrame(mv, mv.currentFrame);
+            if (mv.parent != null && mv.totalFrames != 1) 
+                displayFrame(mv, mv.currentFrame);
         }
     }
 
@@ -215,7 +216,7 @@ class Render
     static public function addMvTimeLine(mv:MovieClip, timelines:Array<DOMTimeLine>):Void 
     {
         instance.mvTimelines.set(mv, timelines);
-        mv.gainScenes();
+        mv.setScenes(getScenes(mv));
         instance.displayFrame(mv, mv.currentFrame);
     }
 
