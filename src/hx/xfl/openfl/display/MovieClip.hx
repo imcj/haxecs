@@ -109,7 +109,7 @@ class MovieClip extends Sprite
         var nowScene = findScene(scene);
         if (nowScene != null) currentScene = nowScene;
         if (Std.is(frame, Int)) {
-            currentFrame = frame;
+            currentFrame = cast(frame)-1;
             isPlaying = true;
         }
         if (Std.is(frame,String)) {
@@ -124,7 +124,7 @@ class MovieClip extends Sprite
         var nowScene = findScene(scene);
         if (nowScene != null) currentScene = nowScene;
         if (Std.is(frame, Int)) {
-            currentFrame = frame;
+            currentFrame = cast(frame)-1;
             isPlaying = false;
         }
         if (Std.is(frame,String)) {
