@@ -87,17 +87,19 @@ class Run
         }
 
         createOpenFlProject("piratepig");
-        exportAsSources(document);
 
         // 创建Sound对应的类文件。
         for (item in document.getMediaIterator()) {
             if (Std.is(item, DOMSoundItem)) {
                 var soundItem:DOMSoundItem = cast(item);
-                // soundItem.
+                
+                if (soundItem.linkageExportForAS)
+                    exportSound(soundItem);
             }
         }
-    }
 
+        exportAsSources(document);
+    }
 
     function usage()
     {
@@ -114,6 +116,48 @@ class Run
     static public function main()
     {
         (new Run());
+    }
+
+    inline function exportSound(item:DOMSoundItem)
+    {
+        var sound_file = Path.join(Sys.getCwd(), [document.dir, "LIBRARY", item.name]);
+
+        if (sys.FileSystem.exists(sound_file)) {
+            var tpath:Dynamic = splitClassName(item.linkageClassName);
+            var sound_package_dir:Array<String> = tpath.package_name.split('.');
+            sound_package_dir.insert(0, "Source");
+            var sound_class_file = Path.join(target, sound_package_dir.concat([tpath.class_name + ".hx"]));
+
+            var class_code:String = exportSoundClass(tpath.package_name, 
+                tpath.class_name, item.linkageBaseClass);
+            
+            if (!sound_class_file.startsWith("/"))
+                sound_class_file = Sys.getCwd() + sound_class_file;
+
+            sys.io.File.saveContent(sound_class_file, class_code);
+        }
+    }
+
+    inline function exportSoundClass(package_name:String, class_name:String,
+        base_class_name:String):String
+    {
+        var class_code = 
+        'package $package_name;\n' +
+        '\n' +
+        'import flash.media.*;\n' +
+        'class $class_name';
+        if (null == base_class_name || "" == base_class_name)
+            base_class_name = "flash.media.Sound";
+        if (null != base_class_name && "" != base_class_name)
+            class_code += ' extends $base_class_name';
+        class_code += '\n{\n' +
+        '    public function new(?stream:URLRequest, ?context:SoundLoaderContext):Void\n' +
+        '    {\n' +
+        '        super(stream, context);\n' +
+        '    }\n' +
+        '}\n';
+
+        return class_code;
     }
 
     function createOpenFlProject(name:String)

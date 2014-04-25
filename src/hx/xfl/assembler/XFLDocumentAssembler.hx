@@ -16,6 +16,7 @@ class XFLDocumentAssembler extends XFLBaseAssembler
         cached = new Map();
     }
 
+    #if neko
     function read(file:String, ?cache:Bool=false)
     {
         var content:String;
@@ -30,6 +31,7 @@ class XFLDocumentAssembler extends XFLBaseAssembler
             cached.set(file, content);
         return content;
     }
+    #end
 
     function parseFolders(data:Xml):Array<DOMFolderItem>
     {
