@@ -98,6 +98,7 @@ class Run
             }
         }
 
+        configurateProject();
         exportAsSources(document);
     }
 
@@ -116,6 +117,21 @@ class Run
     static public function main()
     {
         (new Run());
+    }
+
+    inline function configurateProject()
+    {
+        var project_xml_file = Path.join(Sys.getCwd(), [target, 'project.xml']);
+        var project_xml = Xml.parse(sys.io.File.getContent(project_xml_file));
+
+        var element_haxelib_haxecs = Xml.createElement("haxelib");
+        element_haxelib_haxecs.set('name', 'haxecs');
+
+        for (element in project_xml.elements())
+            if (element.nodeName == "project")
+                element.addChild(element_haxelib_haxecs);
+        
+        // TODO 应当在创建openfl项目时执行
     }
 
     inline function exportSound(item:DOMSoundItem)
