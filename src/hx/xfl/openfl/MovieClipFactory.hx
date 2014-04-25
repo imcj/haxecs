@@ -39,4 +39,16 @@ class MovieClipFactory
         Render.addMvTimeLine(button, lines);
         return button;
     }
+
+    static public function dispatchTimeline(mv:MovieClip, timeline:Dynamic):Void 
+    {
+        var lines = [];
+        if (Std.is(timeline, Array)) lines = timeline;
+        if (Std.is(timeline, DOMTimeLine)) lines = [timeline];
+        if (Std.is(timeline, DOMSymbolInstance)) {
+            var document  = timeline.frame.layer.timeLine.document;
+            lines = document.getSymbol(timeline.libraryItem.name).timelines;
+        }
+        Render.addMvTimeLine(mv, lines);
+    }
 }
