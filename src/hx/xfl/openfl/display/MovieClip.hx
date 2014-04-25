@@ -100,9 +100,10 @@ class MovieClip extends Sprite
         currentFrame = 0;
     }
 
-    public function gotoAndPlay(frame:Dynamic,?scene:Scene):Void 
+    public function gotoAndPlay(frame:Dynamic,?scene:String):Void 
     {
-        if (scene != null) currentScene = scene;
+        var nowScene = findScene(scene);
+        if (nowScene != null) currentScene = nowScene;
         if (Std.is(frame, Int)) {
             currentFrame = frame;
             isPlaying = true;
@@ -114,9 +115,10 @@ class MovieClip extends Sprite
         }
     }
 
-    public function gotoAndStop(frame:Dynamic, ?scene:Scene):Void 
+    public function gotoAndStop(frame:Dynamic, ?scene:String):Void 
     {
-        if (scene != null) currentScene = scene;
+        var nowScene = findScene(scene);
+        if (nowScene != null) currentScene = nowScene;
         if (Std.is(frame, Int)) {
             currentFrame = frame;
             isPlaying = false;
@@ -126,6 +128,15 @@ class MovieClip extends Sprite
             if (i >= 0) currentFrame = i;
             isPlaying = false;
         }
+    }
+
+    function findScene(name:String):Scene
+    {
+        if (name == null) return null;
+        for (s in scenes) {
+            if (s.name == name) return s;
+        }
+        return null;
     }
 
     function getLabelIndex(label:String):Int
