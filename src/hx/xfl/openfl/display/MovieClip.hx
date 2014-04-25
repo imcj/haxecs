@@ -52,9 +52,10 @@ class MovieClip extends Sprite
 
     public function nextFrame():Void 
     {
-        if (currentFrame < currentScene.numFrames) 
+        if (currentFrame < currentScene.numFrames-1) 
         {
             currentFrame = currentFrame + 1;
+            gotoFrame();
         }else {
             if(scenes.indexOf(currentScene) < scenes.length - 1 || isLoop) nextScene();
         }
@@ -65,9 +66,15 @@ class MovieClip extends Sprite
         if (currentFrame > 0) 
         {
             currentFrame = currentFrame - 1;
+            gotoFrame();
         }else {
             prevScene();
+            currentFrame = currentScene.numFrames - 1;
         }
+    }
+    
+    function gotoFrame() {
+        Render.instance.displayFrame(this, currentFrame);
     }
 
     public function nextScene():Void 
@@ -75,10 +82,8 @@ class MovieClip extends Sprite
         var n = scenes.indexOf(currentScene);
         if (n + 1 < scenes.length) {
             changeToScene(scenes[n + 1]);
-            return;
         }else {
             changeToScene(scenes[0]);
-            return;
         }
     }
 
@@ -87,10 +92,8 @@ class MovieClip extends Sprite
         var n = scenes.indexOf(currentScene);
         if (n - 1 >= 0) {
             changeToScene(scenes[n - 1]);
-            return;
         }else {
             changeToScene(scenes[scenes.length - 1]);
-            return;
         }
     }
 
@@ -98,6 +101,7 @@ class MovieClip extends Sprite
     {
         currentScene = scene;
         currentFrame = 0;
+        gotoFrame();
     }
 
     public function gotoAndPlay(frame:Dynamic,?scene:String):Void 
