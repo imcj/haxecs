@@ -1,5 +1,6 @@
 package hx.xfl.openfl.display;
 
+import flash.events.Event;
 import flash.events.MouseEvent;
 import hx.xfl.openfl.MovieClipFactory;
 import hx.xfl.openfl.display.MovieClip;
@@ -10,10 +11,17 @@ class SimpleButton extends MovieClip
     public function new()
     {
         super();
-        gotoAndStop(1);
         addEventListener(MouseEvent.MOUSE_DOWN, __onMouseDown);
         addEventListener(MouseEvent.MOUSE_OVER, __onMouseOver);
         addEventListener(MouseEvent.MOUSE_OUT, __onMouseOut);
+
+        addEventListener(Event.ADDED_TO_STAGE, onAdded);
+    }
+    
+    function onAdded(e:Event)
+    {
+        removeEventListener(Event.ADDED_TO_STAGE, onAdded);
+        gotoAndStop(1);
     }
 
     function __onMouseOver(?e)
