@@ -137,7 +137,8 @@ class Render
 
                     var displayObject:MovieClip;
                     if (null != instance.libraryItem.linkageClassName) {
-                        displayObject = Type.createInstance(Type.resolveClass(instance.libraryItem.linkageClassName), [item.timelines]);
+                        displayObject = Type.createInstance(Type.resolveClass(instance.libraryItem.linkageClassName), []);
+                        MovieClipFactory.dispatchTimeline(displayObject, item.timelines);
                     } else
                         displayObject = MovieClipFactory.create(item.timelines);
                     if (null != instance.name)
@@ -156,7 +157,8 @@ class Render
                     var button:Sprite;
                     if (null != instance.libraryItem.linkageClassName) {
                         className = Type.resolveClass(instance.libraryItem.linkageClassName);
-                        button = Type.createInstance(className, [instance]);
+                        button = Type.createInstance(className, []);
+                        MovieClipFactory.dispatchTimeline(cast(button), instance);
                     } else
                         button = MovieClipFactory.createButton(instance);
                     if (null != instance.name)
