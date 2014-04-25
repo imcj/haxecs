@@ -126,11 +126,13 @@ class MovieClip extends Sprite
         if (Std.is(frame, Int)) {
             currentFrame = cast(frame)-1;
             isPlaying = false;
+            gotoFrame();
         }
         if (Std.is(frame,String)) {
             var i = getLabelIndex(frame);
             if (i >= 0) currentFrame = i;
             isPlaying = false;
+            gotoFrame();
         }
     }
 
