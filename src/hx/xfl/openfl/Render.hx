@@ -16,7 +16,7 @@ import hx.xfl.openfl.display.SimpleButton;
 
 class Render
 {
-    static var instance(get, null):Render;
+    static public var instance(get, null):Render;
     static function get_instance():Render
     {
         if (instance == null) {
@@ -41,12 +41,13 @@ class Render
     function render(e:Event):Void
     {
         for (mv in instance.mvTimelines.keys()) {
-            if (mv.isPlaying && mv.parent != null && mv.totalFrames != 1) 
-                displayFrame(mv, mv.currentFrame);
+            if (mv.isPlaying && mv.parent != null && mv.totalFrames != 1) {
+                mv.nextFrame();
+            }
         }
     }
 
-    function displayFrame(mv:MovieClip, frameIndex:Int):Void 
+    public function displayFrame(mv:MovieClip, frameIndex:Int):Void 
     {
         mv.removeChildren();
         var timelines = mvTimelines.get(mv);
@@ -80,7 +81,6 @@ class Render
             }
             n++;
         }
-        mv.nextFrame();
     }
 
     function displayLayer(domLayer:DOMLayer, parent:Sprite, currentFrame:Int, line:DOMTimeLine):Array<DisplayObject> 
