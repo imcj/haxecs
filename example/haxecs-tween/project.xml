@@ -10,7 +10,7 @@
 	<haxelib name="openfl" />
 	<haxelib name="haxecs" />
 	
-	<assets path="Assets" rename="assets" exclude="openfl.svg" />
+	<assets path="Assets" rename="assets" exclude="openfl.svg|MobileSettings.xml|META-INF" />
 	<icon path="Assets/openfl.svg" />
 	
 </project>

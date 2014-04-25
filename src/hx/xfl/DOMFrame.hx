@@ -55,7 +55,7 @@ class DOMFrame
         elements = [];
         motionTweenRotate = "";
         animation = null;
-        name = "";
+        name = null;
         labelType = "";
     }
 

@@ -1,45 +1,22 @@
 package hx.xfl.openfl.display;
 
-import flash.display.DisplayObject;
-import flash.events.Event;
-import hx.geom.Matrix;
-import hx.geom.Point;
-import hx.xfl.DOMLayer;
-import hx.xfl.DOMFrame;
-import hx.xfl.DOMBitmapItem;
-import hx.xfl.DOMBitmapInstance;
-import hx.xfl.DOMTimeLine;
-import hx.xfl.motion.Property;
-import hx.xfl.openfl.MotionObject;
-
 import flash.display.Sprite;
-import flash.display.Bitmap;
-import flash.display.BitmapData;
-import flash.display.PixelSnapping;
-
-import hx.xfl.DOMSymbolInstance;
-import hx.xfl.DOMShape;
-import hx.xfl.DOMSymbolInstance;
-import hx.xfl.openfl.ShapeInstance;
-import hx.xfl.openfl.display.BitmapInstance;
-import hx.xfl.openfl.display.SimpleButton;
-
-import flash.errors.RangeError;
+import hx.xfl.openfl.MovieClipFactory;
+import hx.xfl.openfl.Render;
 
 class MovieClip extends Sprite
 {
-    public var currentFrame:Int;
-    public var totalFrames:Int;
+    public var currentFrame(default, null):Int;
+    public var currentFrameLabel(get, null):String;
+    public var currentLabels(get, null):Array<FrameLabel>;
+    public var currentScene(default, null):Scene;
+    public var totalFrames(default, null):Int;
+    public var isPlaying(default, null):Bool;
+    public var scenes(default, null):Array<Scene>;
     public var isLoop:Bool;
 
-    var timelines:Array<DOMTimeLine>;
-    var timelinesMap:Map<String, DOMTimeLine>;
-    var domTimeLine:DOMTimeLine;
-    var currentSceneIndex:Int;
 
-    var frameIndices:Map<Int, Bool>;
-
-    public function new(timelines:Array<DOMTimeLine>)
+    public function new()
     {
         super();
         name = '';
@@ -61,30 +38,24 @@ class MovieClip extends Sprite
         frameIndices = new Map();
 
         currentFrame = 0;
-        changeToScene(0);
-        play();
+        currentFrameLabel = null;
+        currentLabels = [];
+        currentScene = null;
+        isPlaying = false;
+        scenes = [];
+
+        this.totalFrames = 0;
     }
 
-    function addFrame(index:Int):Void
+
+    public function setScenes(sceneArr:Array<Scene>):Void 
     {
-        frameIndices.set(index, true);
-    }
-
-    function addFrames(indices:Array<Int>):Void
-    {
-        for (i in indices)
-            addFrame(i);
-    }
-
-    function onFrame(e:Event):Void 
-    {
-        nextFrame();
-
-        var i = currentFrame - 1;
-
-        if (frameIndices.exists(i)) {
-            Reflect.callMethod(this, "_haxecs_frame_" + Std.string(i));
+        scenes = sceneArr;
+        currentScene = scenes[0];
+        for (s in scenes) {
+            totalFrames += s.numFrames;
         }
+        if (totalFrames != 1) play();
     }
 
     public function play():Void 
@@ -99,14 +70,12 @@ class MovieClip extends Sprite
 
     public function nextFrame():Void 
     {
-        if (currentFrame < domTimeLine.totalFrames-1) 
+        if (currentFrame < currentScene.numFrames-1) 
         {
             currentFrame = currentFrame + 1;
-            gotoFrame(currentFrame);
-        }else if (timelines.length > 1) {
-            if (currentSceneIndex < timelines.length - 1 || isLoop) {
-                nextScene();
-            }
+            gotoFrame();
+        }else {
+            if(scenes.indexOf(currentScene) < scenes.length - 1 || isLoop) nextScene();
         }
     }
 
@@ -115,80 +84,88 @@ class MovieClip extends Sprite
         if (currentFrame > 0) 
         {
             currentFrame = currentFrame - 1;
-            gotoFrame(currentFrame);
-        }else if (timelines.length > 1) {
-            if (currentSceneIndex > 0 || isLoop) {
-                prevScene();
-                currentFrame = domTimeLine.totalFrames - 1;
-            }
+            gotoFrame();
+        }else {
+            prevScene();
+            currentFrame = currentScene.numFrames - 1;
         }
+    }
+    
+    function gotoFrame() {
+        Render.instance.displayFrame(this, currentFrame);
     }
 
     public function nextScene():Void 
     {
-        if (currentSceneIndex < timelines.length-1) {
-            changeToScene(currentSceneIndex + 1);
+        var n = scenes.indexOf(currentScene);
+        if (n + 1 < scenes.length) {
+            changeToScene(scenes[n + 1]);
         }else {
-            changeToScene(0);
+            changeToScene(scenes[0]);
         }
     }
 
     public function prevScene():Void 
     {
-        if (currentSceneIndex > 0) {
-            changeToScene(currentSceneIndex - 1);
+        var n = scenes.indexOf(currentScene);
+        if (n - 1 >= 0) {
+            changeToScene(scenes[n - 1]);
         }else {
-            changeToScene(timelines.length - 1);
+            changeToScene(scenes[scenes.length - 1]);
         }
     }
 
-    function changeToScene(scene:Dynamic):Void 
+    function changeToScene(scene:Scene):Void 
     {
-        if (Std.is(scene,Int)) {
-            domTimeLine = timelines[scene];
-            currentSceneIndex = scene;
-            currentFrame = 0;
-            displayFrame();
-        }else if (Std.is(scene,String)) {
-            domTimeLine = timelinesMap.get(scene);
-            currentSceneIndex = timelines.indexOf(domTimeLine);
-            currentFrame = 0;
-            displayFrame();
-        }
+        currentScene = scene;
+        currentFrame = 0;
+        gotoFrame();
     }
 
     public function gotoAndPlay(frame:Dynamic,?scene:String):Void 
     {
-        if (scene != null) changeToScene(scene);
-        if (Std.is(frame,Int)) {
-            currentFrame = frame;
-            gotoFrame(currentFrame);
-            this.addEventListener(Event.ENTER_FRAME, onFrame);
-        }else if(Std.is(frame,String)) {
+        var nowScene = findScene(scene);
+        if (nowScene != null) currentScene = nowScene;
+        if (Std.is(frame, Int)) {
+            currentFrame = cast(frame)-1;
+            isPlaying = true;
+        }
+        if (Std.is(frame,String)) {
             var i = getLabelIndex(frame);
             if (i >= 0) currentFrame = i;
-            gotoFrame(currentFrame);
-            this.addEventListener(Event.ENTER_FRAME, onFrame);
+            isPlaying = true;
         }
     }
 
     public function gotoAndStop(frame:Dynamic, ?scene:String):Void 
     {
-        if (scene != null) changeToScene(scene);
+        var nowScene = findScene(scene);
+        if (nowScene != null) currentScene = nowScene;
         if (Std.is(frame, Int)) {
-            currentFrame = frame;
-            gotoFrame(currentFrame);
-            this.removeEventListener(Event.ENTER_FRAME, onFrame);
-        }else if (Std.is(frame, String)) {
+            currentFrame = cast(frame)-1;
+            isPlaying = false;
+            gotoFrame();
+        }
+        if (Std.is(frame,String)) {
             var i = getLabelIndex(frame);
             if (i >= 0) currentFrame = i;
-            gotoFrame(currentFrame);
-            this.removeEventListener(Event.ENTER_FRAME, onFrame);
+            isPlaying = false;
+            gotoFrame();
         }
+    }
+
+    function findScene(name:String):Scene
+    {
+        if (name == null) return null;
+        for (s in scenes) {
+            if (s.name == name) return s;
+        }
+        return null;
     }
 
     function getLabelIndex(label:String):Int
     {
+        var domTimeLine = Render.getTimeline(Render.getTimelines(this), currentScene);
         for (domLayer in domTimeLine.getLayersIterator(false)) {
             for (frame in domLayer.frames) {
                 if (frame.name == label) return frame.index;
@@ -197,197 +174,23 @@ class MovieClip extends Sprite
         return -1;
     }
 
-    function gotoFrame(index:Int):Void
+    function get_currentLabels():Array<FrameLabel>
     {
-        if (index < 0)
-            return;
-
-        // TODO
-        displayFrame();
+        return currentScene.labels;
     }
 
-    function createBitmapInstance(bitmap_instance:DOMBitmapInstance)
+    function get_currentFrameLabel():String
     {
-        var bitmapItem = cast(bitmap_instance.libraryItem, DOMBitmapItem);
-        var bitmap = new BitmapInstance(
-            bitmapItem,
-            domTimeLine.document.assets.getBitmapDataWithBitmapItem(bitmapItem),
-            PixelSnapping.AUTO, true);
-        bitmap.transform.matrix = bitmap_instance.matrix.toFlashMatrix();
-        
-        if (null != bitmap_instance.name)
-            bitmap.name = bitmap_instance.name;
-
-        return bitmap;
-    }
-
-    function displayFrame():Void
-    {
-        freeChildren();
-
-        var maskDoms:Map<Int, DOMLayer> = new Map();
-        var masklayers:Array<Array<DisplayObject>> = [];
-        var maskNums = [];
-        var numLayer = 0;
-        for (domLayer in domTimeLine.getLayersIterator(false)) {
-            if ("mask" == domLayer.layerType) {
-                maskDoms.set(numLayer, domLayer);
-            }else {
-                var layer = displayLayer(domLayer,this);
-                if (domLayer.parentLayerIndex >= 0) {
-                    masklayers.push(layer);
-                    maskNums.push(domLayer.parentLayerIndex);
-                }
-            }
-            numLayer++;
+        var frameLabel = null;
+        for (label in currentLabels) {
+            if (currentFrame > label.frame) frameLabel = label.name;
         }
-        var n = 0;
-        for (l in masklayers) {
-            for (o in l) {
-                var dom = maskDoms.get(numLayer - 1 - maskNums[n]);
-                var mask = new Sprite();
-                displayLayer(dom, mask);
-                o.mask = mask;
-                addChild(mask);
-            }
-            n++;
-        }
-    }
-
-    function displayLayer(domLayer:DOMLayer, parent:Sprite):Array<DisplayObject> 
-    {
-        var className:Class<Dynamic>;
-        var layer:Array<DisplayObject> = [];
-        var frame = domLayer.getFrameAt(currentFrame);
-        if (frame == null) return null;
-        for (element in frame.getElementsIterator()) {
-            if (Std.is(element, DOMBitmapInstance)) {
-                var bitmap_instance = cast(element, DOMBitmapInstance);
-                var bitmap = createBitmapInstance(bitmap_instance);
-                parent.addChild(bitmap);
-                layer.push(bitmap);
-            } else if (Std.is(element, DOMSymbolInstance)) {
-                var instance = cast(element, DOMSymbolInstance);
-
-                // 动画
-                var matrix = instance.matrix;
-                if (frame.tweenType == "motion") {
-                    var nextFrame = frame;
-                    for (n in 0...domLayer.frames.length) {
-                        if (domLayer.frames[n] == frame) {
-                            nextFrame = domLayer.frames[n + 1];
-                        }
-                    }
-                    var starMatrix = frame.elements[0].matrix;
-                    var endMatrix = nextFrame.elements[0].matrix;
-                    var perAddMatrix = endMatrix.sub(starMatrix).div(frame.duration);
-                    var deltaMatrix = perAddMatrix.multi(currentFrame-frame.index);
-                    matrix = starMatrix.add(deltaMatrix);
-                }else if (frame.tweenType == "motion object") {
-                    var motion = new MotionObject(instance, frame.animation);
-                    var prePosition = new Point(matrix.tx, matrix.ty);
-                    var preTransform = matrix.transformPoint(instance.transformPoint);
-                    motion.animate(currentFrame);
-                    //对形变中心引起的偏移做处理
-                    var deltaPosition = new Point(matrix.tx - prePosition.x, matrix.ty - prePosition.y);
-                    var nowTransform = matrix.transformPoint(instance.transformPoint);
-                    var deltaTransform = new Point(nowTransform.x - preTransform.x, nowTransform.y - preTransform.y);
-                    var revise = deltaPosition.sub(deltaTransform);
-                    matrix.translate(revise);
-                }
-                
-                if ("movie clip" == instance.symbolType ||
-                    "" == instance.symbolType ||
-                    "graphic" == instance.symbolType) {
-
-                    var item = cast(instance.libraryItem, DOMSymbolItem);
-
-                    if (!Std.is(item, DOMSymbolItem)) {
-                        throw '现在我还不清楚是不是只能是SymbolItem';
-                    }
-
-                    var displayObject:MovieClip;
-                    if (null != instance.libraryItem.linkageClassName) {
-                        displayObject = Type.createInstance(Type.resolveClass(instance.libraryItem.linkageClassName), [item.timelines]);
-                    } else
-                        displayObject = new MovieClip(item.timelines);
-                    if (null != instance.name)
-                        displayObject.name = instance.name;
-                    displayObject.transform.matrix = matrix.toFlashMatrix();
-                    displayObject.mouseEnabled = !instance.silent;
-                    displayObject.mouseChildren = !instance.hasAccessibleData;
-                    parent.addChild(displayObject);
-                    layer.push(displayObject);
-                } else if ("button" == instance.symbolType) {
-                    var button:Sprite;
-                    if (null != instance.libraryItem.linkageClassName) {
-                        className = Type.resolveClass(instance.libraryItem.linkageClassName);
-                        button = Type.createInstance(className, [instance]);
-                    } else
-                        button = new SimpleButton(instance);
-                    if (null != instance.name)
-                        button.name = instance.name;
-                    button.transform.matrix = matrix.toFlashMatrix();
-                    parent.addChild(button);
-                    layer.push(button);
-                }
-            } else if (Std.is(element, DOMText)) {
-                var instance = cast(element, DOMText);
-                var displayObject = new TextInstance(instance);
-                if (null != instance.name)
-                    displayObject.name = instance.name;
-                parent.addChild(displayObject);
-                layer.push(displayObject);
-            } else if (Std.is(element, DOMShape)) {
-                var instance = cast(element, DOMShape);
-                var displayObject = new ShapeInstance(instance);
-                parent.addChild(displayObject);
-                layer.push(displayObject);
-            }
-        }
-
-        return layer;
-    }
-
-    // TODO
-    //
-    // 下面的removeChildren是从openfl-native中拷贝过来的，在openfl-html5项目中api缺少
-    // removeChidlren方法。
-    // 把removeChildren方法移到openfl-html5项目中并pr。
-    #if html5
-    public function removeChildren (beginIndex:Int = 0, endIndex:Int = 0x7fffffff):Void {
-
-        if (endIndex == 0x7fffffff) endIndex = __children.length;
-        if (endIndex < beginIndex) throw new RangeError("removeChildren : endIndex must not be less than beginIndex");
-        if (beginIndex < 0) throw new RangeError("removeChildren : beginIndex out of bounds " + beginIndex);
-        if (endIndex > __children.length) throw new RangeError("removeChildren : endIndex out of bounds " + endIndex + "/" + __children.length);
-
-        var numRemovals = endIndex - beginIndex;
-        while (numRemovals >= 0) {
-            removeChildAt(beginIndex);
-            numRemovals --;
-        }
-    }   
-    #end
-
-    function freeChildren():Void
-    {
-        try {
-            while (numChildren > 1) {
-                removeChildAt(0);
-            }
-            // removeChildren();
-        } catch (e:Dynamic) {
-            // TODO
-            // removeChildren
-            trace("here");
-        }
+        return frameLabel;
     }
 
     public function clone():MovieClip
     {
-        var mv = new MovieClip(timelines);
-        mv.gotoAndStop(currentFrame);
+        var mv = MovieClipFactory.create(Render.getTimelines(this));
         return mv;
     }
 }

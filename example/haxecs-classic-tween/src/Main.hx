@@ -1,7 +1,7 @@
 package;
 
 
-import hx.xfl.openfl.display.MovieClip;
+import hx.xfl.openfl.MovieClipFactory;
 import flash.display.Sprite;
 
 
@@ -13,7 +13,7 @@ class Main extends Sprite
         trace("hello");
         var document = hx.xfl.XFLDocument.open("assets/Classic");
         trace(document);
-        var movieClip = new MovieClip(document.timeLines);
+        var movieClip = MovieClipFactory.create(document.timeLines);
         addChild(movieClip);
     }
 }

@@ -4,8 +4,9 @@ import flash.events.MouseEvent;
 import flash.Lib;
 import flash.text.TextField;
 import haxe.Timer;
-import hx.xfl.openfl.display.MovieClip;
 import flash.display.Sprite;
+import hx.xfl.openfl.display.MovieClip;
+import hx.xfl.openfl.MovieClipFactory;
 
 
 class Main extends Sprite
@@ -18,14 +19,14 @@ class Main extends Sprite
         trace("hello");
         var document = hx.xfl.XFLDocument.open("assets/MovieClip");
         trace(document);
-        mv = new MovieClip(document.timeLines);
+        mv = MovieClipFactory.create(document.timeLines);
         addChild(mv);
 
         bulidButton("下一帧", 0, nextFrame);
         bulidButton("播放", 100, play);
         bulidButton("停止", 200, stop);
         bulidButton("下一场景", 300, nextScene);
-        bulidButton("跳到场景1播放", 400, toScene1);
+        bulidButton("跳到场景1jump", 400, toLabel);
         bulidButton("跳到场景2播放", 500, toScene2);
         bulidButton("上一帧", 600, prevFrame);
     }
@@ -40,14 +41,19 @@ class Main extends Sprite
         btn.addEventListener(MouseEvent.CLICK, fun);
     }
 
+    function toLabel(e:MouseEvent):Void 
+    {
+        mv.gotoAndPlay("jump", mv.scenes[0].name);
+    }
+
     function toScene2(e:MouseEvent):Void
     {
-        mv.gotoAndPlay(0, "场景 2");
+        mv.gotoAndPlay(0, mv.scenes[1].name);
     }
 
     function toScene1(e:MouseEvent):Void
     {
-        mv.gotoAndPlay(0, "Scene 1");
+        mv.gotoAndPlay(0, mv.scenes[1].name);
     }
 
     function nextScene(e:MouseEvent):Void 

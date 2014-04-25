@@ -1,46 +1,49 @@
 package hx.xfl.openfl.display;
 
+import flash.events.Event;
 import flash.events.MouseEvent;
-import hx.xfl.XFLDocument;
+import hx.xfl.openfl.MovieClipFactory;
+import hx.xfl.openfl.display.MovieClip;
 
 class SimpleButton extends MovieClip
 {
-    public var symbol:hx.xfl.DOMSymbolInstance;
-    var __document:XFLDocument;
 
-    public function new(symbol:DOMSymbolInstance)
+    public function new()
     {
-        this.symbol = symbol;
-        __document  = symbol.frame.layer.timeLine.document;
-        super(__document.getSymbol(symbol.libraryItem.name).timelines);
-
-        this.transform.matrix = symbol.matrix.toFlashMatrix();
-        gotoAndStop(0);
+        super();
         addEventListener(MouseEvent.MOUSE_DOWN, __onMouseDown);
         addEventListener(MouseEvent.MOUSE_OVER, __onMouseOver);
         addEventListener(MouseEvent.MOUSE_OUT, __onMouseOut);
+
+        addEventListener(Event.ADDED_TO_STAGE, onAdded);
+    }
+    
+    function onAdded(e:Event)
+    {
+        removeEventListener(Event.ADDED_TO_STAGE, onAdded);
+        gotoAndStop(1);
     }
 
     function __onMouseOver(?e)
     {
-        gotoAndStop(1);
+        gotoAndStop(2);
     }
 
     function __onMouseOut(?e)
     {
-        gotoAndStop(0);
+        gotoAndStop(1);
     }
 
     function __onMouseDown(?e)
     {
         addEventListener(MouseEvent.MOUSE_UP, __onMouseUp);
-        gotoAndStop(2);
+        gotoAndStop(3);
     }
 
     function __onMouseUp(?e)
     {
         removeEventListener(MouseEvent.MOUSE_UP, __onMouseUp);
-        gotoAndStop(3);
-        gotoAndStop(0);
+        gotoAndStop(4);
+        gotoAndStop(1);
     }
 }

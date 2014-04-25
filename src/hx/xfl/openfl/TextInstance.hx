@@ -35,7 +35,8 @@ class TextInstance extends TextField
 
         text   = dom.getTextRunAt(0).characters;
         width  = dom.width;
-        height = dom.height + 10;
+        height = dom.height;
+        height += 10;
         selectable = dom.isSelectable;
 
         //处理文本域类型
@@ -50,8 +51,10 @@ class TextInstance extends TextField
         matrix.ty -= 6;
         this.transform.matrix = matrix;
 
-        this.x += dom.left;
-        this.y += dom.top;
+        var xAdd = dom.left+1;
+        var yAdd = dom.top+1;
+        this.x += xAdd-1;
+        this.y += yAdd-1;
     }
 
     function alignmentEnumToString(alignment)
