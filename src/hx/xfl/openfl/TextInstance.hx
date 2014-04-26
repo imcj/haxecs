@@ -4,6 +4,7 @@ import flash.display.SimpleButton;
 import flash.display.Sprite;
 import flash.text.TextField;
 import flash.text.TextFormat;
+import flash.text.TextFieldType;
 import flash.geom.Matrix;
 import hx.xfl.assembler.DOMTimeLineAssembler;
 import hx.xfl.DOMSymbolInstance;
@@ -40,11 +41,11 @@ class TextInstance extends TextField
         selectable = dom.isSelectable;
 
         //处理文本域类型
-        type = switch (dom.type) {
+        switch (dom.type) {
             case "DOMInputText":
-                "INPUT";
+                type = INPUT;
             default:
-                "DYNAMIC";
+                type = DYNAMIC;
         }
 
         var matrix = dom.matrix.toFlashMatrix();

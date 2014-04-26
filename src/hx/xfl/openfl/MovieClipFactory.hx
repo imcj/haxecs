@@ -34,7 +34,7 @@ class MovieClipFactory
     static public function createButton(symbol:DOMSymbolInstance):SimpleButton
     {
         var document  = symbol.frame.layer.timeLine.document;
-        var lines = document.getSymbol(symbol.libraryItem.name).timelines;
+        var lines = [document.getSymbol(symbol.libraryItem.name).timeline];
         var button = new SimpleButton();
         Render.addMvTimeLine(button, lines);
         return button;
@@ -47,7 +47,7 @@ class MovieClipFactory
         if (Std.is(timeline, DOMTimeLine)) lines = [timeline];
         if (Std.is(timeline, DOMSymbolInstance)) {
             var document  = timeline.frame.layer.timeLine.document;
-            lines = document.getSymbol(timeline.libraryItem.name).timelines;
+            lines = [document.getSymbol(timeline.libraryItem.name).timeline];
         }
         Render.addMvTimeLine(mv, lines);
     }

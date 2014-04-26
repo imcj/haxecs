@@ -138,9 +138,9 @@ class Render
                     var displayObject:MovieClip;
                     if (null != instance.libraryItem.linkageClassName) {
                         displayObject = Type.createInstance(Type.resolveClass(instance.libraryItem.linkageClassName), []);
-                        MovieClipFactory.dispatchTimeline(displayObject, item.timelines);
+                        MovieClipFactory.dispatchTimeline(displayObject, item.timeline);
                     } else
-                        displayObject = MovieClipFactory.create(item.timelines);
+                        displayObject = MovieClipFactory.create(item.timeline);
                     if (null != instance.name)
                         displayObject.name = instance.name;
                     displayObject.transform.matrix = matrix.toFlashMatrix();

@@ -4,6 +4,10 @@ import flash.display.Sprite;
 import hx.xfl.openfl.MovieClipFactory;
 import hx.xfl.openfl.Render;
 
+using Lambda;
+
+// TODO
+// 整理注释
 class MovieClip extends Sprite
 {
     public var currentFrame(default, null):Int;
@@ -21,21 +25,21 @@ class MovieClip extends Sprite
         super();
         name = '';
         isLoop = true;
-        this.timelines = timelines;
-        timelinesMap = new Map();
+        // this.timelines = timelines;
+        // timelinesMap = new Map();
         this.totalFrames = 0;
-        for (timeline in timelines) {
-            timelinesMap.set(timeline.name, timeline);
-            var sceneFrames = 0;
-            for (layer in timeline.layers) {
-                if (sceneFrames < layer.totalFrames) {
-                    sceneFrames = layer.totalFrames;
-                }
-            }
-            totalFrames += sceneFrames;
-        }
+        // for (timeline in timelines) {
+        //     timelinesMap.set(timeline.name, timeline);
+        //     var sceneFrames = 0;
+        //     for (layer in timeline.layers) {
+        //         if (sceneFrames < layer.totalFrames) {
+        //             sceneFrames = layer.totalFrames;
+        //         }
+        //     }
+        //     totalFrames += sceneFrames;
+        // }
 
-        frameIndices = new Map();
+        // frameIndices = new Map();
 
         currentFrame = 0;
         currentFrameLabel = null;
@@ -97,22 +101,22 @@ class MovieClip extends Sprite
 
     public function nextScene():Void 
     {
-        var n = scenes.indexOf(currentScene);
-        if (n + 1 < scenes.length) {
-            changeToScene(scenes[n + 1]);
-        }else {
-            changeToScene(scenes[0]);
-        }
+        // var n = scenes.has(currentScene);
+        // if (n + 1 < scenes.length) {
+        //     changeToScene(scenes[n + 1]);
+        // }else {
+        //     changeToScene(scenes[0]);
+        // }
     }
 
     public function prevScene():Void 
     {
-        var n = scenes.indexOf(currentScene);
-        if (n - 1 >= 0) {
-            changeToScene(scenes[n - 1]);
-        }else {
-            changeToScene(scenes[scenes.length - 1]);
-        }
+        // var n = scenes.has(currentScene);
+        // if (n - 1 >= 0) {
+        //     changeToScene(scenes[n - 1]);
+        // }else {
+        //     changeToScene(scenes[scenes.length - 1]);
+        // }
     }
 
     function changeToScene(scene:Scene):Void 
