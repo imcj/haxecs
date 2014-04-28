@@ -8,6 +8,8 @@ using StringTools;
 
 #if openfl
 import hx.xfl.openfl.Assets;
+import hx.xfl.openfl.display.MovieClip;
+import hx.xfl.openfl.MovieClipFactory;
 #end
 
 class XFLDocument extends DOMDocument
@@ -44,6 +46,8 @@ class XFLDocument extends DOMDocument
     public var flashProfiles:DOMFlashProfiles;
     #if openfl
     public var assets:Assets;
+    // public var root(get, null):MovieClip;
+    var _root:MovieClip;
     #end
 
     public var dir:String;
@@ -151,6 +155,32 @@ class XFLDocument extends DOMDocument
     public function forEachTimeLines(Function:DOMTimeLine->Bool):Void
     {
     }
+
+    #if openfl
+    function get_root():MovieClip
+    {
+        if (null == _root) {
+            _root = MovieClipFactory.create(getTimeLinesIterator());
+        }
+
+        return _root;
+    }
+
+    public function root(mc:MovieClip):MovieClip
+    {
+        if (null != mc) {
+            var timelines:Array<DOMTimeLine> = [];
+            for (timeline in getTimeLinesIterator())
+                timelines.push(timeline);
+
+            hx.xfl.openfl.Render.addMvTimeLine(mc, timelines);
+
+            return mc;
+        }
+
+        return null;
+    }
+    #end
 
     static public function openDirectory(path:String):XFLDocument
     {

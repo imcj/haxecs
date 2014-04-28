@@ -19,6 +19,7 @@ class MovieClip extends Sprite
     public var scenes(default, null):Array<Scene>;
     public var isLoop:Bool;
 
+    var scripts:Map<String, Map<Int, Bool>>;
 
     public function new()
     {
@@ -49,8 +50,22 @@ class MovieClip extends Sprite
         scenes = [];
 
         this.totalFrames = 0;
+        scripts = new Map();
     }
 
+    function addFrame(index:Int, scene:String):Void
+    {
+        if (null == scripts.get(scene))
+            scripts.set(scene, new Map<Int, Bool>());
+
+        var indexes = scripts.get(scene);
+        indexes.set(index, true);
+    }
+
+    inline function clearId(class_name:String):String
+    {
+        return ~/([^A-Za-z0-9_])/g.replace(class_name, "_");
+    }
 
     public function setScenes(sceneArr:Array<Scene>):Void 
     {
@@ -95,8 +110,30 @@ class MovieClip extends Sprite
         }
     }
     
-    function gotoFrame() {
+    function gotoFrame()
+    {
         Render.instance.displayFrame(this, currentFrame);
+        executeFrameScript();
+    }
+
+    inline function executeFrameScript():Void
+    {
+        var scene_name = clearId(currentScene.name);
+        var index = currentFrame;
+
+        var indexes = scripts.get(scene_name);
+        if (null != indexes) {
+
+            var hasFrame = indexes.get(index);
+            // trace(index);
+            // trace(indexes);
+            if (!(null == hasFrame || !hasFrame)) {
+
+                trace(index);
+                trace(this);
+                Reflect.callMethod(this, '_haxecs_frame_${scene_name}_${index}', null);
+            }
+        }
     }
 
     public function nextScene():Void 

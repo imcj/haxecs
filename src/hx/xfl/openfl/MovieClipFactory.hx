@@ -24,6 +24,9 @@ class MovieClipFactory
     static public function create(domTimeLine:Dynamic):MovieClip 
     {
         var lines = [];
+        if (Reflect.hasField(domTimeLine, 'next'))
+            while (domTimeLine.hasNext())
+                lines.push(domTimeLine.next());
         if (Std.is(domTimeLine, Array)) lines = domTimeLine;
         if (Std.is(domTimeLine, DOMTimeLine)) lines = [domTimeLine];
         var mv = new MovieClip();

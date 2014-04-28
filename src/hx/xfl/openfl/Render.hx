@@ -137,7 +137,9 @@ class Render
 
                     var displayObject:MovieClip;
                     if (null != instance.libraryItem.linkageClassName) {
+                        trace(Type.resolveClass(instance.libraryItem.linkageClassName));
                         displayObject = Type.createInstance(Type.resolveClass(instance.libraryItem.linkageClassName), []);
+                        trace(displayObject);
                         MovieClipFactory.dispatchTimeline(displayObject, item.timeline);
                     } else
                         displayObject = MovieClipFactory.create(item.timeline);

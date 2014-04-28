@@ -87,6 +87,7 @@ class Run
         }
 
         createOpenFlProject("piratepig");
+        configurateProject();
 
         // 创建Sound对应的类文件。
         for (item in document.getMediaIterator()) {
@@ -97,8 +98,6 @@ class Run
                     exportSound(soundItem);
             }
         }
-
-        configurateProject();
         exportAsSources(document);
     }
 
@@ -127,9 +126,17 @@ class Run
         var element_haxelib_haxecs = Xml.createElement("haxelib");
         element_haxelib_haxecs.set('name', 'haxecs');
 
-        for (element in project_xml.elements())
-            if (element.nodeName == "project")
+        var element_haxelib_assets = Xml.createElement("assets");
+        element_haxelib_assets.set('path', document.dir);
+
+        for (element in project_xml.elements()) {
+            if (element.nodeName == "project") {
                 element.addChild(element_haxelib_haxecs);
+                // element.addChild(element_haxelib_assets);
+            }
+        }
+
+        sys.io.File.saveContent(project_xml_file, project_xml.toString());
         
         // TODO 应当在创建openfl项目时执行
     }
@@ -231,7 +238,7 @@ class Run
 
     inline function clearId(class_name:String):String
     {
-        return ~/([^A-Za-z_])/g.replace(class_name, "_");
+        return ~/([^A-Za-z0-9_])/g.replace(class_name, "_");
     }
 
     function emptyClass(class_name:String, base_class_name:String):String
@@ -252,10 +259,11 @@ class Run
 
     function exportAsSources(document:XFLDocument)
     {
-        emptyClass("Main", "flash.display.MovieClip");
+        emptyClass("Document", "flash.display.MovieClip");
 
-        var class_name:String = "Main";
-        var base_class_name = "flash.display.MovieClip";
+        var class_name:String = "Document";
+        var base_class_name = "hx.xfl.openfl.display.MovieClip";
+        // "flash.display.MovieClip";
         var document_frame_indexes = new Map<String, Array<Int>>();
         var document_frame_code = generateMainMovieClipFrameCode(
             document.getTimeLinesIterator(),
@@ -268,7 +276,7 @@ class Run
             document_frame_indexes, class_name);
 
         File.saveContent(
-            Path.join(Sys.getCwd(), [target, "Source", "Main.hx"]),
+            Path.join(Sys.getCwd(), [target, "Source", "Document.hx"]),
             CSParser.toString(document_frame_ast)
         );
 
@@ -354,7 +362,7 @@ class Run
         }
 
         for (type in ast.typesSeen) {
-            switch(type) {
+            switch(cast(type, T)) {
                 case TPath(v):
                     var n = v.join(".");
                     if (process.get(n) == null)
@@ -399,7 +407,8 @@ class Run
         for (index in frame_codes.keys()) {
             var codes = frame_codes.get(index);
             if (null != codes) {
-                text_code += '\nfunction _haxecs_frame_${index}()\n{\n'+
+                var scene_name = clearId('');
+                text_code += '\nfunction _haxecs_frame_${scene_name}_${index}()\n{\n'+
                     codes.join("\n") + "\n}\n";
 
                 if (frames.get("") == null)
@@ -482,12 +491,18 @@ class Run
         ]);
 
         var expressions:Array<Expr> = [];
-        expressions.push(new_helper_instance);
+        // expressions.push(new_helper_instance);
 
         for (scene in frame_indexes.keys()) {
-            for (index in frame_indexes.get(scene))
-                expressions.push(ECall(EIdent("helper.addFrame"), 
-                    [EConst(CInt(Std.string(index))), EConst(CString(scene))]));
+            for (index in frame_indexes.get(scene)) {
+                expressions.push(
+                    ECall(EIdent("addFrame"), 
+                    [
+                     EConst(CInt(Std.string(index))),
+                     EConst(CString(scene))]));
+                expressions.push(ENL(null));
+            }
+
         }
 
         for (field in fields) {
