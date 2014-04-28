@@ -1,4 +1,5 @@
 package ;
+import flash.text.Font;
 
 class DOMFontItem
 {
@@ -9,6 +10,8 @@ class DOMFontItem
     public var id:Int;
     public var embeddedCharacters:String;
 
+    public var font:Font;
+
     public function new()
     {
         name = "";
@@ -17,6 +20,7 @@ class DOMFontItem
         size = 0;
         id = 0;
         embeddedCharacters = "";
+        font = null;
     }
     
 }
