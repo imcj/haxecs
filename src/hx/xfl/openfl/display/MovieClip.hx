@@ -138,22 +138,22 @@ class MovieClip extends Sprite
 
     public function nextScene():Void 
     {
-        // var n = scenes.has(currentScene);
-        // if (n + 1 < scenes.length) {
-        //     changeToScene(scenes[n + 1]);
-        // }else {
-        //     changeToScene(scenes[0]);
-        // }
+         var n = scenes.indexOf(currentScene);
+         if (n + 1 < scenes.length) {
+             changeToScene(scenes[n + 1]);
+         }else {
+             changeToScene(scenes[0]);
+         }
     }
 
     public function prevScene():Void 
     {
-        // var n = scenes.has(currentScene);
-        // if (n - 1 >= 0) {
-        //     changeToScene(scenes[n - 1]);
-        // }else {
-        //     changeToScene(scenes[scenes.length - 1]);
-        // }
+         var n = scenes.indexOf(currentScene);
+         if (n - 1 >= 0) {
+             changeToScene(scenes[n - 1]);
+         }else {
+             changeToScene(scenes[scenes.length - 1]);
+         }
     }
 
     function changeToScene(scene:Scene):Void 
