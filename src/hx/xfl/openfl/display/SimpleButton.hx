@@ -14,6 +14,7 @@ class SimpleButton extends MovieClip
         addEventListener(MouseEvent.MOUSE_DOWN, __onMouseDown);
         addEventListener(MouseEvent.MOUSE_OVER, __onMouseOver);
         addEventListener(MouseEvent.MOUSE_OUT, __onMouseOut);
+        addEventListener(MouseEvent.MOUSE_UP, __onMouseUp);
 
         addEventListener(Event.ADDED_TO_STAGE, onAdded);
     }
@@ -36,13 +37,11 @@ class SimpleButton extends MovieClip
 
     function __onMouseDown(?e)
     {
-        addEventListener(MouseEvent.MOUSE_UP, __onMouseUp);
         gotoAndStop(3);
     }
 
     function __onMouseUp(?e)
     {
-        removeEventListener(MouseEvent.MOUSE_UP, __onMouseUp);
         gotoAndStop(4);
         gotoAndStop(1);
     }
