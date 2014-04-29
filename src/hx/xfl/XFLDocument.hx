@@ -282,7 +282,7 @@ class XFLDocument extends DOMDocument
 
     macro static public function createMc(fileName:String) 
     {
-        var code = "new hx.xfl.openfl.MovieClip()";
+        var code = "function():MovieClip{return new hx.xfl.openfl.display.MovieClip();}";
 
         return Context.parse(code, Context.currentPos());
     }
