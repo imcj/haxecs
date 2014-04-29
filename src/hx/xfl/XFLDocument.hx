@@ -1,12 +1,13 @@
 package hx.xfl;
 
+import haxe.macro.Context;
 import hx.xfl.assembler.XFLDocumentAssembler;
 import hx.xfl.assembler.DOMPublishSettingAssembler;
 import hx.xfl.setting.publish.DOMFlashProfiles;
 
 using StringTools;
 
-#if openfl
+#if (openfl && !macro)
 import hx.xfl.openfl.Assets;
 import hx.xfl.openfl.display.MovieClip;
 import hx.xfl.openfl.MovieClipFactory;
@@ -45,7 +46,7 @@ class XFLDocument extends DOMDocument
     public var xflVersion:Float;
     public var library:DOMLibrary;
     public var flashProfiles:DOMFlashProfiles;
-    #if openfl
+    #if (openfl && !macro)
     public var assets:Assets;
     // public var root(get, null):MovieClip;
     var _root:MovieClip;
@@ -92,7 +93,7 @@ class XFLDocument extends DOMDocument
 
         library = new DOMLibrary();
 
-        #if openfl
+        #if (openfl && !macro)
         assets = new Assets(this);
         #end
     }
@@ -169,7 +170,7 @@ class XFLDocument extends DOMDocument
     {
     }
 
-    #if openfl
+    #if (openfl && !macro)
     function get_root():MovieClip
     {
         if (null == _root) {
@@ -275,5 +276,12 @@ class XFLDocument extends DOMDocument
         document.dir = path;
         #end
         return document;
+    }
+
+    macro static public function createMc(fileName:String) 
+    {
+        var code = "new hx.xfl.openfl.MovieClip()";
+
+        return Context.parse(code, Context.currentPos());
     }
 }

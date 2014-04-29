@@ -48,7 +48,7 @@ class DOMShapeAssembler extends DOMElementAssembler
                         fillProperty(fillStyle, fill);
                         fillStyle.type = fill.firstElement().nodeName;
                         var bmpUrl = document.dir + "/LIBRARY/" + fill.firstElement().get("bitmapPath");
-                        #if openfl
+                        #if (openfl && !macro)
                         fillStyle.bitmapData = document.assets.getBitmapData(bmpUrl);
                         #end
                         for (e in fill.firstElement().elements()) {
@@ -153,7 +153,7 @@ class DOMShapeAssembler extends DOMElementAssembler
         var fillStyle = new FillStyle();
         fillProperty(fillStyle, fill);
         fillStyle.type = fill.firstElement().nodeName;
-        #if openfl
+        #if (openfl && !macro)
         if (fill.firstElement().exists("spreadMethod")) {
             switch (fill.firstElement().get("spreadMethod")) {
                 case "reflect":

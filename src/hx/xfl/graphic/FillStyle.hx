@@ -1,6 +1,6 @@
 package hx.xfl.graphic;
 
-#if openfl
+#if (openfl && !macro)
 import flash.display.BitmapData;
 import flash.display.InterpolationMethod;
 import flash.display.SpreadMethod;
@@ -20,7 +20,7 @@ class FillStyle
     public var alphas:Array<Float>;
     public var ratios:Array<Float>;
     public var focalPointRatio:Float;
-    #if openfl
+    #if (openfl && !macro)
     public var spreadMethod:SpreadMethod;
     public var interpolationMethod:InterpolationMethod;
     public var bitmapData:BitmapData;
@@ -37,7 +37,7 @@ class FillStyle
         ratios = [];
         alphas = [];
         focalPointRatio = 0;
-        #if openfl
+        #if (openfl && !macro)
         spreadMethod = PAD;
         interpolationMethod = RGB;
         bitmapData = null;

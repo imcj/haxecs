@@ -1,6 +1,6 @@
 package hx.xfl.openfl;
 
-#if openfl
+#if (openfl && !macro)
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.PixelSnapping;
