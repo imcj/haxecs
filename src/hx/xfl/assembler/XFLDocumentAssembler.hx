@@ -60,6 +60,7 @@ class XFLDocumentAssembler extends XFLBaseAssembler
         }
     }
 
+    #if !macro
     function parseSymbol(document:XFLDocument, data:Xml):Void 
     {
         var symbolItem;
@@ -159,4 +160,5 @@ class XFLDocumentAssembler extends XFLBaseAssembler
 
         return document;
     }
+    #end
 }

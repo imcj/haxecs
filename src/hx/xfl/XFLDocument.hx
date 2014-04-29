@@ -196,6 +196,7 @@ class XFLDocument extends DOMDocument
     }
     #end
 
+    #if !macro
     static public function openDirectory(path:String):XFLDocument
     {
         #if (neko || cpp)
@@ -277,6 +278,7 @@ class XFLDocument extends DOMDocument
         #end
         return document;
     }
+    #end
 
     macro static public function createMc(fileName:String) 
     {
