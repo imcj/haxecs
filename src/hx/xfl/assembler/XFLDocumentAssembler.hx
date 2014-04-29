@@ -124,6 +124,14 @@ class XFLDocumentAssembler extends XFLBaseAssembler
         }
     }
 
+    public function parseFont(document:XFLDocument, data:Xml):Void 
+    {
+        var fontItem = new DOMFontItem();
+        fillProperty(fontItem, data, ["sourceLastImported"]);
+        fontItem.fontName = openfl.Assets.getFont("assets/font/" + fontItem.name.toUpperCase() + ".TTF").fontName;
+        document.addFont(fontItem);
+    }
+
     public function parse(data:Xml, path:String):XFLDocument
     {
         fillProperty(document, data.firstChild());
@@ -143,6 +151,9 @@ class XFLDocumentAssembler extends XFLBaseAssembler
 
             } else if ("publishHistory" == element.nodeName) {
 
+            } else if ("fonts" == element.nodeName) {
+                for (e in element.elements())
+                    parseFont(document, e);
             }
         }
 

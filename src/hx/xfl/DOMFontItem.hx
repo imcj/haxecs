@@ -1,5 +1,4 @@
-package ;
-import flash.text.Font;
+package hx.xfl;
 
 class DOMFontItem
 {
@@ -10,7 +9,7 @@ class DOMFontItem
     public var id:Int;
     public var embeddedCharacters:String;
 
-    public var font:Font;
+    public var fontName:String;
 
     public function new()
     {
@@ -20,7 +19,7 @@ class DOMFontItem
         size = 0;
         id = 0;
         embeddedCharacters = "";
-        font = null;
+        fontName = "";
     }
     
 }

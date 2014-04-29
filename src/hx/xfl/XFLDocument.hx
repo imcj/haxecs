@@ -16,6 +16,7 @@ class XFLDocument extends DOMDocument
 {
     var mapMedia:Map<String, DOMItem>;
     var mapSymbol:Map<String, DOMSymbolItem>;
+    var fonts:Map<String, DOMFontItem>;
 
     public var autoSaveEnabled:Bool;
     public var autoSaveHasPrompted:Bool;
@@ -87,7 +88,8 @@ class XFLDocument extends DOMDocument
         mapMedia = new Map();
         mapSymbol = new Map();
         mapTimeLines = new Map();
-        
+        fonts = new Map();
+
         library = new DOMLibrary();
 
         #if openfl
@@ -102,9 +104,20 @@ class XFLDocument extends DOMDocument
         return this;
     }
 
+    public function addFont(fontItem:DOMFontItem):XFLDocument 
+    {
+        fonts.set(fontItem.font, fontItem);
+        return this;
+    }
+
     public function getMedia(name:String):DOMItem
     {
         return mapMedia.get(name);
+    }
+
+    public function getFontName(font:String):String 
+    {
+        return fonts.get(font).fontName;
     }
 
     public function getMediaIterator():Iterator<DOMItem>
