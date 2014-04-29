@@ -8,6 +8,7 @@ class DOMFontItem
     public var size:Int;
     public var id:Int;
     public var embeddedCharacters:String;
+    public var embedRanges:String;
 
     public var fontName:String;
 
@@ -19,6 +20,7 @@ class DOMFontItem
         size = 0;
         id = 0;
         embeddedCharacters = "";
+        embedRanges = "";
         fontName = "";
     }
     
