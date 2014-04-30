@@ -117,7 +117,9 @@ class XFLDocument extends DOMDocument
 
     public function getFontName(font:String):String 
     {
-        return fonts.get(font).fontName;
+        var font = fonts.get(font);
+        if (font == null) return null;
+        return font.fontName;
     }
 
     public function getMediaIterator():Iterator<DOMItem>

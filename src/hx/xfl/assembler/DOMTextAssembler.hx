@@ -59,7 +59,8 @@ class DOMTextAssembler extends DOMElementAssembler
         fillProperty(attrs, node, ["fillColor"]);
         if (null != fillColor)
             attrs.fillColor = Std.parseInt(fillColor.replace("#", "0x"));
-        attrs.face = document.getFontName(attrs.face);
+        var fontName = document.getFontName(attrs.face);
+        if (fontName != null) attrs.face = document.getFontName(attrs.face);
 
         return attrs;
     }
