@@ -4,6 +4,7 @@ package hx.xfl.openfl;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.PixelSnapping;
+import hx.xfl.DOMItem;
 import hx.xfl.DOMBitmapItem;
 import hx.xfl.XFLDocument;
 
@@ -34,15 +35,15 @@ class Assets
         );
     }
 
-    public function getBitmapDataByBitmapItem(name:DOMBitmapItem):BitmapData
+    public function getBitmapDataByBitmapItem(name:DOMItem):BitmapData
     {
         return getBitmapDataWithBitmapItem(name);
     }
 
-    public function getBitmapDataWithBitmapItem(item:DOMBitmapItem)
+    public function getBitmapDataWithBitmapItem(item:DOMItem)
         :BitmapData
     {
-        var name = item.href;
+        var name:String = cast(item, DOMBitmapItem).href;
         if ("./" == name.substr(0, 2))
             name = name.substr(2);
         if ("+" == name.substr(0, 1))
