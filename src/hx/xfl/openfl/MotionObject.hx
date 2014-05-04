@@ -56,9 +56,16 @@ class MotionObject
         var animationFrame = currentFrame - domFrame.index;
         if (animationFrame == 0) return ;
         
-        for (frame in property.keyFrames) {
-            if (animationFrame == frame.getFrameIndex()) 
-                matrix.ty += frame.anchor.y;
+        for (key in property.keyFrames) {
+            if (animationFrame == key.getFrameIndex()) {
+                matrix.ty += key.anchor.y;
+                break;
+            }
+            var nextKey = property.nextKey(key);
+            if (animationFrame > key.getFrameIndex() && 
+                property.nextKey(key) != null) {
+                matrix.ty += (animationFrame-key.getFrameIndex())*(nextKey.anchor.y - key.anchor.y) / (nextKey.getFrameIndex() - key.getFrameIndex());
+            }
         }
     }
     
