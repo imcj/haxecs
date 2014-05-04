@@ -44,7 +44,7 @@ class MotionObject
             //}
             var nextKey = property.nextKey(key);
             if (animationFrame > key.getFrameIndex() && 
-                property.nextKey(key) != null) {
+                nextKey != null) {
                 matrix.tx += (animationFrame-key.getFrameIndex())*(nextKey.anchor.y - key.anchor.y) / (nextKey.getFrameIndex() - key.getFrameIndex());
             }
         }
@@ -82,8 +82,11 @@ class MotionObject
             //}
             var nextKey = property.nextKey(key);
             if (animationFrame > key.getFrameIndex() && 
-                property.nextKey(key) != null) {
+                nextKey != null) {
                 matrix.rotate((animationFrame-key.getFrameIndex())*(nextKey.anchor.y - key.anchor.y) / (nextKey.getFrameIndex() - key.getFrameIndex()) * Math.PI/180);
+            }else if (animationFrame > key.getFrameIndex() && 
+                      nextKey == null) {
+                matrix.setRotate(key.anchor.y * Math.PI / 180);
             }
         }
     }

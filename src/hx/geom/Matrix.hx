@@ -66,6 +66,14 @@ class Matrix
         //this.ty = this.tx * sin + this.ty * cos;
         //this.tx = tx1;
     }
+    
+    public function setRotate(angle:Float):Void 
+    {
+        a = Math.cos(angle);
+        b = Math.sin(angle);
+        c = -Math.sin(angle);
+        d = Math.cos(angle);
+    }
 
     public function scale(x:Float, y:Float):Void 
     {
