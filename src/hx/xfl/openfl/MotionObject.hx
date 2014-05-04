@@ -9,16 +9,32 @@ import hx.xfl.motion.PropertyContainer;
 
 class MotionObject
 {
-    var dom:DOMFrame;
+    var domFrame:DOMFrame;
     var target:DOMElement;
 
     var currentFrame:Int;
 
-    public function new(target, dom)
+    public function new(target, domFrame)
     {
         this.target = target;
-        this.dom = dom;
+        this.domFrame = domFrame;
         this.currentFrame = 0;
+    }
+    
+    public function getCurrentMatrix(currentFrame:Int):Matrix
+    {
+        var matrix = target.matrix.clone();
+        motionX(matrix);
+        return matrix;
+    }
+    
+    function motionX(matrix:Matrix):Void 
+    {
+        var property = getProperty("Motion_X");
+        var animationFrame = currentFrame - domFrame.index;
+        if (animationFrame == 0) return ;
+        
+        
     }
 
     public function animate(currentFrame:Int)
@@ -29,9 +45,9 @@ class MotionObject
         var xAdd = motion("Motion_X");
         var yAdd = motion("Motion_Y");
         if (xAdd.isAdd) matrix.tx += xAdd.v;
-        else matrix.tx = target.matrix.tx;
+        else matrix.tx = target.matrix.tx+xAdd.v;
         if (yAdd.isAdd) matrix.ty += yAdd.v;
-        else matrix.ty = target.matrix.ty;
+        else matrix.ty = target.matrix.ty+yAdd.v;
         var rotationAdd = motion("Rotation_Z");
         //matrix.rotate(rotationAdd);
         var scaleXAdd = motion("Scale_X");
@@ -55,11 +71,12 @@ class MotionObject
         if(1 < keys.length) {
             var delta = keys[1].anchor.y - keys[0].anchor.y;
             var deltaFrame = Std.int((keys[1].timevalue - keys[0].timevalue) / 1000);
-            if (dom.animation.strength != 0) addValue = ease(easeDelta, easeDeltaFrame, currentFrame-Std.int(easeKeys[0].timevalue / 1000));
+            if (domFrame.animation.strength != 0) addValue = ease(easeDelta, easeDeltaFrame, currentFrame-Std.int(easeKeys[0].timevalue / 1000));
             else addValue = delta / deltaFrame;
-            addValue *= (currentFrame-dom.index-Std.int(keys[0].timevalue / 1000));
+            addValue *= (currentFrame-domFrame.index-Std.int(keys[0].timevalue / 1000));
             motionResult.isAdd = true;
         }else {
+            addValue = keys[0].anchor.y;
             motionResult.isAdd = false;
         }
 
@@ -74,7 +91,7 @@ class MotionObject
     //flash中的缓动处理
     public function ease(delta:Float, deltaFrame:Int, pastFrame:Int):Float 
     {
-        var s = dom.animation.strength;
+        var s = domFrame.animation.strength;
         if (s > 0) {
             var v0 = delta / deltaFrame * (1 + s / 100);
             var a = -v0 / deltaFrame;
@@ -92,7 +109,7 @@ class MotionObject
 
     public function getContainers(name:String):Map<String, PropertyContainer>
     {
-        var head = dom.animation.PropertyContainers.get(name);
+        var head = domFrame.animation.PropertyContainers.get(name);
         if (null == head) return null;
         var containers = cast(head.children);
         return containers;
