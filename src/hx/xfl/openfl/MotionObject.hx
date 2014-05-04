@@ -38,10 +38,10 @@ class MotionObject
         if (animationFrame == 0) return ;
         
         for (key in property.keyFrames) {
-            if (animationFrame == key.getFrameIndex()) {
-                matrix.tx += key.anchor.y;
-                break;
-            }
+            //if (animationFrame == key.getFrameIndex()) {
+                //matrix.tx += key.anchor.y;
+                //break;
+            //}
             var nextKey = property.nextKey(key);
             if (animationFrame > key.getFrameIndex() && 
                 property.nextKey(key) != null) {
@@ -57,10 +57,10 @@ class MotionObject
         if (animationFrame == 0) return ;
         
         for (key in property.keyFrames) {
-            if (animationFrame == key.getFrameIndex()) {
-                matrix.ty += key.anchor.y;
-                break;
-            }
+            //if (animationFrame == key.getFrameIndex()) {
+                //matrix.ty += key.anchor.y;
+                //break;
+            //}
             var nextKey = property.nextKey(key);
             if (animationFrame > key.getFrameIndex() && 
                 property.nextKey(key) != null) {
@@ -76,10 +76,10 @@ class MotionObject
         if (animationFrame == 0) return ;
         
         for (key in property.keyFrames) {
-            if (animationFrame == key.getFrameIndex()) {
-                matrix.rotate(key.anchor.y * Math.PI / 180);
-                break;
-            }
+            //if (animationFrame == key.getFrameIndex()) {
+                //matrix.rotate(key.anchor.y * Math.PI / 180);
+                //break;
+            //}
             var nextKey = property.nextKey(key);
             if (animationFrame > key.getFrameIndex() && 
                 property.nextKey(key) != null) {
