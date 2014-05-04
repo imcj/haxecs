@@ -27,6 +27,7 @@ class MotionObject
         var matrix = target.matrix.clone();
         motionX(matrix);
         motionY(matrix);
+        motionRotation(matrix);
         return matrix;
     }
     
@@ -50,7 +51,19 @@ class MotionObject
         
         for (frame in property.keyFrames) {
             if (animationFrame == frame.getFrameIndex()) 
-                matrix.tx += frame.anchor.y;
+                matrix.ty += frame.anchor.y;
+        }
+    }
+    
+    function motionRotation(matrix:Matrix):Void 
+    {
+        var property = getProperty("Rotation_Z");
+        var animationFrame = currentFrame - domFrame.index;
+        if (animationFrame == 0) return ;
+        
+        for (frame in property.keyFrames) {
+            if (animationFrame == frame.getFrameIndex()) 
+                matrix.rotate(frame.anchor.y * Math.PI/180);
         }
     }
 
