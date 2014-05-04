@@ -75,9 +75,16 @@ class MotionObject
         var animationFrame = currentFrame - domFrame.index;
         if (animationFrame == 0) return ;
         
-        for (frame in property.keyFrames) {
-            if (animationFrame == frame.getFrameIndex()) 
-                matrix.rotate(frame.anchor.y * Math.PI/180);
+        for (key in property.keyFrames) {
+            if (animationFrame == key.getFrameIndex()) {
+                matrix.rotate(key.anchor.y * Math.PI / 180);
+                break;
+            }
+            var nextKey = property.nextKey(key);
+            if (animationFrame > key.getFrameIndex() && 
+                property.nextKey(key) != null) {
+                matrix.rotate((animationFrame-key.getFrameIndex())*(nextKey.anchor.y - key.anchor.y) / (nextKey.getFrameIndex() - key.getFrameIndex()) * Math.PI/180);
+            }
         }
     }
 
