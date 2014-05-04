@@ -15,6 +15,11 @@ class Property
     {
         keyFrames = [];
     }
+    
+    public function nextKey(keyFrame:KeyFrame):KeyFrame
+    {
+        return keyFrames[keyFrames.indexOf(keyFrame) + 1];
+    }
 
     public function getStarEnd(frameIndex:Int):Array<KeyFrame>
     {
