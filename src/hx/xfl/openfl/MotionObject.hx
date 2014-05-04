@@ -12,6 +12,7 @@ class MotionObject
     var target:DOMElement;
 
     var currentFrame:Int;
+    var startFrame:Int;
 
     public function new(target, dom)
     {
@@ -20,10 +21,12 @@ class MotionObject
         this.currentFrame = 0;
     }
 
-    public function animate(currentFrame:Int)
+    public function animate(currentFrame:Int, startFrame:Int)
     {
         var matrix = target.matrix.clone();
         this.currentFrame = currentFrame;
+        this.startFrame = startFrame;
+        
         var xAdd = motion("Motion_X");
         var yAdd = motion("Motion_Y");
         matrix.tx += xAdd;
@@ -52,7 +55,7 @@ class MotionObject
             var deltaFrame = Std.int((keys[1].timevalue - keys[0].timevalue) / 1000);
             if (dom.strength != 0) addValue = ease(easeDelta, easeDeltaFrame, currentFrame-Std.int(easeKeys[0].timevalue / 1000));
             else addValue = delta / deltaFrame;
-            addValue *= currentFrame;
+            addValue *= (currentFrame-startFrame-Std.int(keys[0].timevalue/1000));
         }
 
         if (~/Rotation/.match(propertyName)) addValue = addValue * Math.PI / 180;
