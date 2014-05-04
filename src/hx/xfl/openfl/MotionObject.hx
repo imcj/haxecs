@@ -3,12 +3,13 @@ import flash.display.DisplayObject;
 import hx.geom.Matrix;
 import hx.xfl.DOMAnimationCore;
 import hx.xfl.DOMElement;
+import hx.xfl.DOMFrame;
 import hx.xfl.motion.Property;
 import hx.xfl.motion.PropertyContainer;
 
 class MotionObject
 {
-    var dom:DOMAnimationCore;
+    var dom:DOMFrame;
     var target:DOMElement;
 
     var currentFrame:Int;
@@ -21,11 +22,10 @@ class MotionObject
         this.currentFrame = 0;
     }
 
-    public function animate(currentFrame:Int, startFrame:Int)
+    public function animate(currentFrame:Int)
     {
         var matrix = target.matrix.clone();
         this.currentFrame = currentFrame;
-        this.startFrame = startFrame;
         
         var xAdd = motion("Motion_X");
         var yAdd = motion("Motion_Y");
@@ -53,7 +53,7 @@ class MotionObject
         if(1 < keys.length) {
             var delta = keys[1].anchor.y - keys[0].anchor.y;
             var deltaFrame = Std.int((keys[1].timevalue - keys[0].timevalue) / 1000);
-            if (dom.strength != 0) addValue = ease(easeDelta, easeDeltaFrame, currentFrame-Std.int(easeKeys[0].timevalue / 1000));
+            if (dom.animation.strength != 0) addValue = ease(easeDelta, easeDeltaFrame, currentFrame-Std.int(easeKeys[0].timevalue / 1000));
             else addValue = delta / deltaFrame;
             addValue *= (currentFrame-startFrame-Std.int(keys[0].timevalue/1000));
         }
@@ -68,7 +68,7 @@ class MotionObject
     //flash中的缓动处理
     public function ease(delta:Float, deltaFrame:Int, pastFrame:Int):Float 
     {
-        var s = dom.strength;
+        var s = dom.animation.strength;
         if (s > 0) {
             var v0 = delta / deltaFrame * (1 + s / 100);
             var a = -v0 / deltaFrame;
@@ -86,7 +86,7 @@ class MotionObject
 
     public function getContainers(name:String):Map<String, PropertyContainer>
     {
-        var head = dom.PropertyContainers.get(name);
+        var head = dom.animation.PropertyContainers.get(name);
         if (null == head) return null;
         var containers = cast(head.children);
         return containers;

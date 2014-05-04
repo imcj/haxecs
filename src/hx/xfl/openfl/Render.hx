@@ -113,10 +113,10 @@ class Render
                     var deltaMatrix = perAddMatrix.multi(currentFrame-frame.index);
                     matrix = starMatrix.add(deltaMatrix);
                 }else if (frame.tweenType == "motion object") {
-                    var motion = new MotionObject(instance, frame.animation);
+                    var motion = new MotionObject(instance, frame);
                     var prePosition = new Point(matrix.tx, matrix.ty);
                     var preTransform = matrix.transformPoint(instance.transformPoint);
-                    matrix = motion.animate(currentFrame, frame.index);
+                    matrix = motion.animate(currentFrame);
                     //对形变中心引起的偏移做处理
                     var deltaPosition = new Point(matrix.tx - prePosition.x, matrix.ty - prePosition.y);
                     var nowTransform = matrix.transformPoint(instance.transformPoint);
