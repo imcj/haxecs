@@ -26,10 +26,10 @@ class MotionObject
         this.currentFrame = currentFrame;
         var xAdd = motion("Motion_X");
         var yAdd = motion("Motion_Y");
-        matrix.tx += xAdd.v;
-        matrix.ty += yAdd.v;
+        matrix.tx = xAdd;
+        matrix.ty = yAdd;
         var rotationAdd = motion("Rotation_Z");
-        //matrix.rotate(rotationAdd.v);
+        //matrix.rotate(rotationAdd);
         var scaleXAdd = motion("Scale_X");
         var scaleYAdd = motion("Scale_Y");
         //matrix.scale(scaleXAdd, scaleYAdd);
@@ -52,13 +52,14 @@ class MotionObject
             var deltaFrame = Std.int((keys[1].timevalue - keys[0].timevalue) / 1000);
             if (dom.strength != 0) addValue = ease(easeDelta, easeDeltaFrame, currentFrame-Std.int(easeKeys[0].timevalue / 1000));
             else addValue = delta / deltaFrame;
+            addValue *= deltaFrame;
         }
 
         if (~/Rotation/.match(propertyName)) addValue = addValue * Math.PI / 180;
         if (~/Scale/.match(propertyName)) addValue = (keys[0].anchor.y + addValue) / 100;
         if (~/Skew/.match(propertyName)) addValue = addValue * Math.PI / 180;
 
-        return motionResult;
+        return addValue;
     }
 
     //flash中的缓动处理
