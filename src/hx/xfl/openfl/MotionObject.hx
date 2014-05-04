@@ -22,14 +22,12 @@ class MotionObject
 
     public function animate(currentFrame:Int)
     {
-        var matrix = target.matrix;
+        var matrix = target.matrix.clone();
         this.currentFrame = currentFrame;
         var xAdd = motion("Motion_X");
         var yAdd = motion("Motion_Y");
-        if (xAdd.isAdd) matrix.tx += xAdd.v;
-        else matrix.tx = xAdd.v;
-        if (yAdd.isAdd) matrix.ty += yAdd.v;
-        else matrix.ty = yAdd.v;
+        matrix.tx += xAdd.v;
+        matrix.ty += yAdd.v;
         var rotationAdd = motion("Rotation_Z");
         //matrix.rotate(rotationAdd.v);
         var scaleXAdd = motion("Scale_X");
@@ -38,11 +36,11 @@ class MotionObject
         var skewXAdd = motion("Skew_X");
         var skewYAdd = motion("Skew_Y");
         //matrix.skew(skewXAdd, skewYAdd);
+        return matrix;
     }
 
-    public function motion(propertyName:String):{ v:Float, isAdd:Bool }
+    public function motion(propertyName:String):Float
     {
-        var motionResult:Dynamic = { };
         var addValue = 0.0;
         var property = getProperty(propertyName);
         var easeKeys = property.keyFrames;
@@ -54,17 +52,12 @@ class MotionObject
             var deltaFrame = Std.int((keys[1].timevalue - keys[0].timevalue) / 1000);
             if (dom.strength != 0) addValue = ease(easeDelta, easeDeltaFrame, currentFrame-Std.int(easeKeys[0].timevalue / 1000));
             else addValue = delta / deltaFrame;
-            motionResult.isAdd = true;
-        }else {
-            addValue = keys[0].anchor.y;
-            motionResult.isAdd = false;
         }
 
         if (~/Rotation/.match(propertyName)) addValue = addValue * Math.PI / 180;
         if (~/Scale/.match(propertyName)) addValue = (keys[0].anchor.y + addValue) / 100;
         if (~/Skew/.match(propertyName)) addValue = addValue * Math.PI / 180;
 
-        motionResult.v = addValue;
         return motionResult;
     }
 

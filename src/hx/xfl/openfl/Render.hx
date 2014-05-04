@@ -99,7 +99,7 @@ class Render
                 var instance = cast(element, DOMSymbolInstance);
 
                 // 动画
-                var matrix = instance.matrix;
+                var matrix = instance.matrix.clone();
                 if (frame.tweenType == "motion") {
                     var nextFrame = frame;
                     for (n in 0...domLayer.frames.length) {
@@ -116,7 +116,7 @@ class Render
                     var motion = new MotionObject(instance, frame.animation);
                     var prePosition = new Point(matrix.tx, matrix.ty);
                     var preTransform = matrix.transformPoint(instance.transformPoint);
-                    motion.animate(currentFrame);
+                    matrix = motion.animate(currentFrame);
                     //对形变中心引起的偏移做处理
                     var deltaPosition = new Point(matrix.tx - prePosition.x, matrix.ty - prePosition.y);
                     var nowTransform = matrix.transformPoint(instance.transformPoint);
