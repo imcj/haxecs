@@ -13,7 +13,6 @@ class MotionObject
     var target:DOMElement;
 
     var currentFrame:Int;
-    var startFrame:Int;
 
     public function new(target, dom)
     {
@@ -26,11 +25,13 @@ class MotionObject
     {
         var matrix = target.matrix.clone();
         this.currentFrame = currentFrame;
-        
+
         var xAdd = motion("Motion_X");
         var yAdd = motion("Motion_Y");
-        matrix.tx += xAdd;
-        matrix.ty += yAdd;
+        if (xAdd.isAdd) matrix.tx += xAdd.v;
+        else matrix.tx = target.matrix.tx;
+        if (yAdd.isAdd) matrix.ty += yAdd.v;
+        else matrix.ty = target.matrix.ty;
         var rotationAdd = motion("Rotation_Z");
         //matrix.rotate(rotationAdd);
         var scaleXAdd = motion("Scale_X");
@@ -42,8 +43,9 @@ class MotionObject
         return matrix;
     }
 
-    public function motion(propertyName:String):Float
+    public function motion(propertyName:String): {v:Float, isAdd:Bool}
     {
+        var motionResult:Dynamic = { };
         var addValue = 0.0;
         var property = getProperty(propertyName);
         var easeKeys = property.keyFrames;
@@ -55,14 +57,18 @@ class MotionObject
             var deltaFrame = Std.int((keys[1].timevalue - keys[0].timevalue) / 1000);
             if (dom.animation.strength != 0) addValue = ease(easeDelta, easeDeltaFrame, currentFrame-Std.int(easeKeys[0].timevalue / 1000));
             else addValue = delta / deltaFrame;
-            addValue *= (currentFrame-startFrame-Std.int(keys[0].timevalue/1000));
+            addValue *= (currentFrame-dom.index-Std.int(keys[0].timevalue / 1000));
+            motionResult.isAdd = true;
+        }else {
+            motionResult.isAdd = false;
         }
 
         if (~/Rotation/.match(propertyName)) addValue = addValue * Math.PI / 180;
         if (~/Scale/.match(propertyName)) addValue = (keys[0].anchor.y + addValue) / 100;
         if (~/Skew/.match(propertyName)) addValue = addValue * Math.PI / 180;
 
-        return addValue;
+        motionResult.v = addValue;
+        return motionResult;
     }
 
     //flash中的缓动处理
