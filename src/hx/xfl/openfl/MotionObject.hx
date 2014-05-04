@@ -28,6 +28,7 @@ class MotionObject
         motionX(matrix);
         motionY(matrix);
         motionRotation(matrix);
+        motionScaleX(matrix);
         return matrix;
     }
     
@@ -63,7 +64,7 @@ class MotionObject
             //}
             var nextKey = property.nextKey(key);
             if (animationFrame > key.getFrameIndex() && 
-                property.nextKey(key) != null) {
+                nextKey != null) {
                 matrix.ty += (animationFrame-key.getFrameIndex())*(nextKey.anchor.y - key.anchor.y) / (nextKey.getFrameIndex() - key.getFrameIndex());
             }
         }
@@ -87,6 +88,28 @@ class MotionObject
             }else if (animationFrame > key.getFrameIndex() && 
                       nextKey == null) {
                 matrix.setRotate(key.anchor.y * Math.PI / 180);
+            }
+        }
+    }
+    
+    function motionScaleX(matrix:Matrix):Void 
+    {
+        var property = getProperty("Scale_X");
+        var animationFrame = currentFrame - domFrame.index;
+        if (animationFrame == 0) return ;
+        
+        for (key in property.keyFrames) {
+            //if (animationFrame == key.getFrameIndex()) {
+                //matrix.rotate(key.anchor.y * Math.PI / 180);
+                //break;
+            //}
+            var nextKey = property.nextKey(key);
+            if (animationFrame > key.getFrameIndex() && 
+                nextKey != null) {
+                matrix.scale((animationFrame-key.getFrameIndex())*(nextKey.anchor.y - key.anchor.y) / (nextKey.getFrameIndex() - key.getFrameIndex()) / 100, 1);
+            }else if (animationFrame > key.getFrameIndex() && 
+                      nextKey == null) {
+                matrix.scale(key.anchor.y / 100, 1);
             }
         }
     }
