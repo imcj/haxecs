@@ -17,6 +17,11 @@ class KeyFrame
         next = new Point();
         previous = new Point();
     }
+    
+    public function getFrameIndex():Int
+    {
+        return Std.int(timevalue / 1000);
+    }
 
     public function parse(data:Xml)
     {

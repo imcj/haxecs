@@ -23,6 +23,7 @@ class MotionObject
     
     public function getCurrentMatrix(currentFrame:Int):Matrix
     {
+        this.currentFrame = currentFrame;
         var matrix = target.matrix.clone();
         motionX(matrix);
         return matrix;
@@ -34,7 +35,10 @@ class MotionObject
         var animationFrame = currentFrame - domFrame.index;
         if (animationFrame == 0) return ;
         
-        
+        for (frame in property.keyFrames) {
+            if (animationFrame == frame.getFrameIndex()) 
+                matrix.tx += frame.anchor.y;
+        }
     }
 
     public function animate(currentFrame:Int)
