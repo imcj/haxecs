@@ -26,12 +26,25 @@ class MotionObject
         this.currentFrame = currentFrame;
         var matrix = target.matrix.clone();
         motionX(matrix);
+        motionY(matrix);
         return matrix;
     }
     
     function motionX(matrix:Matrix):Void 
     {
         var property = getProperty("Motion_X");
+        var animationFrame = currentFrame - domFrame.index;
+        if (animationFrame == 0) return ;
+        
+        for (frame in property.keyFrames) {
+            if (animationFrame == frame.getFrameIndex()) 
+                matrix.tx += frame.anchor.y;
+        }
+    }
+    
+    function motionY(matrix:Matrix):Void 
+    {
+        var property = getProperty("Motion_Y");
         var animationFrame = currentFrame - domFrame.index;
         if (animationFrame == 0) return ;
         
