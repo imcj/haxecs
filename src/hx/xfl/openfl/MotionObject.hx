@@ -26,8 +26,8 @@ class MotionObject
         this.currentFrame = currentFrame;
         var xAdd = motion("Motion_X");
         var yAdd = motion("Motion_Y");
-        matrix.tx = xAdd;
-        matrix.ty = yAdd;
+        matrix.tx += xAdd;
+        matrix.ty += yAdd;
         var rotationAdd = motion("Rotation_Z");
         //matrix.rotate(rotationAdd);
         var scaleXAdd = motion("Scale_X");
@@ -52,7 +52,7 @@ class MotionObject
             var deltaFrame = Std.int((keys[1].timevalue - keys[0].timevalue) / 1000);
             if (dom.strength != 0) addValue = ease(easeDelta, easeDeltaFrame, currentFrame-Std.int(easeKeys[0].timevalue / 1000));
             else addValue = delta / deltaFrame;
-            addValue *= deltaFrame;
+            addValue *= currentFrame;
         }
 
         if (~/Rotation/.match(propertyName)) addValue = addValue * Math.PI / 180;

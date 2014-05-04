@@ -122,7 +122,7 @@ class Render
                     var nowTransform = matrix.transformPoint(instance.transformPoint);
                     var deltaTransform = new Point(nowTransform.x - preTransform.x, nowTransform.y - preTransform.y);
                     var revise = deltaPosition.sub(deltaTransform);
-                    matrix.translate(revise);
+                    //matrix.translate(revise);
                 }
                 
                 if ("movie clip" == instance.symbolType ||
