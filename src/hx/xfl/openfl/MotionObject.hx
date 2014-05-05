@@ -46,7 +46,10 @@ class MotionObject
             var nextKey = property.nextKey(key);
             if (animationFrame > key.getFrameIndex() && 
                 nextKey != null) {
-                matrix.tx += (animationFrame-key.getFrameIndex())*(nextKey.anchor.y - key.anchor.y) / (nextKey.getFrameIndex() - key.getFrameIndex());
+                var delta = nextKey.anchor.y - key.anchor.y;
+                var deltaFrame = nextKey.getFrameIndex() - key.getFrameIndex();
+                var passFrame = animationFrame-key.getFrameIndex();
+                matrix.tx += ease(delta, deltaFrame, passFrame)*passFrame;
             }
         }
     }
@@ -180,7 +183,7 @@ class MotionObject
             var t = pastFrame;
             return  a * (2 * t -1) / 2;
         }else {
-            return 0;
+            return delta / deltaFrame;
         }
     }
 
