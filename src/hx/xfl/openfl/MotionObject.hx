@@ -28,7 +28,7 @@ class MotionObject
         motionX(matrix);
         motionY(matrix);
         motionRotation(matrix);
-        motionScaleX(matrix);
+        //motionScaleX(matrix);
         return matrix;
     }
     
@@ -38,20 +38,26 @@ class MotionObject
         var animationFrame = currentFrame - domFrame.index;
         if (animationFrame == 0) return ;
         
-        for (key in property.keyFrames) {
-            //if (animationFrame == key.getFrameIndex()) {
-                //matrix.tx += key.anchor.y;
-                //break;
+        //for (key in property.keyFrames) {
+            ////if (animationFrame == key.getFrameIndex()) {
+                ////matrix.tx += key.anchor.y;
+                ////break;
+            ////}
+            //var nextKey = property.nextKey(key);
+            //if (animationFrame > key.getFrameIndex() && 
+                //nextKey != null) {
+                //var delta = nextKey.anchor.y - key.anchor.y;
+                //var deltaFrame = nextKey.getFrameIndex() - key.getFrameIndex();
+                //var pastFrame = animationFrame-key.getFrameIndex();
+                //
+                //matrix.tx += easeValue(delta, deltaFrame, pastFrame);
             //}
-            var nextKey = property.nextKey(key);
-            if (animationFrame > key.getFrameIndex() && 
-                nextKey != null) {
-                var delta = nextKey.anchor.y - key.anchor.y;
-                var deltaFrame = nextKey.getFrameIndex() - key.getFrameIndex();
-                var pastFrame = animationFrame-key.getFrameIndex();
-                matrix.tx += easeValue(delta, deltaFrame, pastFrame);
-            }
-        }
+        //}
+        var keys = property.keyFrames;
+        var delta = keys[keys.length - 1].anchor.y - keys[0].anchor.y;
+        var deltaFrame = keys[keys.length - 1].getFrameIndex() - keys[0].getFrameIndex();
+        var pastFrame = animationFrame - keys[0].getFrameIndex();
+        matrix.tx += easeValue(delta, deltaFrame, pastFrame);
     }
     
     function motionY(matrix:Matrix):Void 
@@ -60,20 +66,25 @@ class MotionObject
         var animationFrame = currentFrame - domFrame.index;
         if (animationFrame == 0) return ;
         
-        for (key in property.keyFrames) {
-            //if (animationFrame == key.getFrameIndex()) {
-                //matrix.ty += key.anchor.y;
-                //break;
+        //for (key in property.keyFrames) {
+            ////if (animationFrame == key.getFrameIndex()) {
+                ////matrix.ty += key.anchor.y;
+                ////break;
+            ////}
+            //var nextKey = property.nextKey(key);
+            //if (animationFrame > key.getFrameIndex() && 
+                //nextKey != null) {
+                //var delta = nextKey.anchor.y - key.anchor.y;
+                //var deltaFrame = nextKey.getFrameIndex() - key.getFrameIndex();
+                //var pastFrame = animationFrame-key.getFrameIndex();
+                //matrix.ty += easeValue(delta, deltaFrame, pastFrame);
             //}
-            var nextKey = property.nextKey(key);
-            if (animationFrame > key.getFrameIndex() && 
-                nextKey != null) {
-                var delta = nextKey.anchor.y - key.anchor.y;
-                var deltaFrame = nextKey.getFrameIndex() - key.getFrameIndex();
-                var pastFrame = animationFrame-key.getFrameIndex();
-                matrix.ty += easeValue(delta, deltaFrame, pastFrame);
-            }
-        }
+        //}
+        var keys = property.keyFrames;
+        var delta = keys[keys.length - 1].anchor.y - keys[0].anchor.y;
+        var deltaFrame = keys[keys.length - 1].getFrameIndex() - keys[0].getFrameIndex();
+        var pastFrame = animationFrame - keys[0].getFrameIndex();
+        matrix.ty += easeValue(delta, deltaFrame, pastFrame);
     }
     
     function motionRotation(matrix:Matrix):Void 
