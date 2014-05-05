@@ -90,7 +90,10 @@ class MotionObject
             var nextKey = property.nextKey(key);
             if (animationFrame > key.getFrameIndex() && 
                 nextKey != null) {
-                matrix.rotate((animationFrame-key.getFrameIndex())*(nextKey.anchor.y - key.anchor.y) / (nextKey.getFrameIndex() - key.getFrameIndex()) * Math.PI/180);
+                var delta = (nextKey.anchor.y - key.anchor.y) * Math.PI / 180;
+                var deltaFrame = nextKey.getFrameIndex() - key.getFrameIndex();
+                var pastFrame = animationFrame-key.getFrameIndex();
+                matrix.rotate(easeValue(delta, deltaFrame, pastFrame));
             }else if (animationFrame > key.getFrameIndex() && 
                       nextKey == null) {
                 matrix.setRotate(key.anchor.y * Math.PI / 180);
