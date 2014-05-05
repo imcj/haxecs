@@ -29,6 +29,7 @@ class MotionObject
         motionY(matrix);
         motionRotation(matrix);
         motionScale(matrix);
+        motionSkew(matrix);
         return matrix;
     }
     
@@ -99,6 +100,27 @@ class MotionObject
             matrix.scale(easeValue(deltaX / 100, deltaFrame, pastFrame),easeValue(deltaX / 100, deltaFrame, pastFrame));
         else 
             matrix.scale(keysX[keysX.length - 1].anchor.y / 100, keysY[keysY.length - 1].anchor.y / 100);
+    }
+    
+    function motionSkew(matrix:Matrix):Void 
+    {
+        var propertyX = getProperty("Skew_X");
+        var animationFrame = currentFrame - domFrame.index;
+        if (animationFrame == 0) return ;
+        var propertyY = getProperty("Skew_Y");
+        var animationFrame = currentFrame - domFrame.index;
+        if (animationFrame == 0) return ;
+        
+        var keysX = propertyX.keyFrames;
+        var keysY = propertyY.keyFrames;
+        var deltaX = keysX[keysX.length - 1].anchor.y - keysX[0].anchor.y;
+        var deltaY = keysY[keysY.length - 1].anchor.y - keysY[0].anchor.y;
+        var deltaFrame = keysX[keysX.length - 1].getFrameIndex() - keysX[0].getFrameIndex();
+        var pastFrame = animationFrame - keysX[0].getFrameIndex();
+        if(pastFrame < keysX[keysX.length-1].getFrameIndex())
+            matrix.skew(easeValue(deltaX / 100, deltaFrame, pastFrame),easeValue(deltaX / 100, deltaFrame, pastFrame));
+        else 
+            matrix.skew(keysX[keysX.length - 1].anchor.y / 100, keysY[keysY.length - 1].anchor.y / 100);
     }
 
     public function animate(currentFrame:Int)
