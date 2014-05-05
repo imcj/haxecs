@@ -97,7 +97,7 @@ class MotionObject
         var deltaFrame = keysX[keysX.length - 1].getFrameIndex() - keysX[0].getFrameIndex();
         var pastFrame = animationFrame - keysX[0].getFrameIndex();
         if(pastFrame < keysX[keysX.length-1].getFrameIndex())
-            matrix.scale(easeValue(deltaX / 100, deltaFrame, pastFrame),easeValue(deltaX / 100, deltaFrame, pastFrame));
+            matrix.scale(1+easeValue(deltaX / 100, deltaFrame, pastFrame),1+easeValue(deltaY / 100, deltaFrame, pastFrame));
         else 
             matrix.scale(keysX[keysX.length - 1].anchor.y / 100, keysY[keysY.length - 1].anchor.y / 100);
     }
@@ -118,7 +118,7 @@ class MotionObject
         var deltaFrame = keysX[keysX.length - 1].getFrameIndex() - keysX[0].getFrameIndex();
         var pastFrame = animationFrame - keysX[0].getFrameIndex();
         if(pastFrame < keysX[keysX.length-1].getFrameIndex())
-            matrix.skew(easeValue(deltaX / 100, deltaFrame, pastFrame),easeValue(deltaX / 100, deltaFrame, pastFrame));
+            matrix.skew(easeValue(deltaX / 100, deltaFrame, pastFrame),easeValue(deltaY / 100, deltaFrame, pastFrame));
         else 
             matrix.skew(keysX[keysX.length - 1].anchor.y / 100, keysY[keysY.length - 1].anchor.y / 100);
     }
