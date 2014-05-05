@@ -48,8 +48,8 @@ class MotionObject
                 nextKey != null) {
                 var delta = nextKey.anchor.y - key.anchor.y;
                 var deltaFrame = nextKey.getFrameIndex() - key.getFrameIndex();
-                var passFrame = animationFrame-key.getFrameIndex();
-                matrix.tx += ease(delta, deltaFrame, passFrame)*passFrame;
+                var pastFrame = animationFrame-key.getFrameIndex();
+                matrix.tx += easeValue(delta, deltaFrame, pastFrame);
             }
         }
     }
@@ -68,7 +68,10 @@ class MotionObject
             var nextKey = property.nextKey(key);
             if (animationFrame > key.getFrameIndex() && 
                 nextKey != null) {
-                matrix.ty += (animationFrame-key.getFrameIndex())*(nextKey.anchor.y - key.anchor.y) / (nextKey.getFrameIndex() - key.getFrameIndex());
+                var delta = nextKey.anchor.y - key.anchor.y;
+                var deltaFrame = nextKey.getFrameIndex() - key.getFrameIndex();
+                var pastFrame = animationFrame-key.getFrameIndex();
+                matrix.ty += easeValue(delta, deltaFrame, pastFrame);
             }
         }
     }
@@ -151,8 +154,7 @@ class MotionObject
         if(1 < keys.length) {
             var delta = keys[1].anchor.y - keys[0].anchor.y;
             var deltaFrame = Std.int((keys[1].timevalue - keys[0].timevalue) / 1000);
-            if (domFrame.animation.strength != 0) addValue = ease(easeDelta, easeDeltaFrame, currentFrame-Std.int(easeKeys[0].timevalue / 1000));
-            else addValue = delta / deltaFrame;
+            addValue = ease(easeDelta, easeDeltaFrame, currentFrame-Std.int(easeKeys[0].timevalue / 1000));
             addValue *= (currentFrame-domFrame.index-Std.int(keys[0].timevalue / 1000));
             motionResult.isAdd = true;
         }else {
@@ -184,6 +186,24 @@ class MotionObject
             return  a * (2 * t -1) / 2;
         }else {
             return delta / deltaFrame;
+        }
+    }
+    
+    public function easeValue(delta:Float, deltaFrame:Int, pastFrame:Int):Float
+    {
+        var s = domFrame.animation.strength;
+        if (s > 0) {
+            var v0 = delta / deltaFrame * (1 + s / 100);
+            var a = -v0 / deltaFrame;
+            var t = pastFrame;
+            return v0 * t + a * t * t / 2;
+        }else if (s < 0) {
+            var v1 = delta / deltaFrame * (1 - s / 100);
+            var a = v1 / deltaFrame;
+            var t = pastFrame;
+            return  v1 * t + a * t * t / 2;
+        }else {
+            return delta / deltaFrame * pastFrame;
         }
     }
 
