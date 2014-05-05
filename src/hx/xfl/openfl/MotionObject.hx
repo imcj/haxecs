@@ -93,23 +93,31 @@ class MotionObject
         var animationFrame = currentFrame - domFrame.index;
         if (animationFrame == 0) return ;
         
-        for (key in property.keyFrames) {
-            //if (animationFrame == key.getFrameIndex()) {
-                //matrix.rotate(key.anchor.y * Math.PI / 180);
-                //break;
+        //for (key in property.keyFrames) {
+            ////if (animationFrame == key.getFrameIndex()) {
+                ////matrix.rotate(key.anchor.y * Math.PI / 180);
+                ////break;
+            ////}
+            //var nextKey = property.nextKey(key);
+            //if (animationFrame > key.getFrameIndex() && 
+                //nextKey != null) {
+                //var delta = (nextKey.anchor.y - key.anchor.y) * Math.PI / 180;
+                //var deltaFrame = nextKey.getFrameIndex() - key.getFrameIndex();
+                //var pastFrame = animationFrame-key.getFrameIndex();
+                //matrix.rotate(easeValue(delta, deltaFrame, pastFrame));
+            //}else if (animationFrame > key.getFrameIndex() && 
+                      //nextKey == null) {
+                //matrix.setRotate(key.anchor.y * Math.PI / 180);
             //}
-            var nextKey = property.nextKey(key);
-            if (animationFrame > key.getFrameIndex() && 
-                nextKey != null) {
-                var delta = (nextKey.anchor.y - key.anchor.y) * Math.PI / 180;
-                var deltaFrame = nextKey.getFrameIndex() - key.getFrameIndex();
-                var pastFrame = animationFrame-key.getFrameIndex();
-                matrix.rotate(easeValue(delta, deltaFrame, pastFrame));
-            }else if (animationFrame > key.getFrameIndex() && 
-                      nextKey == null) {
-                matrix.setRotate(key.anchor.y * Math.PI / 180);
-            }
-        }
+        //}
+        var keys = property.keyFrames;
+        var delta = keys[keys.length - 1].anchor.y - keys[0].anchor.y;
+        var deltaFrame = keys[keys.length - 1].getFrameIndex() - keys[0].getFrameIndex();
+        var pastFrame = animationFrame - keys[0].getFrameIndex();
+        if(pastFrame < keys[keys.length-1].getFrameIndex())
+            matrix.rotate(easeValue(delta * Math.PI / 180, deltaFrame, pastFrame));
+        else 
+            matrix.setRotate(keys[keys.length - 1].anchor.y * Math.PI / 180);
     }
     
     function motionScaleX(matrix:Matrix):Void 
