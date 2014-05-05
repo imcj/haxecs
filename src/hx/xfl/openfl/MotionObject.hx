@@ -56,7 +56,11 @@ class MotionObject
         if (animationFrame == 0) return ;
         
         var keys = property.keyFrames;
-        var delta = keys[keys.length - 1].anchor.y - keys[0].anchor.y;
+        var delta = 0.0;
+        for (i in keys) {
+            delta += i.anchor.y;
+        }
+        //var delta = keys[keys.length - 1].anchor.y - keys[0].anchor.y;
         var deltaFrame = keys[keys.length - 1].getFrameIndex() - keys[0].getFrameIndex();
         var pastFrame = animationFrame - keys[0].getFrameIndex();
         if(pastFrame < keys[keys.length-1].getFrameIndex())
