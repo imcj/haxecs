@@ -28,7 +28,7 @@ class MotionObject
         motionX(matrix);
         motionY(matrix);
         motionRotation(matrix);
-        //motionScaleX(matrix);
+        motionScale(matrix);
         return matrix;
     }
     
@@ -80,26 +80,25 @@ class MotionObject
             matrix.rotate(keys[keys.length - 1].anchor.y * Math.PI / 180);
     }
     
-    function motionScaleX(matrix:Matrix):Void 
+    function motionScale(matrix:Matrix):Void 
     {
-        var property = getProperty("Scale_X");
+        var propertyX = getProperty("Scale_X");
+        var animationFrame = currentFrame - domFrame.index;
+        if (animationFrame == 0) return ;
+        var propertyY = getProperty("Scale_Y");
         var animationFrame = currentFrame - domFrame.index;
         if (animationFrame == 0) return ;
         
-        for (key in property.keyFrames) {
-            //if (animationFrame == key.getFrameIndex()) {
-                //matrix.rotate(key.anchor.y * Math.PI / 180);
-                //break;
-            //}
-            var nextKey = property.nextKey(key);
-            if (animationFrame > key.getFrameIndex() && 
-                nextKey != null) {
-                matrix.scale((animationFrame-key.getFrameIndex())*(nextKey.anchor.y - key.anchor.y) / (nextKey.getFrameIndex() - key.getFrameIndex()) / 100, 1);
-            }else if (animationFrame > key.getFrameIndex() && 
-                      nextKey == null) {
-                matrix.scale(key.anchor.y / 100, 1);
-            }
-        }
+        var keysX = propertyX.keyFrames;
+        var keysY = propertyY.keyFrames;
+        var deltaX = keysX[keysX.length - 1].anchor.y - keysX[0].anchor.y;
+        var deltaY = keysY[keysY.length - 1].anchor.y - keysY[0].anchor.y;
+        var deltaFrame = keysX[keysX.length - 1].getFrameIndex() - keysX[0].getFrameIndex();
+        var pastFrame = animationFrame - keysX[0].getFrameIndex();
+        if(pastFrame < keysX[keysX.length-1].getFrameIndex())
+            matrix.scale(easeValue(deltaX / 100, deltaFrame, pastFrame),easeValue(deltaX / 100, deltaFrame, pastFrame));
+        else 
+            matrix.scale(keysX[keysX.length - 1].anchor.y / 100, keysY[keysY.length - 1].anchor.y / 100);
     }
 
     public function animate(currentFrame:Int)
