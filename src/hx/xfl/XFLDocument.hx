@@ -207,11 +207,12 @@ class XFLDocument extends DOMDocument
 
     static public function open(path:String):XFLDocument
     {
-        #if !windows
         if (path.endsWith(".xfl")) {
-            path = Path.abspath(Path.join(path, [".."]));
+            if (~/Windows/.match(Sys.environment().get("OS")))
+                path = Path.join(path, [".."]);
+            else
+                path = Path.abspath(Path.join(path, [".."]));
         }
-        #end
         #if flash
         return openFromAsset(path);
         #end
@@ -243,14 +244,14 @@ class XFLDocument extends DOMDocument
     {
         #if cstool
         var document_patt:String;
-        #if !windows
-        if (!path.startsWith("/"))
-            document_patt = Path.join(Sys.getCwd(), [path, "DOMDocument.xml"]);
-        else
+        if (~/Windows/.match(Sys.environment().get("OS"))) {
             document_patt = Path.join(path, ["DOMDocument.xml"]);
-        #else
-        document_patt = path;
-        #end
+        }else {
+            if (!path.startsWith("/"))
+                document_patt = Path.join(Sys.getCwd(), [path, "DOMDocument.xml"]);
+            else
+                document_patt = Path.join(path, ["DOMDocument.xml"]);
+        }
         var text = sys.io.File.getContent(document_patt);
         var document = new XFLDocumentAssembler().parse(
             Xml.parse(text), path);

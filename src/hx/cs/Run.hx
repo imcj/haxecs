@@ -63,7 +63,7 @@ class Run
                 var xfls:Array<String> = [];
                 for (item in sys.FileSystem.readDirectory(fla_path)) {
                     if (item.endsWith(".xfl")) {
-                        fla_path += item;
+                        //fla_path += item;
                         xfls.push(item);
                     }
                 }
