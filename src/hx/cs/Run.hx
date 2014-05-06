@@ -122,7 +122,7 @@ class Run
     {
         var project_xml_file = "";
         if(~/Windows/.match(Sys.environment().get("OS")))
-            project_xml_file = Path.join(target, ['project.xml']);
+            project_xml_file = Path.join(target, ['piratepig','project.xml']);
         else 
             project_xml_file = Path.join(Sys.getCwd(), [target, 'project.xml']);
         var project_xml = Xml.parse(sys.io.File.getContent(project_xml_file));
@@ -283,10 +283,16 @@ class Run
         addFrameCodeIntoMovieClipConstructor(document_fields,
             document_frame_indexes, class_name);
 
-        File.saveContent(
-            Path.join(Sys.getCwd(), [target, "Source", "Document.hx"]),
-            CSParser.toString(document_frame_ast)
-        );
+        if (~/Windows/.match(Sys.environment().get("OS")))
+            File.saveContent(
+                Path.join(target, ["Source", "Document.hx"]),
+                CSParser.toString(document_frame_ast)
+            );
+        else
+            File.saveContent(
+                Path.join(Sys.getCwd(), [target, "Source", "Document.hx"]),
+                CSParser.toString(document_frame_ast)
+            );
 
         
         for (symbol in document.getSymbolIterators()) {
