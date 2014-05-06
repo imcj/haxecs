@@ -285,7 +285,7 @@ class Run
 
         if (~/Windows/.match(Sys.environment().get("OS")))
             File.saveContent(
-                Path.join(target, ["Source", "Document.hx"]),
+                Path.join(target, ["piratepig", "Source", "Document.hx"]),
                 CSParser.toString(document_frame_ast)
             );
         else
