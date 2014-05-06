@@ -120,7 +120,11 @@ class Run
 
     inline function configurateProject()
     {
-        var project_xml_file = Path.join(Sys.getCwd(), [target, 'project.xml']);
+        var project_xml_file = "";
+        if(~/Windows/.match(Sys.environment().get("OS")))
+            project_xml_file = Path.join(target, ['project.xml']);
+        else 
+            project_xml_file = Path.join(Sys.getCwd(), [target, 'project.xml']);
         var project_xml = Xml.parse(sys.io.File.getContent(project_xml_file));
 
         var element_haxelib_haxecs = Xml.createElement("haxelib");
@@ -195,7 +199,11 @@ class Run
         if (sys.FileSystem.exists(Path.join(target, ["project.xml"])))
             return;
 
-        var up:String = Path.abspath(Path.join(target_dir, ["../"]));
+        var up:String = "";
+        if (~/Windows/.match(Sys.environment().get("OS")))
+            up = target;
+        else
+            up = Path.abspath(Path.join(target_dir, ["../"]));
 
         if (!sys.FileSystem.exists(up))
             sys.FileSystem.createDirectory(up);
