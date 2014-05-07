@@ -55,6 +55,7 @@ class Run
         }
 
         shellDir = arguments[arguments.length - 1];
+        Path.shellDir = shellDir;
 
         fla_path = arguments[0];
         if (fla_path.endsWith(".fla")) {

@@ -5,10 +5,11 @@ using StringTools;
 class Path
 {
     static var path:IPath;
+    static public var shellDir:String;
 
     static public function __init__()
     {
-        #if (neko || cpp)
+        #if (neko || cpp || php)
         var sys = Sys.systemName();
         
         if (~/Windows/.match(sys)) {
