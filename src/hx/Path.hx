@@ -4,10 +4,17 @@ using StringTools;
 
 class Path
 {
-    static var path:IPath = new PosixPath();
+    static var path:IPath;
 
     static public function __init__()
     {
+        var sys = Sys.systemName();
+        
+        if (~/Windows/.match(sys)) {
+            path = new WindowsPath();
+        }else {
+            path = new PosixPath();
+        }
         // #if flash
         // path = new PosixPath();
         // #else
