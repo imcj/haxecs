@@ -63,6 +63,7 @@ class Run
 
         if (sys.FileSystem.exists(fla_path)) {
             if (sys.FileSystem.isDirectory(fla_path)) {
+                if (!fla_path.endsWith("/")) fla_path += "/";
                 var xfls:Array<String> = [];
                 for (item in sys.FileSystem.readDirectory(fla_path)) {
                     if (item.endsWith(".xfl")) {
