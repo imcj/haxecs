@@ -1,5 +1,7 @@
 package hx;
 
+using StringTools;
+
 class WindowsPath implements IPath
 {
 
@@ -8,16 +10,13 @@ class WindowsPath implements IPath
         
     }
     
-    public function join(a:String, b:Dynamic):String
+    public function join(a:String, b:Array<String>):String
     {
         var path = a;
-        var joinPath = [];
-        if (Std.is(b, String)) joinPath = [b];
-        if (Std.is(b, Array)) joinPath = b;
-        if (joinPath.length == 0) return a;
-        for (p in joinPath) {
+        if (b.length == 0) return a;
+        for (p in b) {
             if (p.startsWith('/'))
-                path = p;
+                path += p;
             else if (path == '' || path.endsWith('/'))
                 path += p;
             else
@@ -26,7 +25,7 @@ class WindowsPath implements IPath
         return path;
     }
     
-    function isabs(s:String):Void 
+    function isabs(s:String):Bool 
     {
         if (~/[a-z,A-Z]:/.match(s)) return true;
         else return false;
