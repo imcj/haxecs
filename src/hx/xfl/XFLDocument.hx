@@ -208,7 +208,7 @@ class XFLDocument extends DOMDocument
     static public function open(path:String):XFLDocument
     {
         if (path.endsWith(".xfl")) {
-            if (~/Windows/.match(Sys.environment().get("OS")))
+            if (~/Windows/.match(Sys.systemName()))
                 path = Path.join(path, [".."]);
             else
                 path = Path.abspath(Path.join(path, [".."]));
@@ -244,7 +244,7 @@ class XFLDocument extends DOMDocument
     {
         #if cstool
         var document_patt:String;
-        if (~/Windows/.match(Sys.environment().get("OS"))) {
+        if (~/Windows/.match(Sys.systemName())) {
             document_patt = Path.join(path, ["DOMDocument.xml"]);
         }else {
             if (!path.startsWith("/"))

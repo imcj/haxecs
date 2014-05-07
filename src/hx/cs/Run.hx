@@ -121,7 +121,7 @@ class Run
     inline function configurateProject()
     {
         var project_xml_file = "";
-        if(~/Windows/.match(Sys.environment().get("OS")))
+        if(~/Windows/.match(Sys.systemName()))
             project_xml_file = Path.join(target, ['piratepig','project.xml']);
         else 
             project_xml_file = Path.join(Sys.getCwd(), [target, 'project.xml']);
@@ -200,7 +200,7 @@ class Run
             return;
 
         var up:String = "";
-        if (~/Windows/.match(Sys.environment().get("OS")))
+        if (~/Windows/.match(Sys.systemName()))
             up = target;
         else
             up = Path.abspath(Path.join(target_dir, ["../"]));
@@ -283,7 +283,7 @@ class Run
         addFrameCodeIntoMovieClipConstructor(document_fields,
             document_frame_indexes, class_name);
 
-        if (~/Windows/.match(Sys.environment().get("OS")))
+        if (~/Windows/.match(Sys.systemName()))
             File.saveContent(
                 Path.join(target, ["piratepig", "Source", "Document.hx"]),
                 CSParser.toString(document_frame_ast)
