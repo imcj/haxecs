@@ -63,6 +63,8 @@ class Run
             Sys.exit(0);
         }
 
+        fla_path = Path.abspath(fla_path);
+
         if (sys.FileSystem.exists(fla_path)) {
             if (sys.FileSystem.isDirectory(fla_path)) {
                 var xfls:Array<String> = [];

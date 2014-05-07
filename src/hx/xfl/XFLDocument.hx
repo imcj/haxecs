@@ -207,14 +207,9 @@ class XFLDocument extends DOMDocument
 
     static public function open(path:String):XFLDocument
     {
-        #if (neko || cpp)
         if (path.endsWith(".xfl")) {
-            if (~/Windows/.match(Sys.systemName()))
-                path = Path.join(path, [".."]);
-            else
-                path = Path.abspath(Path.join(path, [".."]));
+            path = Path.abspath(Path.join(path, [".."]));
         }
-        #end
         
         #if flash
         return openFromAsset(path);
