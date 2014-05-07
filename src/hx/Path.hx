@@ -8,6 +8,7 @@ class Path
 
     static public function __init__()
     {
+        #if (neko || cpp)
         var sys = Sys.systemName();
         
         if (~/Windows/.match(sys)) {
@@ -15,10 +16,9 @@ class Path
         }else {
             path = new PosixPath();
         }
-        // #if flash
-        // path = new PosixPath();
-        // #else
-        // #end
+        #else 
+        path = new PosixPath();
+        #end
     }
 
     static public function join(a:String, b:Array<String>):String
