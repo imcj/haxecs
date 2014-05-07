@@ -5,7 +5,6 @@ using StringTools;
 class Path
 {
     static var path:IPath;
-    static public var shellDir:String;
 
     static public function __init__()
     {

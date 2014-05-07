@@ -4,6 +4,7 @@ using StringTools;
 
 class WindowsPath implements IPath
 {
+    public var shellDirector(get, null):String;
 
     public function new()
     {
@@ -34,7 +35,7 @@ class WindowsPath implements IPath
     public function abspath(path:String):String
     {
         if (!isabs(path)) {
-            path = join(Path.shellDir, [path]);
+            path = join(shellDirector, [path]);
         }
         path = haxe.io.Path.normalize(path);
         return path;
@@ -43,5 +44,11 @@ class WindowsPath implements IPath
     public function dirname(path:String):String
     {
         return "";
+    }
+    
+    function get_shellDirector():String
+    {
+        var args = Sys.args();
+        return args[args.length - 1];
     }
 }

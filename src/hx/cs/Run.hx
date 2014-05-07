@@ -31,7 +31,6 @@ class Run
     var document:XFLDocument;
     var fla_path:String;
     var target:String;
-    var shellDir:String;
 
     var process:Map<String, Bool>;
 
@@ -53,9 +52,6 @@ class Run
                 usage();
             }
         }
-
-        shellDir = arguments[arguments.length - 1];
-        Path.shellDir = shellDir;
 
         fla_path = arguments[0];
         if (fla_path.endsWith(".fla")) {
