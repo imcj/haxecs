@@ -241,16 +241,9 @@ class XFLDocument extends DOMDocument
     static public function openFromAsset(path:String):XFLDocument
     {
         #if cstool
-        var document_patt:String;
-        if (~/Windows/.match(Sys.systemName())) {
-            document_patt = Path.join(path, ["DOMDocument.xml"]);
-        }else {
-            if (!path.startsWith("/"))
-                document_patt = Path.join(Sys.getCwd(), [path, "DOMDocument.xml"]);
-            else
-                document_patt = Path.join(path, ["DOMDocument.xml"]);
-        }
-        var text = sys.io.File.getContent(document_patt);
+        var document_path:String;
+        document_path = Path.abspath(Path.join(path, ["DOMDocument.xml"]));
+        var text = sys.io.File.getContent(document_path);
         var document = new XFLDocumentAssembler().parse(
             Xml.parse(text), path);
 
