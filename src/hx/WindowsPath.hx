@@ -28,8 +28,7 @@ class WindowsPath implements IPath
     
     function isabs(s:String):Bool 
     {
-        if (~/[a-z,A-Z]:/.match(s)) return true;
-        else return false;
+        return ~/[a-z,A-Z]:/.match(s);
     }
     
     public function abspath(path:String):String
