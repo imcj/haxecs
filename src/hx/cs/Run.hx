@@ -31,6 +31,7 @@ class Run
     var document:XFLDocument;
     var fla_path:String;
     var target:String;
+    var projectName:String;
 
     var process:Map<String, Bool>;
 
@@ -125,10 +126,7 @@ class Run
     inline function configurateProject()
     {
         var project_xml_file = "";
-        if(~/Windows/.match(Sys.systemName()))
-            project_xml_file = Path.join(target, ['piratepig','project.xml']);
-        else 
-            project_xml_file = Path.join(Sys.getCwd(), [target, 'project.xml']);
+        project_xml_file = Path.abspath(Path.join(target, [projectName, 'project.xml']));
         var project_xml = Xml.parse(sys.io.File.getContent(project_xml_file));
 
         var element_haxelib_haxecs = Xml.createElement("haxelib");
@@ -193,25 +191,23 @@ class Run
 
     function createOpenFlProject(name:String)
     {
+        this.projectName = name;
         var cwd = Sys.getCwd();
 
         var target_dir:String = target;
-        if (!target.startsWith("/")) {
-            target_dir = Path.join(Sys.getCwd(), [target]);
-        }
+        target_dir = Path.abspath(target_dir);
 
-        if (sys.FileSystem.exists(Path.join(target, ["project.xml"])))
+        if (sys.FileSystem.exists(Path.abspath(Path.join(target, ["project.xml"]))))
             return;
 
-        var up:String = "";
-        if (~/Windows/.match(Sys.systemName()))
-            up = target;
-        else
-            up = Path.abspath(Path.join(target_dir, ["../"]));
+        //var up = Path.abspath(Path.join(target_dir, ["../"]));
 
-        if (!sys.FileSystem.exists(up))
-            sys.FileSystem.createDirectory(up);
-        Sys.setCwd(up);
+        //if (!sys.FileSystem.exists(up))
+            //sys.FileSystem.createDirectory(up);
+        if (!sys.FileSystem.exists(target_dir)) {
+            sys.FileSystem.createDirectory(target_dir);
+        }
+        Sys.setCwd(target_dir);
         Sys.command("haxelib", ["run", "lime", "create", "openfl:project", 
             name]);
     }
@@ -287,16 +283,10 @@ class Run
         addFrameCodeIntoMovieClipConstructor(document_fields,
             document_frame_indexes, class_name);
 
-        if (~/Windows/.match(Sys.systemName()))
-            File.saveContent(
-                Path.join(target, ["piratepig", "Source", "Document.hx"]),
-                CSParser.toString(document_frame_ast)
-            );
-        else
-            File.saveContent(
-                Path.join(Sys.getCwd(), [target, "Source", "Document.hx"]),
-                CSParser.toString(document_frame_ast)
-            );
+        File.saveContent(
+            Path.abspath(Path.join(target, [projectName, "Source", "Document.hx"])),
+            CSParser.toString(document_frame_ast)
+        );
 
         
         for (symbol in document.getSymbolIterators()) {
