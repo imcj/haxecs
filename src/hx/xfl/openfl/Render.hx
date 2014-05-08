@@ -3,8 +3,11 @@ package hx.xfl.openfl;
 import flash.display.DisplayObject;
 import flash.display.PixelSnapping;
 import flash.display.Sprite;
+import flash.display.DisplayObject;
+import flash.display.InteractiveObject;
 import flash.events.Event;
 import flash.Lib;
+
 import hx.geom.Point;
 import hx.xfl.DOMBitmapInstance;
 import hx.xfl.DOMBitmapItem;
@@ -83,20 +86,24 @@ class Render
         }
     }
 
-    function displayLayer(domLayer:DOMLayer, parent:Sprite, currentFrame:Int, line:DOMTimeLine):Array<DisplayObject> 
+    function displayLayer(domLayer:DOMLayer, parent:Sprite, currentFrame:Int, line:DOMTimeLine):Array<DisplayObject>
     {
         var className:Class<Dynamic>;
         var layer:Array<DisplayObject> = [];
         var frame = domLayer.getFrameAt(currentFrame);
         if (frame == null) return null;
+
+        var display_object:DisplayObject = null;
+        var interactive_object:InteractiveObject;
+        var mc:MovieClip;
+
         for (element in frame.getElementsIterator()) {
+
             if (Std.is(element, DOMBitmapInstance)) {
                 var bitmap_instance = cast(element, DOMBitmapInstance);
-                var bitmap = createBitmapInstance(bitmap_instance, line);
-                parent.addChild(bitmap);
-                layer.push(bitmap);
+                display_object = createBitmapInstance(bitmap_instance, line);
             } else if (Std.is(element, DOMSymbolInstance)) {
-                var instance = cast(element, DOMSymbolInstance);
+                var instance:DOMSymbolInstance = cast(element);
 
                 // 动画
                 var matrix = instance.matrix.clone();
@@ -130,60 +137,53 @@ class Render
                     "graphic" == instance.symbolType) {
 
                     var item = cast(instance.libraryItem, DOMSymbolItem);
-
-                    if (!Std.is(item, DOMSymbolItem)) {
-                        throw '现在我还不清楚是不是只能是SymbolItem';
-                    }
-
-                    var displayObject:MovieClip;
                     if (null != instance.libraryItem.linkageClassName) {
-                        trace(Type.resolveClass(instance.libraryItem.linkageClassName));
-                        displayObject = Type.createInstance(Type.resolveClass(instance.libraryItem.linkageClassName), []);
-                        trace(displayObject);
-                        MovieClipFactory.dispatchTimeline(displayObject, item.timeline);
+                        mc = Type.createInstance(Type.resolveClass(instance.libraryItem.linkageClassName), []);
+                        MovieClipFactory.dispatchTimeline(mc, item.timeline);
                     } else
-                        displayObject = MovieClipFactory.create(item.timeline);
-                    if (null != instance.name)
-                        displayObject.name = instance.name;
-                    displayObject.transform.matrix = matrix.toFlashMatrix();
+                        mc = MovieClipFactory.create(item.timeline);
+
+                    mc.transform.matrix = matrix.toFlashMatrix();
+                    display_object = mc;
+
                     if (instance.silent) {
-                        displayObject.mouseEnabled = false;
-                        displayObject.mouseChildren = false;
+                        mc.mouseEnabled = false;
+                        mc.mouseChildren = false;
                     }
                     if (instance.forceSimple) {
-                        displayObject.mouseChildren = false;
+                        mc.mouseChildren = false;
                     }
-                    parent.addChild(displayObject);
-                    layer.push(displayObject);
                 } else if ("button" == instance.symbolType) {
-                    var button:Sprite;
                     if (null != instance.libraryItem.linkageClassName) {
                         className = Type.resolveClass(instance.libraryItem.linkageClassName);
-                        button = Type.createInstance(className, []);
-                        MovieClipFactory.dispatchTimeline(cast(button), instance);
+                        display_object = Type.createInstance(className, []);
+                        MovieClipFactory.dispatchTimeline(cast(display_object), instance);
                     } else
-                        button = MovieClipFactory.createButton(instance);
-                    if (null != instance.name)
-                        button.name = instance.name;
-                    button.transform.matrix = matrix.toFlashMatrix();
-                    button.mouseChildren = false;
-                    parent.addChild(button);
-                    layer.push(button);
+                        display_object = MovieClipFactory.createButton(instance);
+
+                    mc = cast(display_object);
+                    mc.transform.matrix = matrix.toFlashMatrix();
+                    mc.mouseChildren = false;
+                } else {
+                    throw "Not implements";
                 }
             } else if (Std.is(element, DOMText)) {
-                var instance = cast(element, DOMText);
-                var displayObject = new TextInstance(instance);
-                if (null != instance.name)
-                    displayObject.name = instance.name;
-                parent.addChild(displayObject);
-                layer.push(displayObject);
+                var instance:DOMText = cast(element, DOMText);
+                display_object = new TextInstance(instance);
             } else if (Std.is(element, DOMShape)) {
-                var instance = cast(element, DOMShape);
-                var displayObject = new ShapeInstance(instance);
-                displayObject.transform.matrix = instance.matrix.toFlashMatrix();
-                parent.addChild(displayObject);
-                layer.push(displayObject);
+                var instance:DOMShape = cast(element);
+                display_object = new ShapeInstance(cast(element, DOMShape));
+                display_object.transform.matrix = 
+                    instance.matrix.toFlashMatrix();
+            } else {
+                throw "Not implements.";
             }
+
+            if (null != element.name && "" != element.name)
+                display_object.name = element.name;
+
+            parent.addChild(display_object);
+            layer.push(display_object);
         }
 
         return layer;

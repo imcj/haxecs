@@ -4,6 +4,7 @@ import hx.xfl.*;
 import as3hx.Parser;
 import as3hx.Writer;
 import as3hx.As3;
+import sys.db.Types.SText;
 
 import hx.cs.CSParser;
 
@@ -30,6 +31,7 @@ class Run
     var document:XFLDocument;
     var fla_path:String;
     var target:String;
+    var projectName:String;
 
     var process:Map<String, Bool>;
 
@@ -58,8 +60,11 @@ class Run
             Sys.exit(0);
         }
 
+        fla_path = Path.abspath(fla_path);
+
         if (sys.FileSystem.exists(fla_path)) {
             if (sys.FileSystem.isDirectory(fla_path)) {
+                if (!fla_path.endsWith("/")) fla_path += "/";
                 var xfls:Array<String> = [];
                 for (item in sys.FileSystem.readDirectory(fla_path)) {
                     if (item.endsWith(".xfl")) {
@@ -120,7 +125,8 @@ class Run
 
     inline function configurateProject()
     {
-        var project_xml_file = Path.join(Sys.getCwd(), [target, 'project.xml']);
+        var project_xml_file = "";
+        project_xml_file = Path.abspath(Path.join(target, [projectName, 'project.xml']));
         var project_xml = Xml.parse(sys.io.File.getContent(project_xml_file));
 
         var element_haxelib_haxecs = Xml.createElement("haxelib");
@@ -185,21 +191,23 @@ class Run
 
     function createOpenFlProject(name:String)
     {
+        this.projectName = name;
         var cwd = Sys.getCwd();
 
         var target_dir:String = target;
-        if (!target.startsWith("/")) {
-            target_dir = Path.join(Sys.getCwd(), [target]);
-        }
+        target_dir = Path.abspath(target_dir);
 
-        if (sys.FileSystem.exists(Path.join(target, ["project.xml"])))
+        if (sys.FileSystem.exists(Path.abspath(Path.join(target, ["project.xml"]))))
             return;
 
-        var up:String = Path.abspath(Path.join(target_dir, ["../"]));
+        //var up = Path.abspath(Path.join(target_dir, ["../"]));
 
-        if (!sys.FileSystem.exists(up))
-            sys.FileSystem.createDirectory(up);
-        Sys.setCwd(up);
+        //if (!sys.FileSystem.exists(up))
+            //sys.FileSystem.createDirectory(up);
+        if (!sys.FileSystem.exists(target_dir)) {
+            sys.FileSystem.createDirectory(target_dir);
+        }
+        Sys.setCwd(target_dir);
         Sys.command("haxelib", ["run", "lime", "create", "openfl:project", 
             name]);
     }
@@ -276,7 +284,7 @@ class Run
             document_frame_indexes, class_name);
 
         File.saveContent(
-            Path.join(Sys.getCwd(), [target, "Source", "Document.hx"]),
+            Path.abspath(Path.join(target, [projectName, "Source", "Document.hx"])),
             CSParser.toString(document_frame_ast)
         );
 
