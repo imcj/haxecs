@@ -130,7 +130,7 @@ class XFLDocumentAssembler extends XFLBaseAssembler
         fillProperty(fontItem, data, ["sourceLastImported"]);
         var font = openfl.Assets.getFont("assets/font/" + fontItem.font.toUpperCase() + ".TTF");
         if (font != null)fontItem.fontName = font.fontName;
-        else Logging.error("字体文件"+fontItem.font.toUpperCase()+".TTF缺失，请拷贝字体到asstes/font文件夹下");
+        else throw("字体文件"+fontItem.font.toUpperCase()+".TTF缺失，请拷贝字体到asstes/font文件夹下");
         document.addFont(fontItem);
     }
 
