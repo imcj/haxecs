@@ -43,12 +43,10 @@ class Render
     
     function render(e:Event):Void
     {
-        for (mv in instance.mvTimelines.keys()) {
+        for (mv in instance.renderList.keys()) {
             if (mv.isPlaying && mv.parent != null && mv.totalFrames != 1) {
+                instance.renderList.get(mv).render();
                 mv.nextFrame();
-            }
-            if (mv.parent == null) {
-                instance.mvTimelines.remove(mv);
             }
         }
     }
