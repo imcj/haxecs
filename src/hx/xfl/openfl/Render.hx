@@ -32,7 +32,7 @@ class Render
 
     public function new()
     {
-        mvTimelines = new Map();
+        renderList = new Map();
         init(); 
     }
 
@@ -51,41 +51,7 @@ class Render
         }
     }
 
-    public function displayFrame(mv:MovieClip, frameIndex:Int):Void 
-    {
-        mv.removeChildren();
-        var timelines = mvTimelines.get(mv);
-        var domTimeLine = getTimeline(timelines, mv.currentScene);
-        if (domTimeLine == null) return;
-        
-        var maskDoms:Map<Int, DOMLayer> = new Map();
-        var masklayers:Array<Array<DisplayObject>> = [];
-        var maskNums = [];
-        var numLayer = 0;
-        for (domLayer in domTimeLine.getLayersIterator(false)) {
-            if ("mask" == domLayer.layerType) {
-                maskDoms.set(numLayer, domLayer);
-            }else {
-                var layer = displayLayer(domLayer, mv, frameIndex, domTimeLine);
-                if (domLayer.parentLayerIndex >= 0) {
-                    masklayers.push(layer);
-                    maskNums.push(domLayer.parentLayerIndex);
-                }
-            }
-            numLayer++;
-        }
-        var n = 0;
-        for (l in masklayers) {
-            for (o in l) {
-                var dom = maskDoms.get(numLayer - 1 - maskNums[n]);
-                var mask = new Sprite();
-                displayLayer(dom, mask, frameIndex, domTimeLine);
-                o.mask = mask;
-                mv.addChild(mask);
-            }
-            n++;
-        }
-    }
+    
 
     function displayLayer(domLayer:DOMLayer, parent:Sprite, currentFrame:Int, line:DOMTimeLine):Array<DisplayObject>
     {
@@ -211,11 +177,6 @@ class Render
             bitmap.name = bitmap_instance.name;
 
         return bitmap;
-    }
-
-    static public function renderFrame(mv:MovieClip, frameIndex:Int):Void 
-    {
-        instance.displayFrame(mv, frameIndex);
     }
 
     static public function addRenderer(mv:MovieClip, renderer:MovieClipRenderer):Void 

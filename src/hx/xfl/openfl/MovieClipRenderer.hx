@@ -1,9 +1,12 @@
-package ;
+package hx.xfl.openfl;
 import flash.display.DisplayObject;
+import flash.display.PixelSnapping;
 import flash.display.Sprite;
+import hx.geom.Point;
 import hx.xfl.DOMBitmapInstance;
 import hx.xfl.DOMLayer;
 import hx.xfl.DOMTimeLine;
+import hx.xfl.openfl.display.BitmapInstance;
 import hx.xfl.openfl.display.MovieClip;
 
 class MovieClipRenderer
@@ -15,7 +18,7 @@ class MovieClipRenderer
     {
         this.movieClip = movieClip;
         if (Std.is(timeline, DOMTimeLine)) this.timelines = [timeline];
-        else if (Std.is(timeline, Array<DOMTimeLine>)) this.timelines = timeline;
+        else if (Std.is(timeline, Array)) this.timelines = timeline;
         else throw "timeline 类型错误，需要是DOMTimeLine或者Array<DOMTimeLine>";
     }
     
@@ -27,7 +30,6 @@ class MovieClipRenderer
     function displayFrame(mv:MovieClip, frameIndex:Int):Void 
     {
         mv.removeChildren();
-        var timelines = mvTimelines.get(mv);
         var domTimeLine = getTimeline(timelines, mv.currentScene);
         if (domTimeLine == null) return;
         
@@ -68,7 +70,6 @@ class MovieClipRenderer
         if (frame == null) return null;
 
         var display_object:DisplayObject = null;
-        var interactive_object:InteractiveObject;
         var mc:MovieClip;
 
         for (element in frame.getElementsIterator()) {
@@ -176,5 +177,13 @@ class MovieClipRenderer
             bitmap.name = bitmap_instance.name;
 
         return bitmap;
+    }
+    
+    function getTimeline(lines:Array<DOMTimeLine>, scene:Scene):DOMTimeLine 
+    {
+        for (line in lines) {
+            if (line.name == scene.name) return line;
+        }
+        return null;
     }
 }

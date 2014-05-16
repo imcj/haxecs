@@ -42,8 +42,8 @@ class MovieClipFactory
         var document  = symbol.frame.layer.timeLine.document;
         var lines = [document.getSymbol(symbol.libraryItem.name).timeline];
         var button = new SimpleButton();
-        var renderer = new MovieClipRenderer(mv, lines);
-        Render.addRenderer(mv, renderer);
+        var renderer = new MovieClipRenderer(button, lines);
+        Render.addRenderer(button, renderer);
         return button;
     }
 
