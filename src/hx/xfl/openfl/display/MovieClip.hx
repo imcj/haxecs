@@ -112,6 +112,7 @@ class MovieClip extends Sprite
     
     function gotoFrame()
     {
+        Render.renderMovieClip(this);
         executeFrameScript();
     }
 

@@ -45,7 +45,6 @@ class Render
     {
         for (mv in instance.renderList.keys()) {
             if (mv.isPlaying && mv.parent != null && mv.totalFrames != 1) {
-                instance.renderList.get(mv).render();
                 mv.nextFrame();
             }
         }
@@ -70,6 +69,11 @@ class Render
     static public function removeRenderer(mv:MovieClip):Void 
     {
         instance.renderList.remove(mv);
+    }
+    
+    static public function renderMovieClip(mv:MovieClip):Void 
+    {
+        instance.renderList.get(mv).render();
     }
 
     static public function getTimelines(mv:MovieClip):Array<DOMTimeLine> 
