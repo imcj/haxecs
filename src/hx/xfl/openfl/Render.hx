@@ -47,6 +47,9 @@ class Render
             if (mv.isPlaying && mv.parent != null && mv.totalFrames != 1) {
                 mv.nextFrame();
             }
+            if (mv.parent == null) {
+                instance.mvTimelines.remove(mv);
+            }
         }
     }
 
@@ -124,6 +127,7 @@ class Render
                     var prePosition = new Point(matrix.tx, matrix.ty);
                     var preTransform = matrix.transformPoint(instance.transformPoint);
                     matrix = motion.getCurrentMatrix(currentFrame);
+                    if (instance.name == "xxx") trace(matrix.ty);
                     //对形变中心引起的偏移做处理
                     var deltaPosition = new Point(matrix.tx - prePosition.x, matrix.ty - prePosition.y);
                     var nowTransform = matrix.transformPoint(instance.transformPoint);
