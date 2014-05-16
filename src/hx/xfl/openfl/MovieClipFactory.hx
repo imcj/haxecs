@@ -33,7 +33,7 @@ class MovieClipFactory
         else throw "domTimeLine类型错误，需要是DOMTimeLine或者Array<DOMTimeLine>";
         var mv = new MovieClip();
         var renderer = new MovieClipRenderer(mv, lines);
-        Render.addRenderer(mv, renderer);
+        Render.addRenderer(renderer);
         return mv;
     }
 
@@ -43,7 +43,7 @@ class MovieClipFactory
         var lines = [document.getSymbol(symbol.libraryItem.name).timeline];
         var button = new SimpleButton();
         var renderer = new MovieClipRenderer(button, lines);
-        Render.addRenderer(button, renderer);
+        Render.addRenderer(renderer);
         return button;
     }
 
@@ -57,6 +57,6 @@ class MovieClipFactory
             lines = [document.getSymbol(timeline.libraryItem.name).timeline];
         }
         var renderer = new MovieClipRenderer(mv, lines);
-        Render.addRenderer(mv, renderer);
+        Render.addRenderer(renderer);
     }
 }

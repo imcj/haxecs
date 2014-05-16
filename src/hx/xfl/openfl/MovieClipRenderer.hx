@@ -11,7 +11,7 @@ import hx.xfl.openfl.display.MovieClip;
 
 class MovieClipRenderer
 {
-    var movieClip:MovieClip;
+    public var movieClip:MovieClip;
     public var timelines:Array<DOMTimeLine>;
 
     public function new(movieClip:MovieClip, timeline:Dynamic)

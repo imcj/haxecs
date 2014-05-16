@@ -59,8 +59,9 @@ class Render
         return null;
     }
 
-    static public function addRenderer(mv:MovieClip, renderer:MovieClipRenderer):Void 
+    static public function addRenderer(renderer:MovieClipRenderer):Void 
     {
+        var mv = renderer.movieClip;
         instance.renderList.set(mv, renderer);
         mv.setScenes(getScenes(mv));
         renderer.render();
