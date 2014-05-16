@@ -30,7 +30,7 @@ class MovieClipRenderer
     function displayFrame(mv:MovieClip, frameIndex:Int):Void 
     {
         mv.removeChildren();
-        var domTimeLine = getTimeline(timelines, mv.currentScene);
+        var domTimeLine = Render.getTimeline(timelines, mv.currentScene);
         if (domTimeLine == null) return;
         
         var maskDoms:Map<Int, DOMLayer> = new Map();
@@ -177,13 +177,5 @@ class MovieClipRenderer
             bitmap.name = bitmap_instance.name;
 
         return bitmap;
-    }
-    
-    function getTimeline(lines:Array<DOMTimeLine>, scene:Scene):DOMTimeLine 
-    {
-        for (line in lines) {
-            if (line.name == scene.name) return line;
-        }
-        return null;
     }
 }
