@@ -29,9 +29,11 @@ class MovieClipFactory
             while (domTimeLine.hasNext())
                 lines.push(domTimeLine.next());
         if (Std.is(domTimeLine, Array)) lines = domTimeLine;
-        if (Std.is(domTimeLine, DOMTimeLine)) lines = [domTimeLine];
+        else if (Std.is(domTimeLine, DOMTimeLine)) lines = [domTimeLine];
+        else throw "domTimeLine类型错误，需要是DOMTimeLine或者Array<DOMTimeLine>";
         var mv = new MovieClip();
-        Render.addMvTimeLine(mv , lines);
+        var renderer = new MovieClipRenderer(mv, lines);
+        Render.addRenderer(mv, renderer);
         return mv;
     }
 
@@ -40,7 +42,8 @@ class MovieClipFactory
         var document  = symbol.frame.layer.timeLine.document;
         var lines = [document.getSymbol(symbol.libraryItem.name).timeline];
         var button = new SimpleButton();
-        Render.addMvTimeLine(button, lines);
+        var renderer = new MovieClipRenderer(mv, lines);
+        Render.addRenderer(mv, renderer);
         return button;
     }
 
@@ -53,6 +56,7 @@ class MovieClipFactory
             var document  = timeline.frame.layer.timeLine.document;
             lines = [document.getSymbol(timeline.libraryItem.name).timeline];
         }
-        Render.addMvTimeLine(mv, lines);
+        var renderer = new MovieClipRenderer(mv, lines);
+        Render.addRenderer(mv, renderer);
     }
 }
