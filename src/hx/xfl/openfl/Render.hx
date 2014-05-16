@@ -220,17 +220,16 @@ class Render
         instance.displayFrame(mv, frameIndex);
     }
 
-    static public function addMvTimeLine(mv:MovieClip, timelines:Array<DOMTimeLine>):Void 
+    static public function addRenderer(mv:MovieClip, renderer:MovieClipRenderer):Void 
     {
-        var renderer = new MovieClipRenderer(mv, timelines);
         instance.renderList.set(mv, renderer);
         mv.setScenes(getScenes(mv));
         renderer.render();
     }
 
-    static public function removeMvTimeLine(mv:MovieClip):Void 
+    static public function removeRenderer(mv:MovieClip):Void 
     {
-        instance.mvTimelines.remove(mv);
+        instance.renderList.remove(mv);
     }
 
     static public function getTimelines(mv:MovieClip):Array<DOMTimeLine> 
