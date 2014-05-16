@@ -32,8 +32,7 @@ class MovieClipFactory
         else if (Std.is(domTimeLine, DOMTimeLine)) lines = [domTimeLine];
         else throw "domTimeLine类型错误，需要是DOMTimeLine或者Array<DOMTimeLine>";
         var mv = new MovieClip();
-        var renderer = new MovieClipRenderer(mv, lines);
-        Render.addRenderer(renderer);
+        addtoRenderList(mv, lines);
         return mv;
     }
 
@@ -42,8 +41,7 @@ class MovieClipFactory
         var document  = symbol.frame.layer.timeLine.document;
         var lines = [document.getSymbol(symbol.libraryItem.name).timeline];
         var button = new SimpleButton();
-        var renderer = new MovieClipRenderer(button, lines);
-        Render.addRenderer(renderer);
+        addtoRenderList(button, lines);
         return button;
     }
 
@@ -58,5 +56,35 @@ class MovieClipFactory
         }
         var renderer = new MovieClipRenderer(mv, lines);
         Render.addRenderer(renderer);
+    }
+    
+    static function addtoRenderList(mv:MovieClip, timelines:Array<DOMTimeLine>):Void 
+    {
+        mv.setScenes(getScenes(timelines));
+        var renderer = new MovieClipRenderer(mv, timelines);
+        Render.addRenderer(renderer);
+    }
+    
+    static function getScenes(lines:Array<DOMTimeLine>):Array<Scene>
+    {
+        var scenes = [];
+        for (timeline in lines) {
+            var s = new Scene();
+            var name = timeline.name;
+            var numFrames = 0;
+            var labels = [];
+            for (layer in timeline.layers) {
+                if (numFrames < layer.totalFrames)
+                    numFrames = layer.totalFrames;
+                for (f in layer.frames) {
+                    var name = f.name;
+                    if(name != null)
+                        labels.push(new FrameLabel(name,f.index));
+                }
+            }
+            s.setValue(name, numFrames, labels);
+            scenes.push(s);
+        }
+        return scenes;
     }
 }

@@ -60,9 +60,7 @@ class Render
 
     static public function addRenderer(renderer:MovieClipRenderer):Void 
     {
-        var mv = renderer.movieClip;
-        instance.renderList.set(mv, renderer);
-        mv.setScenes(getScenes(mv));
+        instance.renderList.set(renderer.movieClip, renderer);
         renderer.render();
     }
 
@@ -79,29 +77,5 @@ class Render
     static public function getTimelines(mv:MovieClip):Array<DOMTimeLine> 
     {
         return instance.renderList.get(mv).timelines;
-    }
-
-    static public function getScenes(mv:MovieClip):Array<Scene>
-    {
-        var scenes = [];
-        var lines = getTimelines(mv);
-        for (timeline in lines) {
-            var s = new Scene();
-            var name = timeline.name;
-            var numFrames = 0;
-            var labels = [];
-            for (layer in timeline.layers) {
-                if (numFrames < layer.totalFrames)
-                    numFrames = layer.totalFrames;
-                for (f in layer.frames) {
-                    var name = f.name;
-                    if(name != null)
-                        labels.push(new FrameLabel(name,f.index));
-                }
-            }
-            s.setValue(name, numFrames, labels);
-            scenes.push(s);
-        }
-        return scenes;
     }
 }
