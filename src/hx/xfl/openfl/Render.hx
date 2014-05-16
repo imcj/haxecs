@@ -232,7 +232,7 @@ class Render
 
     static public function getTimelines(mv:MovieClip):Array<DOMTimeLine> 
     {
-        return instance.mvTimelines.get(mv);
+        return instance.renderList.get(mv).timelines;
     }
 
     static public function getScenes(mv:MovieClip):Array<Scene>
