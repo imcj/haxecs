@@ -19,9 +19,9 @@ class MovieClipRenderer
         else throw "timeline 类型错误，需要是DOMTimeLine或者Array<DOMTimeLine>";
     }
     
-    public function render(frameIndex:Int):Void 
+    public function render():Void 
     {
-        displayFrame(movieClip, frameIndex);
+        displayFrame(movieClip, movieClip.currentFrame);
     }
     
     function displayFrame(mv:MovieClip, frameIndex:Int):Void 
