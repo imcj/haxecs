@@ -50,12 +50,9 @@ class Render
         }
     }
 
-    static public function getTimeline(lines:Array<DOMTimeLine>, scene:Scene):DOMTimeLine 
+    static public function renderMovieClip(mv:MovieClip):Void 
     {
-        for (line in lines) {
-            if (line.name == scene.name) return line;
-        }
-        return null;
+        instance.renderList.get(mv).render();
     }
 
     static public function addRenderer(renderer:MovieClipRenderer):Void 
@@ -68,10 +65,13 @@ class Render
     {
         instance.renderList.remove(mv);
     }
-    
-    static public function renderMovieClip(mv:MovieClip):Void 
+
+    static public function getTimeline(lines:Array<DOMTimeLine>, scene:Scene):DOMTimeLine 
     {
-        instance.renderList.get(mv).render();
+        for (line in lines) {
+            if (line.name == scene.name) return line;
+        }
+        return null;
     }
 
     static public function getTimelines(mv:MovieClip):Array<DOMTimeLine> 
