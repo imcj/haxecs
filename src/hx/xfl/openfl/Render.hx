@@ -28,7 +28,7 @@ class Render
         return instance;
     }
 
-    var mvTimelines:Map<MovieClip, Array<DOMTimeLine>>;
+    var renderList:Map<MovieClip, MovieClipRenderer>;
 
     public function new()
     {
@@ -222,9 +222,10 @@ class Render
 
     static public function addMvTimeLine(mv:MovieClip, timelines:Array<DOMTimeLine>):Void 
     {
-        instance.mvTimelines.set(mv, timelines);
+        var renderer = new MovieClipRenderer(mv, timelines);
+        instance.renderList.set(mv, renderer);
         mv.setScenes(getScenes(mv));
-        instance.displayFrame(mv, mv.currentFrame);
+        renderer.render();
     }
 
     static public function removeMvTimeLine(mv:MovieClip):Void 
