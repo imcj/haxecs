@@ -4,6 +4,7 @@ import hx.geom.Matrix;
 import hx.xfl.DOMAnimationCore;
 import hx.xfl.DOMElement;
 import hx.xfl.DOMFrame;
+import hx.xfl.motion.KeyFrame;
 import hx.xfl.motion.Property;
 import hx.xfl.motion.PropertyContainer;
 
@@ -47,6 +48,8 @@ class MotionObject
             matrix.tx += easeValue(delta, deltaFrame, pastFrame);
         else
             matrix.tx += keys[keys.length - 1].anchor.y;
+        
+        
     }
     
     function motionY(matrix:Matrix):Void 
@@ -164,6 +167,15 @@ class MotionObject
         var v0 = alls / allt * (1 + strength / 100);
         var a = acceleration(alls, allt, strength);
         return v0 + a * frameIndex;
+    }
+    
+    function allS(keyFrames:Array<KeyFrame>):Float
+    {
+        var s = 0;
+        for (i in keyFrames) {
+            s += i.anchor.y;
+        }
+        return s;
     }
 
     public function getContainers(name:String):Map<String, PropertyContainer>
