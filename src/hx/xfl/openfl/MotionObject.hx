@@ -223,10 +223,10 @@ class MotionObject
             var t = pastFrame;
             return v0 * t + a * t * t / 2;
         }else if (s < 0) {
-            var v1 = delta / deltaFrame * (1 - s / 100);
-            var a = v1 / deltaFrame;
+            var v0 = delta / deltaFrame * (1 + s / 100);
+            var a = (delta - v0 * deltaFrame) * 2 / deltaFrame * deltaFrame;
             var t = pastFrame;
-            return  a * t * t / 2;
+            return  v0 * pastFrame + a * t * t / 2;
         }else {
             return delta / deltaFrame * pastFrame;
         }
