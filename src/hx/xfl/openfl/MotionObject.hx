@@ -140,6 +140,19 @@ class MotionObject
             return delta / deltaFrame * pastFrame;
         }
     }
+    
+    function acceleration(s:Float, t:Int, strength:Float):Float 
+    {
+        if (strength > 0) {
+            var v0 = s / t * (1 + strength / 100);
+            return -v0 / t;
+        }else if (strength < 0) {
+            var v0 = s / t * (1 + strength / 100);
+            return (s - v0 * t) * 2 / (t * t);
+        }else {
+            return 0;
+        }
+    }
 
     public function getContainers(name:String):Map<String, PropertyContainer>
     {
