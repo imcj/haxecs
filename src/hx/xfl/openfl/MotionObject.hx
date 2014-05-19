@@ -178,6 +178,11 @@ class MotionObject
         return s;
     }
     
+    function allT(keyFrames:Array<KeyFrame>):Void 
+    {
+        return keyFrames[keyFrames.length - 1].getFrameIndex() - keyFrames[0].getFrameIndex();
+    }
+    
     function targetFrame(keyFrames:Array<KeyFrame>):KeyFrame
     {
         var frame;
