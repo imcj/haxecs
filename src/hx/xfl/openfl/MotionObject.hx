@@ -218,8 +218,8 @@ class MotionObject
     {
         var s = domFrame.animation.strength;
         if (s > 0) {
-            var v0 = delta / deltaFrame * (1 - s / 100);
-            var a = -v0 / deltaFrame;
+            var v0 = delta / deltaFrame * (1 + s / 100);
+            var a = -(delta - v0 * deltaFrame) * 2 / (deltaFrame * deltaFrame);
             var t = pastFrame;
             return v0 * t + a * t * t / 2;
         }else if (s < 0) {
