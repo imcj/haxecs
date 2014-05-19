@@ -177,6 +177,15 @@ class MotionObject
         }
         return s;
     }
+    
+    function targetFrame(keyFrames:Array<KeyFrame>):KeyFrame
+    {
+        var frame;
+        for (i in keyFrames) {
+            if (currentFrame < i.getFrameIndex()) frame = i;
+        }
+        return frame;
+    }
 
     public function getContainers(name:String):Map<String, PropertyContainer>
     {
