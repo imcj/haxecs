@@ -37,23 +37,9 @@ class MotionObject
     function motionX(matrix:Matrix):Void 
     {
         var property = getProperty("Motion_X");
-        var animationFrame = currentFrame - domFrame.index;
-        if (animationFrame == 0) return ;
+        var delta = nowS(property);
         
-        var keys = property.keyFrames;
-        var pastFrame = animationFrame - keys[0].getFrameIndex();
-        
-        var alls = allS(keys);
-        var allt = allT(keys);
-        var a = acceleration(alls, allt, domFrame.animation.strength);
-        var keys = property.getStarEnd(currentFrame);
-        var v0 = keyFrameVelocity(alls, allt, domFrame.animation.strength, keys[0].getFrameIndex());
-        var delta = displacement(v0, a, currentFrame-keys[0].getFrameIndex());
-        
-        if(pastFrame < keys[keys.length-1].getFrameIndex())
-            matrix.tx += delta;
-        else
-            matrix.tx += keys[keys.length - 1].anchor.y;
+        matrix.tx += delta;
     }
     
     function motionY(matrix:Matrix):Void 
@@ -146,6 +132,24 @@ class MotionObject
         }else {
             return delta / deltaFrame * pastFrame;
         }
+    }
+    
+    function nowS(property:Property):Float 
+    {
+        var animationFrame = currentFrame - domFrame.index;
+        if (animationFrame == 0) return 0;
+        
+        var keys = property.keyFrames;
+        var pastFrame = animationFrame - keys[0].getFrameIndex();
+        
+        var alls = allS(keys);
+        var allt = allT(keys);
+        var a = acceleration(alls, allt, domFrame.animation.strength);
+        var keys = property.getStarEnd(currentFrame);
+        var v0 = keyFrameVelocity(alls, allt, domFrame.animation.strength, keys[0].getFrameIndex());
+        var delta = displacement(v0, a, currentFrame-keys[0].getFrameIndex());
+        
+        return delta;
     }
     
     function acceleration(s:Float, t:Int, strength:Float):Float 
