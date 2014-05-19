@@ -41,15 +41,19 @@ class MotionObject
         if (animationFrame == 0) return ;
         
         var keys = property.keyFrames;
-        var delta = keys[keys.length - 1].anchor.y - keys[0].anchor.y;
-        var deltaFrame = keys[keys.length - 1].getFrameIndex() - keys[0].getFrameIndex();
         var pastFrame = animationFrame - keys[0].getFrameIndex();
+        
+        var alls = allS(keys);
+        var allt = allT(keys);
+        var a = acceleration(alls, allt, domFrame.animation.strength);
+        var v0 = keyFrameVelocity(alls, allt, domFrame.animation.strength, currentFrame-domFrame.index);
+        var keys = property.getStarEnd(currentFrame);
+        var delta = displacement(v0, a, currentFrame-keys[0].getFrameIndex());
+        
         if(pastFrame < keys[keys.length-1].getFrameIndex())
-            matrix.tx += easeValue(delta, deltaFrame, pastFrame);
+            matrix.tx += delta;
         else
             matrix.tx += keys[keys.length - 1].anchor.y;
-        
-        
     }
     
     function motionY(matrix:Matrix):Void 
@@ -174,14 +178,14 @@ class MotionObject
         return keyFrames[keyFrames.length - 1].anchor.y - keyFrames[0].anchor.y;
     }
     
-    function allT(keyFrames:Array<KeyFrame>):Void 
+    function allT(keyFrames:Array<KeyFrame>):Int
     {
         return keyFrames[keyFrames.length - 1].getFrameIndex() - keyFrames[0].getFrameIndex();
     }
     
     function targetFrame(keyFrames:Array<KeyFrame>):KeyFrame
     {
-        var frame;
+        var frame = null;
         for (i in keyFrames) {
             if (currentFrame < i.getFrameIndex()) frame = i;
         }
