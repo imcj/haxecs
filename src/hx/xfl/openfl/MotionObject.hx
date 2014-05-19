@@ -45,17 +45,9 @@ class MotionObject
     function motionY(matrix:Matrix):Void 
     {
         var property = getProperty("Motion_Y");
-        var animationFrame = currentFrame - domFrame.index;
-        if (animationFrame == 0) return ;
+        var delta = nowS(property);
         
-        var keys = property.keyFrames;
-        var delta = keys[keys.length - 1].anchor.y - keys[0].anchor.y;
-        var deltaFrame = keys[keys.length - 1].getFrameIndex() - keys[0].getFrameIndex();
-        var pastFrame = animationFrame - keys[0].getFrameIndex();
-        if(pastFrame < keys[keys.length-1].getFrameIndex())
-            matrix.ty += easeValue(delta, deltaFrame, pastFrame);
-        else
-            matrix.ty += keys[keys.length - 1].anchor.y;
+        matrix.ty += delta;
     }
     
     function motionRotation(matrix:Matrix):Void 
