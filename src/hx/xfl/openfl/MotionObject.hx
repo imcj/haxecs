@@ -158,6 +158,13 @@ class MotionObject
     {
         return v0 * t + a * t * t / 2;
     }
+    
+    function keyFrameVelocity(alls:Float, allt:Int, strength:Float, frameIndex:Int):Float 
+    {
+        var v0 = alls / allt * (1 + strength / 100);
+        var a = acceleration(alls, allt, strength);
+        return v0 + a * frameIndex;
+    }
 
     public function getContainers(name:String):Map<String, PropertyContainer>
     {
