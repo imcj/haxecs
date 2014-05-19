@@ -153,6 +153,11 @@ class MotionObject
             return 0;
         }
     }
+    
+    function displacement(v0:Float, a:Float, t:Int):Float
+    {
+        return v0 * t + a * t * t / 2;
+    }
 
     public function getContainers(name:String):Map<String, PropertyContainer>
     {
