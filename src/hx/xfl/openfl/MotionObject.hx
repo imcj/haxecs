@@ -171,11 +171,7 @@ class MotionObject
     
     function allS(keyFrames:Array<KeyFrame>):Float
     {
-        var s = 0;
-        for (i in keyFrames) {
-            s += i.anchor.y;
-        }
-        return s;
+        return keyFrames[keyFrames.length - 1].anchor.y - keyFrames[0].anchor.y;
     }
     
     function allT(keyFrames:Array<KeyFrame>):Void 
