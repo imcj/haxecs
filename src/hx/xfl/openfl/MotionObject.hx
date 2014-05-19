@@ -46,8 +46,8 @@ class MotionObject
         var alls = allS(keys);
         var allt = allT(keys);
         var a = acceleration(alls, allt, domFrame.animation.strength);
-        var v0 = keyFrameVelocity(alls, allt, domFrame.animation.strength, currentFrame-domFrame.index);
         var keys = property.getStarEnd(currentFrame);
+        var v0 = keyFrameVelocity(alls, allt, domFrame.animation.strength, keys[0].getFrameIndex());
         var delta = displacement(v0, a, currentFrame-keys[0].getFrameIndex());
         
         if(pastFrame < keys[keys.length-1].getFrameIndex())
