@@ -171,7 +171,13 @@ class MotionObject
     
     function allS(keyFrames:Array<KeyFrame>):Float
     {
-        return keyFrames[keyFrames.length - 1].anchor.y - keyFrames[0].anchor.y;
+        var i = 1;
+        var s = 0.0;
+        while (i < keyFrames.length) {
+            s += Math.abs(keyFrames[i].anchor.y - keyFrames[i - 1].anchor.y);
+            i++;
+        }
+        return s;
     }
     
     function allT(keyFrames:Array<KeyFrame>):Int
