@@ -54,8 +54,7 @@ class MovieClipFactory
             var document  = timeline.frame.layer.timeLine.document;
             lines = [document.getSymbol(timeline.libraryItem.name).timeline];
         }
-        var renderer = new MovieClipRenderer(mv, lines);
-        Render.addRenderer(renderer);
+        addtoRenderList(mv, lines);
     }
     
     static function addtoRenderList(mv:MovieClip, timelines:Array<DOMTimeLine>):Void 
