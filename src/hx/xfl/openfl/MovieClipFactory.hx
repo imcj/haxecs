@@ -21,6 +21,11 @@ class MovieClipFactory
         if (instance != null) throw "MovieClipFactory是单列类";
     }
 
+    /**
+     * 根据时间轴数据生成MovieClip实例
+     * @param domTimeLine 时间轴数据，可以是时间轴数组，每个时间轴作为一个场景
+     * @return hx.xfl.openfl.display.MovieClip实例
+     */
     static public function create(domTimeLine:Dynamic):MovieClip 
     {
         var lines = [];
@@ -36,6 +41,11 @@ class MovieClipFactory
         return mv;
     }
 
+    /**
+     * 创建按钮
+     * @param symbol 按钮元件数据
+     * @return hx.xfl.openfl.display.SimpleButton
+     */
     static public function createButton(symbol:DOMSymbolInstance):SimpleButton
     {
         var document  = symbol.frame.layer.timeLine.document;
@@ -45,6 +55,11 @@ class MovieClipFactory
         return button;
     }
 
+    /**
+     * 向MovieClip实例添加时间轴数据
+     * @param mv hx.xfl.openfl.display.MovieClip实例
+     * @param timeline 时间轴数据
+     */
     static public function dispatchTimeline(mv:MovieClip, timeline:Dynamic):Void 
     {
         var lines = [];
