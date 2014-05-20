@@ -10,8 +10,7 @@ class Main extends Sprite
     public function new()
     {
         super();
-        var document = hx.xfl.XFLDocument.open("assets/gradient");
-        var movieClip = MovieClipFactory.create(document.timeLines);
+        var movieClip = XFL.load("assets/gradient");
         addChild(movieClip);
     }
 }
