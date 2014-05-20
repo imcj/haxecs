@@ -1,5 +1,7 @@
 package ;
 
+import flash.Lib;
+import hx.xfl.openfl.display.FPS;
 import hx.xfl.openfl.display.MovieClip;
 import hx.xfl.openfl.MovieClipFactory;
 import hx.xfl.XFLDocument;
@@ -25,5 +27,11 @@ class XFL extends MovieClip
     static public function load(path:String):MovieClip 
     {
         return new XFL(path);
+    }
+    
+    static public function showInfo():Void 
+    {
+        var fps = new FPS();
+        Lib.current.stage.addChild(fps);
     }
 }
