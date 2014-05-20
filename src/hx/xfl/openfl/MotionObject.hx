@@ -148,10 +148,10 @@ class MotionObject
     {
         if (strength > 0) {
             var v0 = s / t * (1 + strength / 100);
-            return -v0 / t;
+            return -Math.abs(v0 / t);
         }else if (strength < 0) {
             var v0 = s / t * (1 + strength / 100);
-            return (s - v0 * t) * 2 / (t * t);
+            return Math.abs((s - v0 * t) * 2 / (t * t));
         }else {
             return 0;
         }
