@@ -139,7 +139,10 @@ class MotionObject
         var a = acceleration(alls, allt, domFrame.animation.strength);
         var keySE = property.getStarEnd(animationFrame);
         var v0 = keyFrameVelocity(alls, allt, domFrame.animation.strength, keySE[0].getFrameIndex());
-        var delta = keySE[0].anchor.y + displacement(v0, a, animationFrame);
+        var s = displacement(v0, a, animationFrame);
+        var delta = keySE[0].anchor.y;
+        if (keySE[1] != null && keySE[1].anchor.y - keySE[0].anchor.y > 0 ) delta += s;
+        if (keySE[1] != null && keySE[1].anchor.y - keySE[0].anchor.y < 0 ) delta -= s;
         
         return delta;
     }
