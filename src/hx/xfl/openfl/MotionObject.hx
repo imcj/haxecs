@@ -31,8 +31,9 @@ class MotionObject
         //motionRotation(matrix);
         //motionScale(matrix);
         //motionSkew(matrix);
-        var matrix = target.nowMatrix.clone();
-        
+        if (currentFrame - domFrame.index <= 0) target.nowMatrix = target.matrix.clone();
+        var matrix = target.nowMatrix;
+        matrix.tx += motion(currentFrame);
         return matrix;
     }
     
