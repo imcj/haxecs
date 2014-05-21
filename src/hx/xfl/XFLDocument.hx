@@ -157,7 +157,7 @@ class XFLDocument extends DOMDocument
     }
 
     #if openfl
-    function get_root():MovieClip
+    public function get_root():MovieClip
     {
         if (null == _root) {
             _root = MovieClipFactory.create(getTimeLinesIterator());
@@ -172,7 +172,6 @@ class XFLDocument extends DOMDocument
             var timelines:Array<DOMTimeLine> = [];
             for (timeline in getTimeLinesIterator())
                 timelines.push(timeline);
-
             hx.xfl.openfl.Render.addMvTimeLine(mc, timelines);
 
             return mc;

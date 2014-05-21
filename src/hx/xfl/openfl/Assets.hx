@@ -35,6 +35,12 @@ class Assets
         );
     }
 
+    public function getBitmapDataByMediaName(name:String):BitmapData
+    {
+        return getBitmapDataWithBitmapItem(
+            cast(document.getMedia(name), DOMBitmapItem));
+    }
+
     public function getBitmapDataByBitmapItem(name:DOMItem):BitmapData
     {
         return getBitmapDataWithBitmapItem(name);

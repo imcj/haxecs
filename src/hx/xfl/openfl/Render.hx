@@ -95,10 +95,9 @@ class Render
 
         var display_object:DisplayObject = null;
         var interactive_object:InteractiveObject;
-        var mc:MovieClip;
+        var mc:MovieClip = null;
 
         for (element in frame.getElementsIterator()) {
-
             if (Std.is(element, DOMBitmapInstance)) {
                 var bitmap_instance = cast(element, DOMBitmapInstance);
                 display_object = createBitmapInstance(bitmap_instance, line);
@@ -138,7 +137,13 @@ class Render
 
                     var item = cast(instance.libraryItem, DOMSymbolItem);
                     if (null != instance.libraryItem.linkageClassName) {
-                        mc = Type.createInstance(Type.resolveClass(instance.libraryItem.linkageClassName), []);
+                        var symbol_class = Type.resolveClass(
+                            instance.libraryItem.linkageClassName);
+                        try {
+                            mc = Type.createInstance(symbol_class, []);
+                        } catch (e:Dynamic) {
+                            trace(e);
+                        }
                         MovieClipFactory.dispatchTimeline(mc, item.timeline);
                     } else
                         mc = MovieClipFactory.create(item.timeline);
