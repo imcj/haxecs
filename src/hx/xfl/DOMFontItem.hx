@@ -1,8 +1,7 @@
 package hx.xfl;
 
-class DOMFontItem
+class DOMFontItem extends DOMItem
 {
-    public var name:String;
     public var itemID:String;
     public var font:String;
     public var size:Int;
@@ -14,7 +13,8 @@ class DOMFontItem
 
     public function new()
     {
-        name = "";
+        super();
+
         itemID = "";
         font = "";
         size = 0;

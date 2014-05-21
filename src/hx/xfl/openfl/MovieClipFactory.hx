@@ -21,7 +21,8 @@ class MovieClipFactory
         if (instance != null) throw "MovieClipFactory是单列类";
     }
 
-    static public function create(domTimeLine:Dynamic):MovieClip 
+    static public function create(domTimeLine:Dynamic,
+        ?instance:MovieClip=null):MovieClip 
     {
         var lines = [];
 
@@ -30,9 +31,14 @@ class MovieClipFactory
                 lines.push(domTimeLine.next());
         if (Std.is(domTimeLine, Array)) lines = domTimeLine;
         if (Std.is(domTimeLine, DOMTimeLine)) lines = [domTimeLine];
-        var mv = new MovieClip();
-        Render.addMvTimeLine(mv , lines);
-        return mv;
+        var mc:MovieClip;
+        if (instance != null)
+            mc = instance;
+        else
+            mc = new MovieClip();
+
+        Render.addMvTimeLine(mc , lines);
+        return mc;
     }
 
     static public function createButton(symbol:DOMSymbolInstance):SimpleButton
