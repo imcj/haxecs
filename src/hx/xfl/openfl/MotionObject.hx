@@ -222,15 +222,15 @@ class MotionObject
     public function motion(currentFrame:Int):Float 
     {
         var addValue = 0.0;
-        var property = getProperty("Motion_X");var easeKeys = property.keyFrames;
+        var property = getProperty("Motion_X");
+        var easeKeys = property.keyFrames;
         var easeDelta = easeKeys[easeKeys.length - 1].anchor.y - easeKeys[0].anchor.y;
-        var easeDeltaFrame = Std.int((easeKeys[easeKeys.length - 1].timevalue - easeKeys[0].timevalue) / 1000);
+        var easeDeltaFrame = Std.int(easeKeys[easeKeys.length - 1].getFrameIndex() - easeKeys[0].getFrameIndex());
         var keys = property.getStarEnd(currentFrame);
         if(1 < keys.length) {
             var delta = keys[1].anchor.y - keys[0].anchor.y;
-            var deltaFrame = Std.int((keys[1].timevalue - keys[0].timevalue) / 1000);
-            addValue = ease(easeDelta, easeDeltaFrame, currentFrame-Std.int(easeKeys[0].timevalue / 1000));
-            addValue *= (currentFrame-domFrame.index-Std.int(keys[0].timevalue / 1000));
+            var deltaFrame = Std.int(keys[1].getFrameIndex() - keys[0].getFrameIndex());
+            addValue = ease(easeDelta, easeDeltaFrame, currentFrame-easeKeys[0].getFrameIndex());
         }else {
             addValue = keys[0].anchor.y;
         }
