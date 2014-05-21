@@ -10,10 +10,7 @@ class Main extends Sprite
     public function new()
     {
         super();
-        trace("hello");
-        var document = hx.xfl.XFLDocument.open("assets/Classic");
-        trace(document);
-        var movieClip = MovieClipFactory.create(document.timeLines);
+        var movieClip = XFL.load("assets/Classic");
         addChild(movieClip);
     }
 }

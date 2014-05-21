@@ -4,6 +4,7 @@ import hx.geom.Matrix;
 import hx.xfl.DOMAnimationCore;
 import hx.xfl.DOMElement;
 import hx.xfl.DOMFrame;
+import hx.xfl.motion.KeyFrame;
 import hx.xfl.motion.Property;
 import hx.xfl.motion.PropertyContainer;
 
@@ -36,55 +37,17 @@ class MotionObject
     function motionX(matrix:Matrix):Void 
     {
         var property = getProperty("Motion_X");
-        var animationFrame = currentFrame - domFrame.index;
-        if (animationFrame == 0) return ;
+        var delta = nowS(property);
         
-        var keys = property.keyFrames;
-        var delta = keys[keys.length - 1].anchor.y - keys[0].anchor.y;
-        var deltaFrame = keys[keys.length - 1].getFrameIndex() - keys[0].getFrameIndex();
-        var pastFrame = animationFrame - keys[0].getFrameIndex();
-        if(pastFrame < keys[keys.length-1].getFrameIndex())
-            matrix.tx += easeValue(delta, deltaFrame, pastFrame);
-        else
-            matrix.tx += keys[keys.length - 1].anchor.y;
+        matrix.tx += delta;
     }
     
     function motionY(matrix:Matrix):Void 
     {
         var property = getProperty("Motion_Y");
-        var animationFrame = currentFrame - domFrame.index;
-        if (animationFrame == 0) return ;
+        var delta = nowS(property);
         
-        var keys = property.keyFrames;
-        var delta = keys[keys.length - 1].anchor.y - keys[0].anchor.y;
-        var deltaFrame = keys[keys.length - 1].getFrameIndex() - keys[0].getFrameIndex();
-        var pastFrame = animationFrame - keys[0].getFrameIndex();
-        if(pastFrame < keys[keys.length-1].getFrameIndex())
-            matrix.ty += easeValue(delta, deltaFrame, pastFrame);
-        else
-            matrix.ty += keys[keys.length - 1].anchor.y;
-        
-        //var s = domFrame.animation.strength;
-        //var vStart = delta / deltaFrame * (1 + Math.abs(s) / 100);
-        //var a = vStart / deltaFrame;
-        //if (s > 0) {
-            //var start = null;
-            //var end = null;
-            //for (key in keys) {
-                //if (pastFrame >= key.getFrameIndex())
-                    //start = key;
-            //}
-            //if (start != null) {
-                //end = property.nextKey(start);
-                //if (end != null) {
-                    //var v0 = vStart - a * pastFrame;
-                    //if (end.anchor.y - start.anchor.y > 0)
-                        //matrix.ty += v0 * pastFrame + a * pastFrame * pastFrame / 2;
-                    //else
-                        //matrix.ty += 2 * start.anchor.y - v0 * pastFrame - a * pastFrame * pastFrame / 2;
-                //}
-            //}
-        //}
+        matrix.ty += delta;
     }
     
     function motionRotation(matrix:Matrix):Void 
@@ -145,91 +108,93 @@ class MotionObject
             matrix.skew(keysX[keysX.length - 1].anchor.y / 100, keysY[keysY.length - 1].anchor.y / 100);
     }
 
-    public function animate(currentFrame:Int)
-    {
-        var matrix = target.matrix.clone();
-        this.currentFrame = currentFrame;
-
-        var xAdd = motion("Motion_X");
-        var yAdd = motion("Motion_Y");
-        if (xAdd.isAdd) matrix.tx += xAdd.v;
-        else matrix.tx = target.matrix.tx+xAdd.v;
-        if (yAdd.isAdd) matrix.ty += yAdd.v;
-        else matrix.ty = target.matrix.ty+yAdd.v;
-        var rotationAdd = motion("Rotation_Z");
-        //matrix.rotate(rotationAdd);
-        var scaleXAdd = motion("Scale_X");
-        var scaleYAdd = motion("Scale_Y");
-        //matrix.scale(scaleXAdd, scaleYAdd);
-        var skewXAdd = motion("Skew_X");
-        var skewYAdd = motion("Skew_Y");
-        //matrix.skew(skewXAdd, skewYAdd);
-        return matrix;
-    }
-
-    public function motion(propertyName:String): {v:Float, isAdd:Bool}
-    {
-        var motionResult:Dynamic = { };
-        var addValue = 0.0;
-        var property = getProperty(propertyName);
-        var easeKeys = property.keyFrames;
-        var easeDelta = easeKeys[easeKeys.length - 1].anchor.y - easeKeys[0].anchor.y;
-        var easeDeltaFrame = Std.int((easeKeys[easeKeys.length - 1].timevalue - easeKeys[0].timevalue) / 1000);
-        var keys = property.getStarEnd(currentFrame);
-        if(1 < keys.length) {
-            var delta = keys[1].anchor.y - keys[0].anchor.y;
-            var deltaFrame = Std.int((keys[1].timevalue - keys[0].timevalue) / 1000);
-            addValue = ease(easeDelta, easeDeltaFrame, currentFrame-Std.int(easeKeys[0].timevalue / 1000));
-            addValue *= (currentFrame-domFrame.index-Std.int(keys[0].timevalue / 1000));
-            motionResult.isAdd = true;
-        }else {
-            addValue = keys[0].anchor.y;
-            motionResult.isAdd = false;
-        }
-
-        if (~/Rotation/.match(propertyName)) addValue = addValue * Math.PI / 180;
-        if (~/Scale/.match(propertyName)) addValue = (keys[0].anchor.y + addValue) / 100;
-        if (~/Skew/.match(propertyName)) addValue = addValue * Math.PI / 180;
-
-        motionResult.v = addValue;
-        return motionResult;
-    }
-
     //flash中的缓动处理
-    public function ease(delta:Float, deltaFrame:Int, pastFrame:Int):Float 
-    {
-        var s = domFrame.animation.strength;
-        if (s > 0) {
-            var v0 = delta / deltaFrame * (1 + s / 100);
-            var a = -v0 / deltaFrame;
-            var t = pastFrame;
-            return v0 + a * (2 * t -1) / 2;
-        }else if (s < 0) {
-            var v1 = delta / deltaFrame * (1 - s / 100);
-            var a = v1 / deltaFrame;
-            var t = pastFrame;
-            return  a * (2 * t -1) / 2;
-        }else {
-            return delta / deltaFrame;
-        }
-    }
-    
     public function easeValue(delta:Float, deltaFrame:Int, pastFrame:Int):Float
     {
         var s = domFrame.animation.strength;
         if (s > 0) {
             var v0 = delta / deltaFrame * (1 + s / 100);
-            var a = -v0 / deltaFrame;
-            var t = pastFrame;
-            return v0 * t + a * t * t / 2;
+            var a = -v0/deltaFrame;
+            return v0 * pastFrame + a * pastFrame * pastFrame / 2;
         }else if (s < 0) {
-            var v1 = delta / deltaFrame * (1 - s / 100);
-            var a = v1 / deltaFrame;
+            var v0 = delta / deltaFrame * (1 + s / 100);
+            var a = (delta - v0 * deltaFrame) * 2 / (deltaFrame * deltaFrame);
             var t = pastFrame;
-            return  a * t * t / 2;
+            return  v0 * pastFrame + a * pastFrame * pastFrame / 2;
         }else {
             return delta / deltaFrame * pastFrame;
         }
+    }
+    
+    function nowS(property:Property):Float 
+    {
+        var animationFrame = currentFrame - domFrame.index;
+        if (animationFrame <= 0) return 0;
+        
+        var keys = property.keyFrames;
+        var pastFrame = animationFrame - keys[0].getFrameIndex();
+        
+        var alls = allS(keys);
+        var allt = allT(keys);
+        var a = acceleration(alls, allt, domFrame.animation.strength);
+        var keySE = property.getStarEnd(animationFrame);
+        var v0 = keyFrameVelocity(alls, allt, domFrame.animation.strength, keySE[0].getFrameIndex());
+        var s = displacement(v0, a, animationFrame-keySE[0].getFrameIndex());
+        var delta = keySE[0].anchor.y;
+        if (keySE[1] != null && keySE[1].anchor.y - keySE[0].anchor.y > 0 ) delta += s;
+        if (keySE[1] != null && keySE[1].anchor.y - keySE[0].anchor.y < 0 ) delta -= s;
+        
+        return delta;
+    }
+    
+    function acceleration(s:Float, t:Int, strength:Float):Float 
+    {
+        if (strength > 0) {
+            var v0 = s / t * (1 + strength / 100);
+            return -Math.abs(v0 / t);
+        }else if (strength < 0) {
+            var v0 = s / t * (1 + strength / 100);
+            return Math.abs((s - v0 * t) * 2 / (t * t));
+        }else {
+            return 0;
+        }
+    }
+    
+    function displacement(v0:Float, a:Float, t:Int):Float
+    {
+        return v0 * t + a * t * t / 2;
+    }
+    
+    function keyFrameVelocity(alls:Float, allt:Int, strength:Float, frameIndex:Int):Float 
+    {
+        var v0 = alls / allt * (1 + strength / 100);
+        var a = acceleration(alls, allt, strength);
+        return v0 + a * frameIndex;
+    }
+    
+    function allS(keyFrames:Array<KeyFrame>):Float
+    {
+        var i = 1;
+        var s = 0.0;
+        while (i < keyFrames.length) {
+            s += Math.abs(keyFrames[i].anchor.y - keyFrames[i - 1].anchor.y);
+            i++;
+        }
+        return s;
+    }
+    
+    function allT(keyFrames:Array<KeyFrame>):Int
+    {
+        return keyFrames[keyFrames.length - 1].getFrameIndex() - keyFrames[0].getFrameIndex();
+    }
+    
+    function targetFrame(keyFrames:Array<KeyFrame>):KeyFrame
+    {
+        var frame = null;
+        for (i in keyFrames) {
+            if (currentFrame < i.getFrameIndex()) frame = i;
+        }
+        return frame;
     }
 
     public function getContainers(name:String):Map<String, PropertyContainer>
