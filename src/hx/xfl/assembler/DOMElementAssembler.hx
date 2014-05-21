@@ -63,6 +63,8 @@ class DOMElementAssembler extends XFLBaseAssembler
                 matrix.ty = Std.parseFloat(matrix_ty);
 
         }
+        
+        element.nowMatrix = element.matrix.clone();
     }
 
     function parse_transformPoint(elementNode:Xml, element):Void 

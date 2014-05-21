@@ -13,4 +13,6 @@ interface IDOMElement
     var centerPoint3DY(default, default):Float;
     var width(default, default):Float;
     var height(default, default):Float;
+    
+    var nowMatrix:Matrix;
 }
