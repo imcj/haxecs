@@ -25,12 +25,14 @@ class MotionObject
     public function getCurrentMatrix(currentFrame:Int):Matrix
     {
         this.currentFrame = currentFrame;
-        var matrix = target.matrix.clone();
-        motionX(matrix);
-        motionY(matrix);
-        motionRotation(matrix);
-        motionScale(matrix);
-        motionSkew(matrix);
+        //var matrix = target.matrix.clone();
+        //motionX(matrix);
+        //motionY(matrix);
+        //motionRotation(matrix);
+        //motionScale(matrix);
+        //motionSkew(matrix);
+        var matrix = target.nowMatrix.clone();
+        
         return matrix;
     }
     
@@ -214,6 +216,25 @@ class MotionObject
             }
         }
         return null;
+    }
+
+    public function motion(currentFrame:Int):Float 
+    {
+        var addValue = 0.0;
+        var property = getProperty("Motion_X");var easeKeys = property.keyFrames;
+        var easeDelta = easeKeys[easeKeys.length - 1].anchor.y - easeKeys[0].anchor.y;
+        var easeDeltaFrame = Std.int((easeKeys[easeKeys.length - 1].timevalue - easeKeys[0].timevalue) / 1000);
+        var keys = property.getStarEnd(currentFrame);
+        if(1 < keys.length) {
+            var delta = keys[1].anchor.y - keys[0].anchor.y;
+            var deltaFrame = Std.int((keys[1].timevalue - keys[0].timevalue) / 1000);
+            addValue = ease(easeDelta, easeDeltaFrame, currentFrame-Std.int(easeKeys[0].timevalue / 1000));
+            addValue *= (currentFrame-domFrame.index-Std.int(keys[0].timevalue / 1000));
+        }else {
+            addValue = keys[0].anchor.y;
+        }
+        
+        return addValue;
     }
 
     //flash中的缓动处理
