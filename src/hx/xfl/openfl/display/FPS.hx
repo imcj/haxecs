@@ -16,7 +16,7 @@ class FPS extends TextField
         super();
         times = [];
         mouseEnabled = false;
-        defaultTextFormat = new TextFormat (12, 0xffffff);
+        defaultTextFormat = new TextFormat (12, 0xff0000);
         addEventListener(Event.ENTER_FRAME, onEnter);
     }
 
