@@ -233,7 +233,7 @@ class MotionObject
         var isAdd = true;
         if (keys.length > 1) {
             var t = animateTime-keys[0].getFrameIndex();
-            var v0 = keyFrameVelocity(alls, allt, domFrame.animation.strength, t);
+            var v0 = keyFrameVelocity(alls, allt, domFrame.animation.strength, animateTime);
             var isAdd = keys[1].anchor.y - keys[0].anchor.y > 0;
         
             deltaS = v0 + a * t - a / 2;
@@ -255,7 +255,7 @@ class MotionObject
         var isAdd = true;
         if (keys.length > 1) {
             var t = animateTime-keys[0].getFrameIndex();
-            var v0 = keyFrameVelocity(alls, allt, domFrame.animation.strength, t);
+            var v0 = keyFrameVelocity(alls, allt, domFrame.animation.strength, animateTime);
             var isAdd = keys[1].anchor.y - keys[0].anchor.y > 0;
         
             deltaS = v0 + a * t - a / 2;
