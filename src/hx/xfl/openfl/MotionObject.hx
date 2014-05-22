@@ -221,7 +221,6 @@ class MotionObject
 
     public function motion(currentFrame:Int):Void 
     {
-        var addValue = 0.0;
         var property = getProperty("Motion_X");
         
         var alls = allS(property.keyFrames);
@@ -236,5 +235,21 @@ class MotionObject
         var deltaS = v0 + a * t - a / 2;
         
         target.nowMatrix.tx += deltaS;
+        
+        
+        var property = getProperty("Motion_Y");
+        
+        var alls = allS(property.keyFrames);
+        var allt = allT(property.keyFrames);
+        var a = acceleration(alls, allt, domFrame.animation.strength);
+        var animateTime = currentFrame - domFrame.index;
+        
+        var keys = property.getStarEnd(currentFrame);
+        var t = animateTime-keys[0].getFrameIndex();
+        var v0 = keyFrameVelocity(alls, allt, domFrame.animation.strength, t);
+        
+        var deltaS = v0 + a * t - a / 2;
+        
+        target.nowMatrix.ty += deltaS;
     }
 }
