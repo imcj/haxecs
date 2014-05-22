@@ -33,9 +33,8 @@ class MotionObject
         //motionSkew(matrix);
         
         if (currentFrame - domFrame.index <= 0) target.nowMatrix = target.matrix.clone();
-        var matrix = target.nowMatrix;
-        matrix.tx += motion(currentFrame);
-        return matrix;
+        motion(currentFrame);
+        return target.nowMatrix;
     }
     
     function motionX(matrix:Matrix):Void 
@@ -220,7 +219,7 @@ class MotionObject
         return null;
     }
 
-    public function motion(currentFrame:Int):Float 
+    public function motion(currentFrame:Int):Void 
     {
         var addValue = 0.0;
         var property = getProperty("Motion_X");
@@ -234,8 +233,8 @@ class MotionObject
         var t = animateTime-keys[0].getFrameIndex();
         var v0 = keyFrameVelocity(alls, allt, domFrame.animation.strength, t);
         
-        var deltaS = v0 + a * t -a / 2;
+        var deltaS = v0 + a * t - a / 2;
         
-        return deltaS;
+        target.nowMatrix.tx += deltaS;
     }
 }
