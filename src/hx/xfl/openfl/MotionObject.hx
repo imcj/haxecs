@@ -229,10 +229,16 @@ class MotionObject
         var animateTime = currentFrame - domFrame.index;
         
         var keys = property.getStarEnd(currentFrame);
-        var t = animateTime-keys[0].getFrameIndex();
-        var v0 = keyFrameVelocity(alls, allt, domFrame.animation.strength, t);
+        var deltaS = 0.0;
+        var isAdd = true;
+        if (keys.length > 1) {
+            var t = animateTime-keys[0].getFrameIndex();
+            var v0 = keyFrameVelocity(alls, allt, domFrame.animation.strength, t);
+            var isAdd = keys[1].anchor.y - keys[0].anchor.y > 0;
         
-        var deltaS = v0 + a * t - a / 2;
+            deltaS = v0 + a * t - a / 2;
+            if (!isAdd) deltaS = -deltaS;
+        }
         
         target.nowMatrix.tx += deltaS;
         
@@ -245,10 +251,16 @@ class MotionObject
         var animateTime = currentFrame - domFrame.index;
         
         var keys = property.getStarEnd(currentFrame);
-        var t = animateTime-keys[0].getFrameIndex();
-        var v0 = keyFrameVelocity(alls, allt, domFrame.animation.strength, t);
+        var deltaS = 0.0;
+        var isAdd = true;
+        if (keys.length > 1) {
+            var t = animateTime-keys[0].getFrameIndex();
+            var v0 = keyFrameVelocity(alls, allt, domFrame.animation.strength, t);
+            var isAdd = keys[1].anchor.y - keys[0].anchor.y > 0;
         
-        var deltaS = v0 + a * t - a / 2;
+            deltaS = v0 + a * t - a / 2;
+            if (!isAdd) deltaS = -deltaS;
+        }
         
         target.nowMatrix.ty += deltaS;
     }
