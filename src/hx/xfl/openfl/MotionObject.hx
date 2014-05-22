@@ -33,7 +33,7 @@ class MotionObject
         //motionSkew(matrix);
         
         if (currentFrame - domFrame.index <= 0) target.nowMatrix = target.matrix.clone();
-        motion(currentFrame);
+        deltaS(currentFrame);
         return target.nowMatrix;
     }
     
@@ -263,5 +263,24 @@ class MotionObject
         }
         
         target.nowMatrix.ty += deltaS;
+        trace(target.nowMatrix.tx,target.nowMatrix.ty,currentFrame,domFrame.index);
+    }
+    
+    
+    function deltaS(currentFrame:Int):Void 
+    {
+        var animateTime = currentFrame-domFrame.index;
+        if (animateTime <= 0) return;
+        var property = getProperty("Motion_X");
+        
+        var alls = allS(property.keyFrames);
+        var allt = allT(property.keyFrames);
+        var averageS = alls / allt;
+        
+        var ds = -averageS/2 * (domFrame.animation.strength / 100);
+        var s0 = (alls - allt * (allt - 1) * ds / 2) / allt;
+        trace(ds,s0);
+        
+        target.nowMatrix.tx += s0 + (animateTime-1)*ds;
     }
 }
