@@ -31,6 +31,7 @@ class MotionObject
         //motionRotation(matrix);
         //motionScale(matrix);
         //motionSkew(matrix);
+        
         if (currentFrame - domFrame.index <= 0) target.nowMatrix = target.matrix.clone();
         var matrix = target.nowMatrix;
         matrix.tx += motion(currentFrame);
@@ -223,19 +224,19 @@ class MotionObject
     {
         var addValue = 0.0;
         var property = getProperty("Motion_X");
-        var easeKeys = property.keyFrames;
-        var easeDelta = easeKeys[easeKeys.length - 1].anchor.y - easeKeys[0].anchor.y;
-        var easeDeltaFrame = Std.int(easeKeys[easeKeys.length - 1].getFrameIndex() - easeKeys[0].getFrameIndex());
-        var keys = property.getStarEnd(currentFrame);
-        if(1 < keys.length) {
-            var delta = keys[1].anchor.y - keys[0].anchor.y;
-            var deltaFrame = Std.int(keys[1].getFrameIndex() - keys[0].getFrameIndex());
-            addValue = ease(easeDelta, easeDeltaFrame, currentFrame-easeKeys[0].getFrameIndex());
-        }else {
-            addValue = keys[0].anchor.y;
-        }
         
-        return addValue;
+        var alls = allS(property.keyFrames);
+        var allt = allT(property.keyFrames);
+        var a = acceleration(alls, allt, domFrame.animation.strength);
+        var animateTime = currentFrame - domFrame.index;
+        
+        var keys = property.getStarEnd(currentFrame);
+        var t = animateTime-keys[0].getFrameIndex();
+        var v0 = keyFrameVelocity(alls, allt, domFrame.animation.strength, t);
+        
+        var deltaS = v0 + a * t -a / 2;
+        
+        return deltaS;
     }
 
     //flash中的缓动处理
