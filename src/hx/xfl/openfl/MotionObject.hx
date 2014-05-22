@@ -238,25 +238,4 @@ class MotionObject
         
         return deltaS;
     }
-
-    //flash中的缓动处理
-    public function ease(delta:Float, deltaFrame:Int, pastFrame:Int):Float 
-    {
-        var s = domFrame.animation.strength;
-        if (s > 0) {
-            var v0 = delta / deltaFrame * (1 + s / 100);
-            var a = -v0 / deltaFrame;
-            var t = pastFrame;
-            return v0 + a * (2 * t -1) / 2;
-        }else if (s < 0) {
-            var v1 = delta / deltaFrame * (1 - s / 100);
-            var a = v1 / deltaFrame;
-            var t = pastFrame;
-            return  a * (2 * t -1) / 2;
-        }else {
-            return delta / deltaFrame;
-        }
-    }
-    
-
 }
