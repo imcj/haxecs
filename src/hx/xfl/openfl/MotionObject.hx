@@ -26,6 +26,8 @@ class MotionObject
         matrix.tx += motion(matrix, "Motion_X", currentFrame);
         matrix.ty += motion(matrix, "Motion_Y", currentFrame);
         matrix.rotate(motion(matrix, "Rotation_Z", currentFrame)*Math.PI/180);
+        matrix.scale(motion(matrix, "Scale_X", currentFrame)/100, motion(matrix, "Scale_Y", currentFrame)/100);
+        matrix.skew(motion(matrix, "Skew_X", currentFrame)*Math.PI/180, motion(matrix, "Skew_Y", currentFrame)*Math.PI/180);
         
         return matrix;
     }
