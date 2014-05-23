@@ -37,10 +37,15 @@ class MotionObject
         if (animateTime <= 0) return;
         var property = getProperty("Motion_X");
         
-        var alls = allS(property.keyFrames);
-        var allt = allT(property.keyFrames);
-        
-        target.nowMatrix.tx = easeQuadPercent(animateTime, target.matrix.tx, alls, allt, domFrame.animation.strength/100);
+        var keys = property.getStarEnd(currentFrame);
+        if (keys.length > 1) {
+            var t = animateTime-keys[0].getFrameIndex();
+            var b = target.matrix.tx + keys[0].anchor.y;
+            var c = keys[1].anchor.y - keys[0].anchor.y;
+            var d = keys[1].getFrameIndex() - keys[0].getFrameIndex();
+            var p = domFrame.animation.strength / 100;
+            target.nowMatrix.tx = easeQuadPercent(t, b, c, d, p);
+        }
     }
     
     function easeQuadPercent(t:Float, b:Float, c:Float, d:Float, p:Float):Float
