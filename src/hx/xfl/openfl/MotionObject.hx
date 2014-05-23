@@ -38,7 +38,7 @@ class MotionObject
         if (animateTime <= 0) return 0;
         var property = getProperty(name);
         
-        var keys = property.getStarEnd(currentFrame);
+        var keys = property.getStarEnd(animateTime);
         if (keys.length > 1) {
             var t = animateTime-keys[0].getFrameIndex();
             var b = keys[0].anchor.y;
