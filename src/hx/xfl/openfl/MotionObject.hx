@@ -13,19 +13,14 @@ class MotionObject
     var domFrame:DOMFrame;
     var target:DOMElement;
 
-    var currentFrame:Int;
-
     public function new(target, domFrame)
     {
         this.target = target;
         this.domFrame = domFrame;
-        this.currentFrame = 0;
     }
     
     public function getCurrentMatrix(currentFrame:Int):Matrix
     {
-        this.currentFrame = currentFrame;
-        
         if (currentFrame - domFrame.index <= 0) target.nowMatrix = target.matrix.clone();
         motion(currentFrame);
         return target.nowMatrix;
