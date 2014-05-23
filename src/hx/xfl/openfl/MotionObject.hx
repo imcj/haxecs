@@ -52,7 +52,7 @@ class MotionObject
         var keys = property.getStarEnd(currentFrame);
         if (keys.length > 1) {
             var t = animateTime-keys[0].getFrameIndex();
-            var b = target.matrix.tx + keys[0].anchor.y;
+            var b = target.matrix.ty + keys[0].anchor.y;
             var c = keys[1].anchor.y - keys[0].anchor.y;
             var d = keys[1].getFrameIndex() - keys[0].getFrameIndex();
             var p = domFrame.animation.strength / 100;
