@@ -21,25 +21,25 @@ class MotionObject
     
     public function getCurrentMatrix(currentFrame:Int):Matrix
     {
-        if (currentFrame - domFrame.index <= 0) target.nowMatrix = target.matrix.clone();
-        motion(currentFrame);
-        return target.nowMatrix;
+        return motion(currentFrame);
     }
     
-    function motion(currentFrame:Int ):Void 
+    function motion(currentFrame:Int):Matrix 
     {
+        var matrix = target.matrix.clone();
+    
         var animateTime = currentFrame-domFrame.index;
-        if (animateTime <= 0) return;
+        if (animateTime <= 0) return matrix;
         var property = getProperty("Motion_X");
         
         var keys = property.getStarEnd(currentFrame);
         if (keys.length > 1) {
             var t = animateTime-keys[0].getFrameIndex();
-            var b = target.matrix.tx + keys[0].anchor.y;
+            var b = matrix.tx + keys[0].anchor.y;
             var c = keys[1].anchor.y - keys[0].anchor.y;
             var d = keys[1].getFrameIndex() - keys[0].getFrameIndex();
             var p = domFrame.animation.strength / 100;
-            target.nowMatrix.tx = easeQuadPercent(t, b, c, d, p);
+            matrix.tx = easeQuadPercent(t, b, c, d, p);
         }
         
         var property = getProperty("Motion_Y");
@@ -47,11 +47,11 @@ class MotionObject
         var keys = property.getStarEnd(currentFrame);
         if (keys.length > 1) {
             var t = animateTime-keys[0].getFrameIndex();
-            var b = target.matrix.ty + keys[0].anchor.y;
+            var b = matrix.ty + keys[0].anchor.y;
             var c = keys[1].anchor.y - keys[0].anchor.y;
             var d = keys[1].getFrameIndex() - keys[0].getFrameIndex();
             var p = domFrame.animation.strength / 100;
-            target.nowMatrix.ty = easeQuadPercent(t, b, c, d, p);
+            matrix.ty = easeQuadPercent(t, b, c, d, p);
         }
         
         var property = getProperty("Rotation_Z");
@@ -63,8 +63,10 @@ class MotionObject
             var c = keys[1].anchor.y - keys[0].anchor.y;
             var d = keys[1].getFrameIndex() - keys[0].getFrameIndex();
             var p = domFrame.animation.strength / 100;
-            target.nowMatrix.rotate(easeQuadPercent(t, b, c, d, p)*Math.PI/180);
+            matrix.rotate(easeQuadPercent(t, b, c, d, p)*Math.PI/180);
         }
+        
+        return matrix;
     }
     
     function easeQuadPercent(t:Float, b:Float, c:Float, d:Float, p:Float):Float

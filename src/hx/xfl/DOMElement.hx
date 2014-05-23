@@ -15,8 +15,6 @@ class DOMElement implements IDOMElement
     public var height(default, default):Float;
     public var top(default, default):Float;
     public var left(default, default):Float;
-    
-    public var nowMatrix:Matrix;
 
     public function new()
     {
@@ -29,7 +27,5 @@ class DOMElement implements IDOMElement
         height = 0;
         top = 0;
         left = 0;
-        
-        nowMatrix = new Matrix();
     }
 }

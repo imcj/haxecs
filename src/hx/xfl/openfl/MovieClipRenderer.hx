@@ -81,7 +81,7 @@ class MovieClipRenderer
                 var instance:DOMSymbolInstance = cast(element);
 
                 // 动画
-                var matrix = instance.nowMatrix.clone();
+                var matrix = instance.matrix.clone();
                 if (frame.tweenType == "motion") {
                     var nextFrame = frame;
                     for (n in 0...domLayer.frames.length) {
