@@ -58,12 +58,24 @@ class MotionObject
             var p = domFrame.animation.strength / 100;
             target.nowMatrix.ty = easeQuadPercent(t, b, c, d, p);
         }
+        
+        var property = getProperty("Rotation_Z");
+        
+        var keys = property.getStarEnd(currentFrame);
+        if (keys.length > 1) {
+            var t = animateTime-keys[0].getFrameIndex();
+            var b = keys[0].anchor.y;
+            var c = keys[1].anchor.y - keys[0].anchor.y;
+            var d = keys[1].getFrameIndex() - keys[0].getFrameIndex();
+            var p = domFrame.animation.strength / 100;
+            target.nowMatrix.rotate(easeQuadPercent(t, b, c, d, p)*Math.PI/180);
+        }
     }
     
     function easeQuadPercent(t:Float, b:Float, c:Float, d:Float, p:Float):Float
     {
         if (p == 0) return c * t / d + b;
-        if (p < 0) return c * (t/=d) * (t * ( -p) + (1 + p)) + b;
+        if (p < 0) return c * (t/=d) * (t * (-p) + (1 + p)) + b;
         return c * (t/=d) * ((2 - t) * p +(1 - p)) + b;
     }
 
