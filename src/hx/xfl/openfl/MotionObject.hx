@@ -27,11 +27,11 @@ class MotionObject
         this.currentFrame = currentFrame;
         
         if (currentFrame - domFrame.index <= 0) target.nowMatrix = target.matrix.clone();
-        easeX(currentFrame);
+        motion(currentFrame);
         return target.nowMatrix;
     }
     
-    function easeX(currentFrame:Int ):Void 
+    function motion(currentFrame:Int ):Void 
     {
         var animateTime = currentFrame-domFrame.index;
         if (animateTime <= 0) return;
