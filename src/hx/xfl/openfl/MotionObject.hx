@@ -33,7 +33,7 @@ class MotionObject
         //motionSkew(matrix);
         
         if (currentFrame - domFrame.index <= 0) target.nowMatrix = target.matrix.clone();
-        deltaS(currentFrame);
+        easeX(currentFrame);
         return target.nowMatrix;
     }
     
@@ -282,5 +282,22 @@ class MotionObject
         trace(ds,s0);
         
         target.nowMatrix.tx += s0 + (animateTime-1)*ds;
+    }
+    
+    function easeX(currentFrame:Int ):Void 
+    {
+        var animateTime = currentFrame-domFrame.index;
+        if (animateTime <= 0) return;
+        var property = getProperty("Motion_X");
+        
+        var alls = allS(property.keyFrames);
+        var allt = allT(property.keyFrames);
+        
+        target.nowMatrix.tx = ease(animateTime, target.matrix.tx, alls, allt);
+    }
+    
+    function ease(t:Float, b:Float, c:Float, d:Int):Float 
+    {
+        return c * (t /= d) * t + b;
     }
 }
