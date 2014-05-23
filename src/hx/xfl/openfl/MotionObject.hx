@@ -22,21 +22,18 @@ class MotionObject
     public function getCurrentMatrix(currentFrame:Int):Matrix
     {
         var matrix = target.matrix.clone();
-        var x = motion(matrix, "Motion_X", currentFrame);
-        var y = motion(matrix, "Motion_Y", currentFrame);
-        var r = motion(matrix, "Rotation_Z", currentFrame);
         
-        if (x != null) matrix.tx += x;
-        if (y != null) matrix.ty += y;
-        if (r != null) matrix.rotate(r*Math.PI/180);
+        matrix.tx += motion(matrix, "Motion_X", currentFrame);
+        matrix.ty += motion(matrix, "Motion_Y", currentFrame);
+        matrix.rotate(motion(matrix, "Rotation_Z", currentFrame)*Math.PI/180);
         
         return matrix;
     }
     
-    function motion(matrix:Matrix, name:String, currentFrame:Int):Null<Float>
+    function motion(matrix:Matrix, name:String, currentFrame:Int):Float
     {
         var animateTime = currentFrame-domFrame.index;
-        if (animateTime <= 0) return null;
+        if (animateTime <= 0) return 0;
         var property = getProperty(name);
         
         var keys = property.getStarEnd(currentFrame);
@@ -49,7 +46,7 @@ class MotionObject
             return easeQuadPercent(t, b, c, d, p);
         }
         
-        return null;
+        return 0;
     }
     
     function easeQuadPercent(t:Float, b:Float, c:Float, d:Float, p:Float):Float
