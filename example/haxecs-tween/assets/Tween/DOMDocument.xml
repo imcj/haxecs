@@ -4,19 +4,34 @@
           <Include href="rect2.xml" loadImmediate="false" itemID="5338fcd4-00000006" lastModified="1396243668"/>
      </symbols>
      <timelines>
-          <DOMTimeline name="Scene 1" currentFrame="49">
+          <DOMTimeline name="Scene 1" currentFrame="95">
                <layers>
                     <DOMLayer name="图层 2" color="#9933CC" current="true" isSelected="true" animationType="motion object">
                          <frames>
-                              <DOMFrame index="0" duration="50" tweenType="motion object" motionTweenRotate="none" motionTweenScale="false" isMotionObject="true" visibleAnimationKeyframes="2097151" keyMode="8195">
+                              <DOMFrame index="0" duration="15" keyMode="9728">
+                                   <elements/>
+                              </DOMFrame>
+                              <DOMFrame index="15" duration="50" tweenType="motion object" motionTweenRotate="none" motionTweenScale="false" isMotionObject="true" visibleAnimationKeyframes="2097151" keyMode="8195">
                                    <motionObjectXML><AnimationCore TimeScale="24000" Version="1" duration="50000"><TimeMap strength="-100" type="Quadratic"/><metadata><names><name langID="zh_CN" value=""/></names><Settings orientToPath="0" xformPtXOffsetPct="0.493976" xformPtYOffsetPct="0.492742" xformPtZOffsetPixels="0"/></metadata><PropertyContainer id="headContainer"><PropertyContainer id="Basic_Motion"><Property TimeMapIndex="0" enabled="1" id="Motion_X" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="0,0" previous="0,0" roving="0" timevalue="0"/><Keyframe anchor="0,269.356" next="0,269.356" previous="0,269.356" roving="0" timevalue="37000"/><Keyframe anchor="0,283" next="0,283" previous="0,283" roving="0" timevalue="49000"/></Property><Property TimeMapIndex="0" enabled="1" id="Motion_Y" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="0,0" previous="0,0" roving="0" timevalue="0"/><Keyframe anchor="0,-25.917" next="0,-25.917" previous="0,-25.917" roving="0" timevalue="37000"/><Keyframe anchor="0,-155.95" next="0,-155.95" previous="0,-155.95" roving="0" timevalue="49000"/></Property><Property TimeMapIndex="0" enabled="1" id="Rotation_Z" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="0,0" previous="0,0" roving="0" timevalue="0"/><Keyframe anchor="0,47" next="0,47" previous="0,47" roving="0" timevalue="49000"/></Property></PropertyContainer><PropertyContainer id="Transformation"><Property TimeMapIndex="0" enabled="1" id="Skew_X" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="0,0" previous="0,0" roving="0" timevalue="0"/><Keyframe anchor="0,-18.81" next="0,-18.81" previous="0,-18.81" roving="0" timevalue="49000"/></Property><Property TimeMapIndex="0" enabled="1" id="Skew_Y" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,0" next="0,0" previous="0,0" roving="0" timevalue="0"/><Keyframe anchor="0,0.000869751" next="0,0.000869751" previous="0,0.000869751" roving="0" timevalue="49000"/></Property><Property TimeMapIndex="0" enabled="1" id="Scale_X" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,100" next="0,100" previous="0,100" roving="0" timevalue="0"/><Keyframe anchor="0,160.677" next="0,160.677" previous="0,160.677" roving="0" timevalue="49000"/></Property><Property TimeMapIndex="0" enabled="1" id="Scale_Y" ignoreTimeMap="0" readonly="0" visible="1"><Keyframe anchor="0,100" next="0,100" previous="0,100" roving="0" timevalue="0"/><Keyframe anchor="0,157.405" next="0,157.405" previous="0,157.405" roving="0" timevalue="49000"/></Property></PropertyContainer><PropertyContainer id="Colors"/><PropertyContainer id="Filters"/></PropertyContainer></AnimationCore></motionObjectXML>
                                    <elements>
-                                        <DOMSymbolInstance libraryItemName="rect2" name="yy" selected="true" centerPoint3DX="155.05" centerPoint3DY="261.45">
+                                        <DOMSymbolInstance libraryItemName="rect2" name="yy" centerPoint3DX="155.05" centerPoint3DY="261.45">
                                              <matrix>
                                                   <Matrix tx="113.55" ty="230.45"/>
                                              </matrix>
                                              <transformationPoint>
                                                   <Point x="41" y="30.55"/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="65" duration="31" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="rect2" selected="true">
+                                             <matrix>
+                                                  <Matrix tx="430.5" ty="249.95"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point x="41.5" y="31"/>
                                              </transformationPoint>
                                         </DOMSymbolInstance>
                                    </elements>
@@ -31,6 +46,7 @@
      </persistentData>
      <PrinterSettings/>
      <publishHistory>
+          <PublishItem publishSize="912" publishTime="1400838922"/>
           <PublishItem publishSize="875" publishTime="1400835400"/>
           <PublishItem publishSize="411" publishTime="1400833960"/>
           <PublishItem publishSize="415" publishTime="1400832428"/>
@@ -50,6 +66,5 @@
           <PublishItem publishSize="569" publishTime="1400741170"/>
           <PublishItem publishSize="563" publishTime="1400740572"/>
           <PublishItem publishSize="567" publishTime="1400740500"/>
-          <PublishItem publishSize="566" publishTime="1400740108"/>
      </publishHistory>
 </DOMDocument>
