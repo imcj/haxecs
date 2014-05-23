@@ -293,11 +293,14 @@ class MotionObject
         var alls = allS(property.keyFrames);
         var allt = allT(property.keyFrames);
         
-        target.nowMatrix.tx = ease(animateTime, target.matrix.tx, alls, allt);
+        target.nowMatrix.tx = easeQuadPercent(animateTime, target.matrix.tx, alls, allt, domFrame.animation.strength/100);
+        trace(target.nowMatrix.tx);
     }
     
-    function ease(t:Float, b:Float, c:Float, d:Int):Float 
+    function easeQuadPercent(t:Float, b:Float, c:Float, d:Float, p:Float):Float
     {
-        return c * (t /= d) * t + b;
+        if (p == 0) return c * t / d + b;
+        if (p < 0) return c * (t/=d) * (t * ( -p) + (1 + p)) + b;
+        return c * (t/=d) * ((2 - t) * p +(1 - p)) + b;
     }
 }
