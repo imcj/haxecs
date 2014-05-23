@@ -21,18 +21,18 @@ class Property
         return keyFrames[keyFrames.indexOf(keyFrame) + 1];
     }
 
-    public function getStarEnd(frameIndex:Int):Array<KeyFrame>
+    public function getStarEnd(pastFrames:Int):Array<KeyFrame>
     {
         var starEnd:Array<KeyFrame> = [];
         for (kf in keyFrames) {
             var keyIndex = Std.int(kf.timevalue / 1000);
-            if (keyIndex == frameIndex) {
+            if (keyIndex == pastFrames) {
                 starEnd.push(kf);
                 break;
-            }else if (keyIndex < frameIndex) {
+            }else if (keyIndex < pastFrames) {
                 starEnd = [];
                 starEnd.push(kf);
-            }else if (keyIndex > frameIndex) {
+            }else if (keyIndex > pastFrames) {
                 starEnd.push(kf);
                 break;
             }
