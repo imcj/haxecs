@@ -172,7 +172,7 @@ class XFLDocument extends DOMDocument
     }
 
     #if openfl
-    function get_root():MovieClip
+    public function get_root():MovieClip
     {
         if (null == _root) {
             _root = MovieClipFactory.create(getTimeLinesIterator());
@@ -189,7 +189,8 @@ class XFLDocument extends DOMDocument
                 timelines.push(timeline);
 
             var renderer = new hx.xfl.openfl.MovieClipRenderer(mc, timelines);
-            hx.xfl.openfl.Render.addRenderer(renderer);
+            // hx.xfl.openfl.Render.addRenderer(renderer);
+            hx.xfl.openfl.MovieClipFactory.addtoRenderList(mc, timeLines);
 
             return mc;
         }

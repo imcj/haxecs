@@ -81,7 +81,7 @@ class MovieClipFactory
         addtoRenderList(mv, lines);
     }
     
-    static function addtoRenderList(mv:MovieClip, timelines:Array<DOMTimeLine>):Void 
+    static public function addtoRenderList(mv:MovieClip, timelines:Array<DOMTimeLine>):Void 
     {
         mv.setScenes(getScenes(timelines));
         var renderer = new MovieClipRenderer(mv, timelines);

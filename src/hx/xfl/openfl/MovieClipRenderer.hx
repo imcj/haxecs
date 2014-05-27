@@ -73,7 +73,6 @@ class MovieClipRenderer
         var mc:MovieClip;
 
         for (element in frame.getElementsIterator()) {
-
             if (Std.is(element, DOMBitmapInstance)) {
                 var bitmap_instance = cast(element, DOMBitmapInstance);
                 display_object = createBitmapInstance(bitmap_instance, line);
