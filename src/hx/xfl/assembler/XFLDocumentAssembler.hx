@@ -72,7 +72,7 @@ class XFLDocumentAssembler extends XFLBaseAssembler
             #if cstool
             text = read(file, true);
             #else
-            text = hx.xfl.openfl.Assets.getText(file);
+            text = document.assets.getText(file);
             #end
             var symbolXml = Xml.parse(text).firstChild();
             symbolItem.name = symbolXml.get("name");
@@ -104,7 +104,7 @@ class XFLDocumentAssembler extends XFLBaseAssembler
             #if cstool
             text = read(file, true);
             #else
-            text = hx.xfl.openfl.Assets.getText(file);
+            text = document.assets.getText(file);
             #end
             var symbolXml = Xml.parse(text).firstChild();
 
@@ -128,7 +128,7 @@ class XFLDocumentAssembler extends XFLBaseAssembler
     {
         var fontItem = new DOMFontItem();
         fillProperty(fontItem, data, ["sourceLastImported"]);
-        var font = openfl.Assets.getFont("assets/font/" + fontItem.font.toUpperCase() + ".TTF");
+        var font = document.assets.getFont("assets/font/" + fontItem.font.toUpperCase() + ".TTF");
         if (font != null)fontItem.fontName = font.fontName;
         else throw("字体文件"+fontItem.font.toUpperCase()+".TTF缺失，请拷贝字体到asstes/font文件夹下");
         document.addFont(fontItem);

@@ -4,6 +4,7 @@ package hx.xfl.openfl;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.PixelSnapping;
+import flash.text.Font;
 import hx.xfl.DOMItem;
 import hx.xfl.DOMBitmapItem;
 import hx.xfl.XFLDocument;
@@ -24,7 +25,7 @@ class Assets
         if (name.startsWith("/"))
             name = name.substr(1);
 
-        return openfl.Assets.getBitmapData(name);
+        return Asset.getBitmapData(name);
     }
 
     public function getBitmapByMediaName(name:String):Bitmap
@@ -60,9 +61,14 @@ class Assets
         return bmd;
     }
 
-    static public function getText(name:String):String
+    public function getText(name:String):String
     {
-        return openfl.Assets.getText(name);
+        return Asset.getText(name);
+    }
+
+    public function getFont(id:String, ?useCache:Bool=true):Font
+    {
+        return Asset.getFont(id, useCache);
     }
 }
 

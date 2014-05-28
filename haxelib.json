@@ -10,6 +10,7 @@
     "url": "http://github.com/imcj/haxecs",
     "dependencies": 
     {
-        "logging": ""
+        "logging": "",
+        "asset": ""
     }
 }

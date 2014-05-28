@@ -270,7 +270,7 @@ class XFLDocument extends DOMDocument
                     Path.join(path, ["PublishSettings.xml"]))));
         }
         #else
-        var text = hx.xfl.openfl.Assets.getText(path + "/DOMDocument.xml");
+        var text = Asset.getText(path + "/DOMDocument.xml");
         var document = new XFLDocumentAssembler().parse(
             Xml.parse(text), path);
         document.dir = path;
