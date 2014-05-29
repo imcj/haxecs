@@ -46,6 +46,10 @@ class MotionObject
             var d = keys[1].getFrameIndex() - keys[0].getFrameIndex();
             var p = domFrame.animation.strength / 100;
             return easeQuadPercent(t, b, c, d, p);
+            //var p0 = keys[0].anchor.y;
+            //var p1 = keys[0].next.y;
+            //var p2 = keys[1].anchor.y;
+            //return easeBezier(t, d, p0, p1, p2);
         }
         
         return 0;
@@ -56,6 +60,11 @@ class MotionObject
         if (p == 0) return c * t / d + b;
         if (p < 0) return c * (t/=d) * (t * (-p) + (1 + p)) + b;
         return c * (t/=d) * ((2 - t) * p +(1 - p)) + b;
+    }
+    
+    function easeBezier(t:Float, d:Float, p0:Float, p1:Float, p2:Float):Float 
+    {
+        return (t /= d) * t * p2 + (1 - t) * (1 - t) * p0 + 2 * t * (1 - t) * p1;
     }
 
     public function getContainers(name:String):Map<String, PropertyContainer>
