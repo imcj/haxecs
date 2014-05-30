@@ -82,18 +82,6 @@ class XFLDocumentAssembler extends XFLBaseAssembler
             fillProperty(symbolItem, symbolXml, ["lastUniqueIdentifier"]);
             document.library.items.push(symbolItem);
             document.addSymbol(symbolItem);
-
-            /*
-            for (timeline in symbolXml.elements()) {
-                if ("timeline" == timeline.nodeName) {
-                    symbolItem.timeline = assemblerTimeLine.parse(timeline)[0];
-                    symbolItem.timeline.document = document;
-
-
-                }
-            }*/
-            
-            document.addSymbol(symbolItem);
         }
 
         for (element in data.elements()) {

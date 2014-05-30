@@ -20,27 +20,14 @@ class MovieClip extends Sprite
     public var isLoop:Bool;
 
     var scripts:Map<String, Map<Int, Bool>>;
+    var methods:Map<Int, Array<Void->Void>>;
 
     public function new()
     {
         super();
         name = '';
         isLoop = true;
-        // this.timelines = timelines;
-        // timelinesMap = new Map();
-        this.totalFrames = 0;
-        // for (timeline in timelines) {
-        //     timelinesMap.set(timeline.name, timeline);
-        //     var sceneFrames = 0;
-        //     for (layer in timeline.layers) {
-        //         if (sceneFrames < layer.totalFrames) {
-        //             sceneFrames = layer.totalFrames;
-        //         }
-        //     }
-        //     totalFrames += sceneFrames;
-        // }
-
-        // frameIndices = new Map();
+        totalFrames = 0;
 
         currentFrame = 0;
         currentFrameLabel = null;
@@ -51,6 +38,7 @@ class MovieClip extends Sprite
 
         this.totalFrames = 0;
         scripts = new Map();
+        methods = new Map();
     }
 
     function addFrame(index:Int, scene:String):Void
@@ -60,6 +48,39 @@ class MovieClip extends Sprite
 
         var indexes = scripts.get(scene);
         indexes.set(index, true);
+    }
+
+    public function addFrameScript(frame0:Int, script0:Void->Void,
+         frame1:Int=-1, script1:Void->Void=null, frame2:Int=-1,
+         script2:Void->Void=null, frame3:Int=-1, script3:Void->Void=null,
+         frame4:Int=-1, script4:Void->Void=null, frame5:Int=-1,
+         script5:Void->Void=null, frame6:Int=-1, script6:Void->Void=null,
+         frame7:Int=-1, script7:Void->Void=null, frame8:Int=-1,
+         script8:Void->Void=null, frame9:Int=-1, script9:Void->Void=null):Void
+    {
+        _addFrameScript(frame0, script0);
+        _addFrameScript(frame1, script1);
+        _addFrameScript(frame2, script2);
+        _addFrameScript(frame3, script3);
+        _addFrameScript(frame4, script4);
+        _addFrameScript(frame5, script5);
+        _addFrameScript(frame6, script6);
+        _addFrameScript(frame7, script7);
+        _addFrameScript(frame8, script8);
+        _addFrameScript(frame9, script9);
+    }
+
+    inline function _addFrameScript(frame:Int, script:Void->Void):Void
+    {
+        if (null == script || frame == -1)
+            return;
+
+        var frame_methods:Array<Void->Void> = methods.get(frame);
+        if (null == frame_methods) {
+            frame_methods = [];
+            methods.set(frame, frame_methods);
+        }
+        frame_methods.push(script);
     }
 
     inline function clearId(class_name:String):String
@@ -128,6 +149,12 @@ class MovieClip extends Sprite
             if (!(null == hasFrame || !hasFrame)) {
                 Reflect.callMethod(this, '_haxecs_frame_${scene_name}_${index}', null);
             }
+        }
+
+        var frame_scripts = methods.get(currentFrame);
+        if (null != frame_scripts) {
+            for (script in frame_scripts)
+                script();
         }
     }
 
