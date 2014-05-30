@@ -4,13 +4,17 @@ using StringTools;
 
 import hx.xfl.XFLDocument;
 
+import logging.*;
+
 class XFLBaseAssembler
 {
     var document:XFLDocument;
+    var logger:ILogger;
 
     public function new(document)
     {
         this.document = document;
+        logger = Logging.getLogger("hx.xfl.assembler.XFLBaseAssembler");
     }
 
     public function fillProperty<T>(object:T, data:Xml,
@@ -44,10 +48,17 @@ class XFLBaseAssembler
             // attribute = attribute.replace("\r", "");
             // trace(Type.getInstanceFields(Type.getClass(object)));
 
-            // if (!Reflect.hasField(object, attribute))
-            //     throw 'not implement property '+
-            //           '${Type.getClassName(Type.getClass(object))}' + 
-            //           '.$attribute in ${data.nodeName}';
+            if (!Reflect.hasField(object, attribute))
+                logger.error('not implement property '+
+                      '${Type.getClassName(Type.getClass(object))}' + 
+                      '.$attribute in ${data.nodeName}');
+
+            var value = data.get(attribute);
+            if ("backgroundColor" == attribute && value.substr(0, 1) == "#") {
+                Reflect.setField(object, 'backgroundColor', 
+                    Std.parseInt('0x' + value.substr(1)));
+                continue;
+            }
 
             Reflect.setField(object, attribute, switch(data.get(attribute)) {
                 case "true": true;

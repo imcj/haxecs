@@ -21,6 +21,7 @@ class XFLDocument extends DOMDocument
     public var autoSaveEnabled:Bool;
     public var autoSaveHasPrompted:Bool;
     public var buildNumber:Int;
+    public var backgroundColor:Int;
     public var creatorInfo:String;
     public var currentTimeline:Int;
     public var filetypeGUID:String;
