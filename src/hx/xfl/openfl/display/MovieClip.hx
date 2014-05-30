@@ -125,12 +125,7 @@ class MovieClip extends Sprite
         if (null != indexes) {
 
             var hasFrame = indexes.get(index);
-            // trace(index);
-            // trace(indexes);
             if (!(null == hasFrame || !hasFrame)) {
-
-                trace(index);
-                trace(this);
                 Reflect.callMethod(this, '_haxecs_frame_${scene_name}_${index}', null);
             }
         }
