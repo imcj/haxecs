@@ -148,7 +148,7 @@ class Matrix
         return new Matrix(a / num, b / num, c / num, d / num, tx / num, ty / num);
     }
 
-    #if (flash||cpp)
+    #if openfl
     public function toFlashMatrix():flash.geom.Matrix
     {
         return new flash.geom.Matrix(a, b, c, d, tx, ty);
