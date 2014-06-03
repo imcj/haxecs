@@ -17,12 +17,16 @@ class SimpleButton extends MovieClip
         addEventListener(MouseEvent.MOUSE_UP, __onMouseUp);
 
         addEventListener(Event.ADDED_TO_STAGE, onAdded);
+
+        addFrameScript(0, function() {
+            stop();
+        });
     }
     
     function onAdded(e:Event)
     {
         removeEventListener(Event.ADDED_TO_STAGE, onAdded);
-        gotoAndStop(1);
+        // gotoAndStop(1);
     }
 
     function __onMouseOver(?e)
@@ -42,7 +46,6 @@ class SimpleButton extends MovieClip
 
     function __onMouseUp(?e)
     {
-        gotoAndStop(4);
         gotoAndStop(1);
     }
 }
