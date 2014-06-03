@@ -81,6 +81,7 @@ class MovieClipRenderer
 
                 // 动画
                 var matrix = instance.matrix.clone();
+                var alpha = 1.0;
                 if (frame.tweenType == "motion") {
                     var nextFrame = frame;
                     for (n in 0...domLayer.frames.length) {
@@ -98,6 +99,7 @@ class MovieClipRenderer
                     var prePosition = new Point(matrix.tx, matrix.ty);
                     var preTransform = matrix.transformPoint(instance.transformPoint);
                     matrix = motion.getCurrentMatrix(currentFrame);
+                    alpha = motion.getCurrentAlpha(currentFrame);
                     //对形变中心引起的偏移做处理
                     var deltaPosition = new Point(matrix.tx - prePosition.x, matrix.ty - prePosition.y);
                     var nowTransform = matrix.transformPoint(instance.transformPoint);
@@ -118,6 +120,7 @@ class MovieClipRenderer
                         mc = MovieClipFactory.create(item.timeline);
 
                     mc.transform.matrix = matrix.toFlashMatrix();
+                    mc.alpha = alpha;
                     display_object = mc;
 
                     if (instance.silent) {
@@ -137,6 +140,7 @@ class MovieClipRenderer
 
                     mc = cast(display_object);
                     mc.transform.matrix = matrix.toFlashMatrix();
+                    mc.alpha = alpha;
                     mc.mouseChildren = false;
                 } else {
                     throw "Not implements";
