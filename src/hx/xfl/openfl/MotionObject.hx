@@ -96,6 +96,12 @@ class MotionObject
         for (c in containers) {
             for (p in c.children) {
                 if (name == p.id) return cast(p);
+                if (Std.is(p, PropertyContainer)) {
+                    var pc = cast(p, PropertyContainer);
+                    for (pcc in pc.children) {
+                        if (name == pcc.id) return cast(pcc);
+                    }
+                }
             }
         }
         return null;
