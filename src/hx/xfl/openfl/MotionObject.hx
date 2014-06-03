@@ -41,8 +41,8 @@ class MotionObject
     
     public function getCurrentAlpha(currentFrame:Int):Float 
     {
-        var alpha = motion(matrix, "Alpha_ColorXform", currentFrame);
-        if (alpha != null) return alpha;
+        var alpha = motion(null, "Alpha_ColorXform", currentFrame);
+        if (alpha != null) return alpha/100;
         else return 1;
     }
     
