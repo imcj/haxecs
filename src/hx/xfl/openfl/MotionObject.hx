@@ -39,6 +39,13 @@ class MotionObject
         return matrix;
     }
     
+    public function getCurrentAlpha(currentFrame:Int):Float 
+    {
+        var alpha = motion(matrix, "Alpha_ColorXform", currentFrame);
+        if (alpha != null) return alpha;
+        else return 1;
+    }
+    
     function motion(matrix:Matrix, name:String, currentFrame:Int):Null<Float>
     {
         var animateTime = currentFrame-domFrame.index;
