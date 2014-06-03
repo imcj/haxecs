@@ -1,0 +1,53 @@
+package hx.geom;
+
+class ColorTransform{
+
+    var alphaMultiplier:Float;
+    var alphaOffset:Float;
+    var blueMultiplier:Float;
+    var blueOffset:Float;
+    var color:Int;
+    var greenMultiplier:Float;
+    var greenOffset:Float;
+    var redMultiplier:Float;
+    var redOffset:Float;
+
+    function new(redMultiplier:Float = 1, greenMultiplier:Float = 1, blueMultiplier:Float = 1, alphaMultiplier:Float = 1, redOffset:Float = 0, greenOffset:Float = 0, blueOffset:Float = 0, alphaOffset:Float = 0):Void
+    {
+        this.redMultiplier = redMultiplier;
+        this.greenMultiplier = greenMultiplier;
+        this.blueMultiplier = blueMultiplier;
+        this.alphaMultiplier = alphaMultiplier;
+        this.redOffset = redOffset;
+        this.greenOffset = greenOffset;
+        this.blueOffset = blueOffset;
+        this.alphaOffset = alphaOffset;
+    }
+
+
+    function concat(second:ColorTransform):Void
+    {
+        redMultiplier += second.redMultiplier;
+        greenMultiplier += second.greenMultiplier;
+        blueMultiplier += second.blueMultiplier;
+        alphaMultiplier += second.alphaMultiplier;
+    }
+    
+    function get_color():Int
+    {
+        return (Std.int(redOffset) << 16) | (Std.int(greenOffset) << 8) | Std.int(blueOffset);
+    }
+    
+    function set_color(value:Int):Int
+    {
+        redOffset = (value >> 16) & 0xFF;
+        greenOffset = (value >> 8) & 0xFF;
+        blueOffset = value & 0xFF;
+
+        redMultiplier = 0;
+        greenMultiplier = 0;
+        blueMultiplier = 0;
+
+        return color;
+    }
+}
