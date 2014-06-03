@@ -23,20 +23,35 @@ class MotionObject
     {
         var matrix = target.matrix.clone();
         
-        matrix.tx += motion(matrix, "Motion_X", currentFrame);
-        matrix.ty += motion(matrix, "Motion_Y", currentFrame);
-        matrix.rotate(motion(matrix, "Rotation_Z", currentFrame)*Math.PI/180);
-        matrix.scale(motion(matrix, "Scale_X", currentFrame)/100, motion(matrix, "Scale_Y", currentFrame)/100);
-        matrix.skew(motion(matrix, "Skew_X", currentFrame)*Math.PI/180, motion(matrix, "Skew_Y", currentFrame)*Math.PI/180);
+        var x = motion(matrix, "Motion_X", currentFrame);
+        var y = motion(matrix, "Motion_Y", currentFrame);
+        var r = motion(matrix, "Rotation_Z", currentFrame);
+        var scx = motion(matrix, "Scale_X", currentFrame);
+        var scy = motion(matrix, "Scale_Y", currentFrame);
+        var skx = motion(matrix, "Skew_X", currentFrame);
+        var sky = motion(matrix, "Skew_X", currentFrame);
         
+        if (x != null) matrix.tx += x;
+        if (y != null) matrix.ty += y;
+        if (r != null) matrix.rotate(r * Math.PI / 180);
+        if (scx != null && scy != null) matrix.scale(scx / 100, scy / 100);
+        if (skx != null && sky != null) matrix.skew(skx * Math.PI / 180, sky * Math.PI / 180);
         return matrix;
     }
     
-    function motion(matrix:Matrix, name:String, currentFrame:Int):Float
+    public function getCurrentAlpha(currentFrame:Int):Float 
+    {
+        var alpha = motion(null, "Alpha_Amount", currentFrame);
+        if (alpha != null) return alpha/100;
+        else return 1;
+    }
+    
+    function motion(matrix:Matrix, name:String, currentFrame:Int):Null<Float>
     {
         var animateTime = currentFrame-domFrame.index;
-        if (animateTime <= 0) return 0;
+        if (animateTime <= 0) return null;
         var property = getProperty(name);
+        if (property == null) return null;
         
         var keys = property.getStarEnd(animateTime);
         if (keys.length > 1) {
@@ -52,7 +67,7 @@ class MotionObject
             //return easeBezier(t, d, p0, p1, p2);
         }
         
-        return 0;
+        return null;
     }
     
     function easeQuadPercent(t:Float, b:Float, c:Float, d:Float, p:Float):Float
@@ -81,6 +96,12 @@ class MotionObject
         for (c in containers) {
             for (p in c.children) {
                 if (name == p.id) return cast(p);
+                if (Std.is(p, PropertyContainer)) {
+                    var pc = cast(p, PropertyContainer);
+                    for (pcc in pc.children) {
+                        if (name == pcc.id) return cast(pcc);
+                    }
+                }
             }
         }
         return null;
