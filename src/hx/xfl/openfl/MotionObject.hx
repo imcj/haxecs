@@ -41,7 +41,7 @@ class MotionObject
     
     public function getCurrentAlpha(currentFrame:Int):Float 
     {
-        var alpha = motion(null, "Alpha_ColorXform", currentFrame);
+        var alpha = motion(null, "Alpha_Amount", currentFrame);
         if (alpha != null) return alpha/100;
         else return 1;
     }
@@ -51,6 +51,7 @@ class MotionObject
         var animateTime = currentFrame-domFrame.index;
         if (animateTime <= 0) return null;
         var property = getProperty(name);
+        if (property == null) return null;
         
         var keys = property.getStarEnd(animateTime);
         if (keys.length > 1) {
