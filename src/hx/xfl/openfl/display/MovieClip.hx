@@ -101,12 +101,12 @@ class MovieClip extends Sprite
 
     public function play():Void 
     {
-        gotoAndPlay(_currentFrame);
+        isPlaying = true;
     }
 
     public function stop():Void 
     {
-        gotoAndStop(_currentFrame);
+        isPlaying = false;
     }
 
     public function nextFrame():Void 
@@ -191,7 +191,7 @@ class MovieClip extends Sprite
         var nowScene = findScene(scene);
         if (nowScene != null) currentScene = nowScene;
         if (Std.is(frame, Int)) {
-            _currentFrame = cast(frame-1)-1;
+            _currentFrame = cast(frame) - 1;
             isPlaying = true;
         }
         if (Std.is(frame,String)) {
@@ -206,7 +206,7 @@ class MovieClip extends Sprite
         var nowScene = findScene(scene);
         if (nowScene != null) currentScene = nowScene;
         if (Std.is(frame, Int)) {
-            _currentFrame = cast(frame-1)-1;
+            _currentFrame = cast(frame) - 1;
             isPlaying = false;
             gotoFrame();
         }
@@ -240,7 +240,7 @@ class MovieClip extends Sprite
     
     function get_currentFrame():Int 
     {
-        return _currentFrame+1;
+        return _currentFrame + 1;
     }
 
     function get_currentLabels():Array<FrameLabel>
