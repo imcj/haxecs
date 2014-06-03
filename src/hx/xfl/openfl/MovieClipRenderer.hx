@@ -24,7 +24,7 @@ class MovieClipRenderer
     
     public function render():Void 
     {
-        displayFrame(movieClip, movieClip.currentFrame);
+        displayFrame(movieClip, movieClip.currentFrame-1);
     }
     
     function displayFrame(mv:MovieClip, frameIndex:Int):Void 

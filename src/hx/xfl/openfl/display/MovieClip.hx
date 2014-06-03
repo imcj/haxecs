@@ -10,7 +10,7 @@ using Lambda;
 // 整理注释
 class MovieClip extends Sprite
 {
-    public var currentFrame(default, null):Int;
+    public var currentFrame(get, null):Int;
     public var currentFrameLabel(get, null):String;
     public var currentLabels(get, null):Array<FrameLabel>;
     public var currentScene(default, null):Scene;
@@ -21,6 +21,7 @@ class MovieClip extends Sprite
 
     var scripts:Map<String, Map<Int, Bool>>;
     var methods:Map<Int, Array<Void->Void>>;
+    var _currentFrame:Int;
 
     public function new()
     {
@@ -29,7 +30,7 @@ class MovieClip extends Sprite
         isLoop = true;
         totalFrames = 0;
 
-        currentFrame = 0;
+        _currentFrame = 0;
         currentFrameLabel = null;
         currentLabels = [];
         currentScene = null;
@@ -100,19 +101,19 @@ class MovieClip extends Sprite
 
     public function play():Void 
     {
-        gotoAndPlay(currentFrame);
+        gotoAndPlay(_currentFrame);
     }
 
     public function stop():Void 
     {
-        gotoAndStop(currentFrame);
+        gotoAndStop(_currentFrame);
     }
 
     public function nextFrame():Void 
     {
-        if (currentFrame < currentScene.numFrames-1) 
+        if (_currentFrame < currentScene.numFrames-1) 
         {
-            currentFrame = currentFrame + 1;
+            _currentFrame = _currentFrame + 1;
             gotoFrame();
         }else {
             if(scenes.indexOf(currentScene) < scenes.length - 1 || isLoop) nextScene();
@@ -121,13 +122,13 @@ class MovieClip extends Sprite
 
     public function prevFrame():Void 
     {
-        if (currentFrame > 0) 
+        if (_currentFrame > 0) 
         {
-            currentFrame = currentFrame - 1;
+            _currentFrame = _currentFrame - 1;
             gotoFrame();
         }else {
             prevScene();
-            currentFrame = currentScene.numFrames - 1;
+            _currentFrame = currentScene.numFrames - 1;
         }
     }
     
@@ -140,7 +141,7 @@ class MovieClip extends Sprite
     inline function executeFrameScript():Void
     {
         var scene_name = clearId(currentScene.name);
-        var index = currentFrame;
+        var index = _currentFrame;
 
         var indexes = scripts.get(scene_name);
         if (null != indexes) {
@@ -151,7 +152,7 @@ class MovieClip extends Sprite
             }
         }
 
-        var frame_scripts = methods.get(currentFrame);
+        var frame_scripts = methods.get(_currentFrame);
         if (null != frame_scripts) {
             for (script in frame_scripts)
                 script();
@@ -181,7 +182,7 @@ class MovieClip extends Sprite
     function changeToScene(scene:Scene):Void 
     {
         currentScene = scene;
-        currentFrame = 0;
+        _currentFrame = 0;
         gotoFrame();
     }
 
@@ -190,12 +191,12 @@ class MovieClip extends Sprite
         var nowScene = findScene(scene);
         if (nowScene != null) currentScene = nowScene;
         if (Std.is(frame, Int)) {
-            currentFrame = cast(frame)-1;
+            _currentFrame = cast(frame-1)-1;
             isPlaying = true;
         }
         if (Std.is(frame,String)) {
             var i = getLabelIndex(frame);
-            if (i >= 0) currentFrame = i;
+            if (i >= 0) _currentFrame = i;
             isPlaying = true;
         }
     }
@@ -205,13 +206,13 @@ class MovieClip extends Sprite
         var nowScene = findScene(scene);
         if (nowScene != null) currentScene = nowScene;
         if (Std.is(frame, Int)) {
-            currentFrame = cast(frame)-1;
+            _currentFrame = cast(frame-1)-1;
             isPlaying = false;
             gotoFrame();
         }
         if (Std.is(frame,String)) {
             var i = getLabelIndex(frame);
-            if (i >= 0) currentFrame = i;
+            if (i >= 0) _currentFrame = i;
             isPlaying = false;
             gotoFrame();
         }
@@ -236,6 +237,11 @@ class MovieClip extends Sprite
         }
         return -1;
     }
+    
+    function get_currentFrame():Int 
+    {
+        return _currentFrame+1;
+    }
 
     function get_currentLabels():Array<FrameLabel>
     {
@@ -246,7 +252,7 @@ class MovieClip extends Sprite
     {
         var frameLabel = null;
         for (label in currentLabels) {
-            if (currentFrame > label.frame) frameLabel = label.name;
+            if (_currentFrame > label.frame) frameLabel = label.name;
         }
         return frameLabel;
     }
