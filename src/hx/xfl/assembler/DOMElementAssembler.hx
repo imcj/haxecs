@@ -19,6 +19,7 @@ class DOMElementAssembler extends XFLBaseAssembler
         for (elementNode in data.elements()) {
             parse_matrix(elementNode, element);
             parse_transformPoint(elementNode, element);
+            parse_colorTransform(elementNode, element);
         }
 
         return element;
@@ -80,6 +81,64 @@ class DOMElementAssembler extends XFLBaseAssembler
 
             if (null != transformPoint_y) {
                 transformPoint.y = Std.parseFloat(transformPoint_y);
+            }
+        }
+    }
+
+    function parse_colorTransform(elementNode:Xml, element):Void 
+    {
+        var colorTransform = element.colorTransform;
+        var alphaMultiplier:String, alphaOffset:String,
+            blueMultiplier:String, blueOffset:String,
+            color:String,
+            greenMultiplier:String, greenOffset:String,
+            redMultiplier:String, redOffset:String;
+
+        if ("color" == elementNode.nodeName) {
+            alphaMultiplier = elementNode.firstElement().get('alphaMultiplier');
+            alphaOffset = elementNode.firstElement().get('alphaOffset');
+            blueMultiplier = elementNode.firstElement().get('blueMultiplier');
+            blueOffset = elementNode.firstElement().get('blueOffset');
+            color = elementNode.firstElement().get('color');
+            greenMultiplier = elementNode.firstElement().get('greenMultiplier');
+            greenOffset = elementNode.firstElement().get('greenOffset');
+            redMultiplier = elementNode.firstElement().get('redMultiplier');
+            redOffset = elementNode.firstElement().get('redOffset');
+
+            if (null != alphaMultiplier) {
+                colorTransform.alphaMultiplier = Std.parseFloat(alphaMultiplier);
+            }
+
+            if (null != alphaOffset) {
+                colorTransform.alphaOffset = Std.parseFloat(alphaOffset);
+            }
+            
+            if (null != blueMultiplier) {
+                colorTransform.blueMultiplier = Std.parseFloat(blueMultiplier);
+            }
+            
+            if (null != blueOffset) {
+                colorTransform.blueOffset = Std.parseFloat(blueOffset);
+            }
+            
+            if (null != color) {
+                colorTransform.color = Std.parseInt(color.substr(1));
+            }
+            
+            if (null != greenMultiplier) {
+                colorTransform.greenMultiplier = Std.parseFloat(greenMultiplier);
+            }
+            
+            if (null != greenOffset) {
+                colorTransform.greenOffset = Std.parseFloat(greenOffset);
+            }
+            
+            if (null != redMultiplier) {
+                colorTransform.redMultiplier = Std.parseFloat(redMultiplier);
+            }
+            
+            if (null != redOffset) {
+                colorTransform.redOffset = Std.parseFloat(redOffset);
             }
         }
     }

@@ -1,5 +1,6 @@
 package hx.xfl;
 
+import hx.geom.ColorTransform;
 import hx.geom.Matrix;
 import hx.geom.Point;
 
@@ -15,12 +16,14 @@ class DOMElement implements IDOMElement
     public var height(default, default):Float;
     public var top(default, default):Float;
     public var left(default, default):Float;
+    public var colorTransform(default, default):ColorTransform;
 
     public function new()
     {
         frame = null;
         matrix = new Matrix();
         transformPoint = new Point();
+        colorTransform = new ColorTransform();
         centerPoint3DX = -1;
         centerPoint3DY = -1;
         width = 0;

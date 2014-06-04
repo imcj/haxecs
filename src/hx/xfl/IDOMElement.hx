@@ -1,5 +1,6 @@
 package hx.xfl;
 
+import hx.geom.ColorTransform;
 import hx.geom.Matrix;
 import hx.geom.Point;
 
@@ -13,4 +14,5 @@ interface IDOMElement
     var centerPoint3DY(default, default):Float;
     var width(default, default):Float;
     var height(default, default):Float;
+    var colorTransform(default, default):ColorTransform;
 }
