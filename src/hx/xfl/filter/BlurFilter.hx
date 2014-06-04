@@ -22,11 +22,6 @@ class BlurFilter extends Filter implements IFilter
         );
     }
     
-    override public function parse(data:Xml):Void
-    {
-        
-    }
-    
     override public function clone():IFilter
     {
         var filter:BlurFilter = new BlurFilter(id);

@@ -42,11 +42,6 @@ class BevelFilter extends Filter implements IFilter
         );
     }
     
-    override public function parse(data:Xml):Void
-    {
-    
-    }
-    
     override public function clone():IFilter
     {
         var filter:BevelFilter = new BevelFilter(id);

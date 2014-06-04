@@ -1,6 +1,7 @@
 ﻿package hx.xfl.filter;
 
 import flash.filters.BitmapFilter;
+import hx.xfl.assembler.XFLBaseAssembler;
 import hx.xfl.filter.IFilter;
 
 class Filter implements IFilter
@@ -18,7 +19,8 @@ class Filter implements IFilter
     }
     
     public function parse(data:Xml):Void {
-        throw("Implement in subclasses!");
+        var assembler = new XFLBaseAssembler(null);
+        assembler.fillProperty(this, data);
     }
     
     public function clone():IFilter {
