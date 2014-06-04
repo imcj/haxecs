@@ -2,30 +2,25 @@
 
 import flash.filters.BitmapFilter;
 
-class DropShadowFilter extends Filter implements IFilter
+class GlowFilter extends Filter implements IFilter
 {
     public var color:Int;
     public var alpha:Float;
     public var blurX:Float;
     public var blurY:Float;
-    public var angle:Float;
-    public var distance:Float;
-    public var hideObject:Bool;
+    public var strength:Float;
     public var inner:Bool;
     public var knockout:Bool;
     public var quality:Int;
-    public var strength:Float;
     
     public function new()
     {
-    
+        
     }
     
-    override function get_filter():BitmapFilter
+    override private function get_filter():BitmapFilter
     {
-        return new flash.filters.DropShadowFilter(
-            distance,
-            angle * 180 / Math.PI,
+        return new flash.filters.GlowFilter(
             color,
             alpha,
             blurX,
@@ -33,8 +28,7 @@ class DropShadowFilter extends Filter implements IFilter
             strength,
             quality,
             inner,
-            knockout,
-            hideObject
+            knockout
         );
     }
     
@@ -45,23 +39,20 @@ class DropShadowFilter extends Filter implements IFilter
     
     override public function clone():IFilter
     {
-        var filter:DropShadowFilter = new DropShadowFilter();
-        filter.color = dropShadowColor;
+        var filter:GlowFilter = new GlowFilter(id);
+        filter.color = color;
+        filter.alpha = alpha;
         filter.blurX = blurX;
         filter.blurY = blurY;
-        filter.angle = angle;
-        filter.distance = distance;
-        filter.alpha = alpha;
-        filter.inner = inner;
-        filter.hideObject = hideObject;
-        filter.quality = quality;
-        filter.knockout = knockout;
         filter.strength = strength;
+        filter.quality = quality;
+        filter.inner = inner;
+        filter.knockout = knockout;
         return filter;
     }
     
     override public function toString():String
     {
-        return "[DropShadowFilter]";
+        return "[GlowFilter]";
     }
 }
