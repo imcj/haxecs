@@ -25,7 +25,7 @@ class ColorTransform{
     }
 
 
-    function concat(second:ColorTransform):Void
+    public function concat(second:ColorTransform):Void
     {
         redMultiplier += second.redMultiplier;
         greenMultiplier += second.greenMultiplier;
@@ -33,12 +33,12 @@ class ColorTransform{
         alphaMultiplier += second.alphaMultiplier;
     }
     
-    function get_color():Int
+    public function get_color():Int
     {
         return (Std.int(redOffset) << 16) | (Std.int(greenOffset) << 8) | Std.int(blueOffset);
     }
     
-    function set_color(value:Int):Int
+    public function set_color(value:Int):Int
     {
         redOffset = (value >> 16) & 0xFF;
         greenOffset = (value >> 8) & 0xFF;
@@ -49,5 +49,10 @@ class ColorTransform{
         blueMultiplier = 0;
 
         return color;
+    }
+    
+    public function toFlashColorTransform():flash.geom.ColorTransform
+    {
+        return new flash.geom.ColorTransform(redMultiplier, greenMultiplier, blueMultiplier, alphaMultiplier, redOffset, greenOffset, blueOffset, alphaOffset);
     }
 }
