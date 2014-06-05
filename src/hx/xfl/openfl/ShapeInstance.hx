@@ -9,13 +9,8 @@ import hx.xfl.DOMSymbolItem;
 
 class ShapeInstance
 {
-    var dom:DOMShape;
-    var target:Sprite;
-
-    public function new(dom:DOMShape, target:Sprite)
+    static public function draw(dom:DOMShape, target:Sprite):Void 
     {
-        this.dom = dom;
-        this.target = target;
         var document = dom.frame.layer.timeLine.document;
 
         //绘制填充
@@ -69,5 +64,4 @@ class ShapeInstance
             }
         }
     }
-    
 }

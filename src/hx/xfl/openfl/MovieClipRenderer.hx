@@ -154,7 +154,7 @@ class MovieClipRenderer
                 display_object = new TextInstance(instance);
             } else if (Std.is(element, DOMShape)) {
                 var instance:DOMShape = cast(element);
-                new ShapeInstance(cast(element, DOMShape), parent);
+                ShapeInstance.draw(cast(element, DOMShape), parent);
             } else {
                 throw "Not implements.";
             }
