@@ -18,7 +18,7 @@ class BlurFilter extends Filter implements IFilter
         return new flash.filters.BlurFilter(
             blurX,
             blurY,
-            quality
+            quality+1
         );
     }
     

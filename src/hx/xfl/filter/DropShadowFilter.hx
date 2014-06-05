@@ -31,7 +31,7 @@ class DropShadowFilter extends Filter implements IFilter
             blurX,
             blurY,
             strength,
-            quality,
+            quality+1,
             inner,
             knockout,
             hideObject

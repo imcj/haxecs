@@ -26,7 +26,7 @@ class GlowFilter extends Filter implements IFilter
             blurX,
             blurY,
             strength,
-            quality,
+            quality+1,
             inner,
             knockout
         );
