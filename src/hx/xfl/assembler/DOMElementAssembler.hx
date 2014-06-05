@@ -98,7 +98,8 @@ class DOMElementAssembler extends XFLBaseAssembler
             color:String,
             greenMultiplier:String, greenOffset:String,
             redMultiplier:String, redOffset:String,
-            brightness:String;
+            brightness:String,
+            tintMultiplier:String, tintColor:String;
 
         if ("color" == elementNode.nodeName) {
             alphaMultiplier = elementNode.firstElement().get('alphaMultiplier');
@@ -111,6 +112,8 @@ class DOMElementAssembler extends XFLBaseAssembler
             redMultiplier = elementNode.firstElement().get('redMultiplier');
             redOffset = elementNode.firstElement().get('redOffset');
             brightness = elementNode.firstElement().get('brightness');
+            tintMultiplier = elementNode.firstElement().get('tintMultiplier');
+            tintColor = elementNode.firstElement().get('tintColor');
 
             if (null != alphaMultiplier) {
                 colorTransform.alphaMultiplier = Std.parseFloat(alphaMultiplier);
@@ -129,7 +132,7 @@ class DOMElementAssembler extends XFLBaseAssembler
             }
             
             if (null != color) {
-                colorTransform.color = Std.parseInt(color.substr(1));
+                colorTransform.color = Std.parseInt("0x"+color.substr(1));
             }
             
             if (null != greenMultiplier) {
@@ -152,6 +155,20 @@ class DOMElementAssembler extends XFLBaseAssembler
                 colorTransform.redOffset = Std.parseFloat(brightness) * 255;
                 colorTransform.greenOffset = Std.parseFloat(brightness) * 255;
                 colorTransform.blueOffset = Std.parseFloat(brightness) * 255;
+            }
+            
+            if (null != tintMultiplier) {
+                var tint = Std.parseFloat(tintMultiplier);
+                var c = Std.parseInt("0x"+tintColor.substr(1));
+                var r = c >> 16;
+                var g = c >> 8 & 0xFF;
+                var b = c & 0xFF;
+                colorTransform.redMultiplier = r/255;
+                colorTransform.greenMultiplier = g/255;
+                colorTransform.blueMultiplier = b/255;
+                colorTransform.redOffset = tint*255;
+                colorTransform.greenOffset = tint*255;
+                colorTransform.blueOffset = tint*255;
             }
         }
     }
