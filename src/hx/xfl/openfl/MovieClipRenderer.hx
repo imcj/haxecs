@@ -2,17 +2,79 @@ package hx.xfl.openfl;
 import flash.display.DisplayObject;
 import flash.display.PixelSnapping;
 import flash.display.Sprite;
+import flash.display.DisplayObjectContainer;
 import hx.geom.Point;
+import hx.xfl.IDOMElement;
 import hx.xfl.DOMBitmapInstance;
 import hx.xfl.DOMLayer;
 import hx.xfl.DOMTimeLine;
 import hx.xfl.openfl.display.BitmapInstance;
 import hx.xfl.openfl.display.MovieClip;
 
+typedef Marker
+{
+    displayObject:DisplayObject;
+    toBeRemoved:Bool;
+};
+
+class DisplayObjectPool
+{
+    var list:Array<Marker>;
+    var container:DisplayObjectContainer;
+
+    public function new()
+    {
+        list = [];
+    }
+
+    public function fill(container:DisplayObjectContainer)
+    {
+        this.container = container;
+        var size = container.numChildren;
+        for (i in 0...size) {
+            var m = new Marker();
+            m.displayObject = container.getChildAt(i);
+            m.toBeRemoved = true;
+            list.push(m);
+        }
+    }
+
+    public function clear()
+    {
+        var i:Int = container.numChildren;
+        while(i > -1) {
+            i -= 1;
+            if (list[i].toBeRemoved)
+                container.removeChildAt(i);
+        }
+        container = null;
+        list = [];
+    }
+
+    public function get(element:IDOMElement)
+    {
+        var size:Int = list.length;
+        var found:Marker;
+        for (i in 0...size) {
+            var marker = list[i];
+            if (reusable(element, marker.displayObject)) {
+                found = marker;
+                break;
+            }
+        }
+        found.toBeRemoved = false;
+        list.remove(found);
+
+        return found.displayObject;
+    }
+}
+
 class MovieClipRenderer
 {
     public var movieClip:MovieClip;
     public var timelines:Array<DOMTimeLine>;
+
+    var pool:DisplayObjectPool;
 
     public function new(movieClip:MovieClip, timeline:Dynamic)
     {
@@ -20,6 +82,8 @@ class MovieClipRenderer
         if (Std.is(timeline, DOMTimeLine)) this.timelines = [timeline];
         else if (Std.is(timeline, Array)) this.timelines = timeline;
         else throw "timeline 类型错误，需要是DOMTimeLine或者Array<DOMTimeLine>";
+
+        pool = new DisplayObjectPool();
     }
     
     public function render():Void 
@@ -29,7 +93,9 @@ class MovieClipRenderer
     
     function displayFrame(mv:MovieClip, frameIndex:Int):Void 
     {
-        mv.removeChildren();
+        // mv.removeChildren();
+        pool.fill(mv);
+        
         var domTimeLine = Render.getTimeline(timelines, mv.currentScene);
         if (domTimeLine == null) return;
         
@@ -40,7 +106,7 @@ class MovieClipRenderer
         for (domLayer in domTimeLine.getLayersIterator(false)) {
             if ("mask" == domLayer.layerType) {
                 maskDoms.set(numLayer, domLayer);
-            }else {
+            } else {
                 var layer = displayLayer(domLayer, mv, frameIndex, domTimeLine);
                 if (domLayer.parentLayerIndex >= 0) {
                     masklayers.push(layer);
@@ -94,7 +160,7 @@ class MovieClipRenderer
                     var perAddMatrix = endMatrix.sub(starMatrix).div(frame.duration);
                     var deltaMatrix = perAddMatrix.multi(currentFrame-frame.index);
                     matrix = starMatrix.add(deltaMatrix);
-                }else if (frame.tweenType == "motion object") {
+                } else if (frame.tweenType == "motion object") {
                     var motion = new MotionObject(instance, frame);
                     var prePosition = new Point(matrix.tx, matrix.ty);
                     var preTransform = matrix.transformPoint(instance.transformPoint);
