@@ -11,6 +11,9 @@ class BlurFilter extends Filter implements IFilter
     public function new(blurX:Float = 4, blurY:Float = 4, quality:Int = 1)
     {
         super();
+        this.blurX = blurX;
+        this.blurY = blurY;
+        this.quality = quality;
     }
     
     override private function get_filter():BitmapFilter
@@ -18,7 +21,7 @@ class BlurFilter extends Filter implements IFilter
         return new flash.filters.BlurFilter(
             blurX,
             blurY,
-            quality+1
+            quality
         );
     }
     

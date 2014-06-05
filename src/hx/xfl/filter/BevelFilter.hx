@@ -36,7 +36,7 @@ class BevelFilter extends Filter implements IFilter
             blurX,
             blurY,
             strength,
-            quality+1,
+            quality,
             type,
             knockout
         );

@@ -16,6 +16,14 @@ class GlowFilter extends Filter implements IFilter
     public function new(color:Int = 16711680, alpha:Float = 1, blurX:Float = 6, blurY:Float = 6, strength:Float = 2, quality:Int = 1, inner:Bool = false, knockout:Bool = false)
     {
         super();
+        this.color = color;
+        this.alpha = alpha;
+        this.blurX = blurX;
+        this.blurY = blurY;
+        this.strength = strength;
+        this.inner = inner;
+        this.knockout = knockout;
+        this.quality = quality;
     }
     
     override private function get_filter():BitmapFilter
@@ -26,7 +34,7 @@ class GlowFilter extends Filter implements IFilter
             blurX,
             blurY,
             strength,
-            quality+1,
+            quality,
             inner,
             knockout
         );
