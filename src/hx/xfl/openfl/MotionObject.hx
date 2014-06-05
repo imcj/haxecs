@@ -23,13 +23,13 @@ class MotionObject
     {
         var matrix = target.matrix.clone();
         
-        var x = motion(matrix, "Motion_X", currentFrame);
-        var y = motion(matrix, "Motion_Y", currentFrame);
-        var r = motion(matrix, "Rotation_Z", currentFrame);
-        var scx = motion(matrix, "Scale_X", currentFrame);
-        var scy = motion(matrix, "Scale_Y", currentFrame);
-        var skx = motion(matrix, "Skew_X", currentFrame);
-        var sky = motion(matrix, "Skew_X", currentFrame);
+        var x = motion("Motion_X", currentFrame);
+        var y = motion("Motion_Y", currentFrame);
+        var r = motion("Rotation_Z", currentFrame);
+        var scx = motion("Scale_X", currentFrame);
+        var scy = motion("Scale_Y", currentFrame);
+        var skx = motion("Skew_X", currentFrame);
+        var sky = motion("Skew_X", currentFrame);
         
         if (x != null) matrix.tx += x;
         if (y != null) matrix.ty += y;
@@ -41,12 +41,12 @@ class MotionObject
     
     public function getCurrentAlpha(currentFrame:Int):Float 
     {
-        var alpha = motion(null, "Alpha_Amount", currentFrame);
+        var alpha = motion("Alpha_Amount", currentFrame);
         if (alpha != null) return alpha/100;
         else return 1;
     }
     
-    function motion(matrix:Matrix, name:String, currentFrame:Int):Null<Float>
+    function motion(name:String, currentFrame:Int):Null<Float>
     {
         var animateTime = currentFrame-domFrame.index;
         if (animateTime <= 0) return null;
