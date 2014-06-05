@@ -1,7 +1,11 @@
 package hx.xfl.assembler;
 
+import hx.xfl.filter.BlurFilter;
+import hx.xfl.filter.DropShadowFilter;
 import hx.geom.Matrix;
 import hx.xfl.DOMBitmapInstance;
+import hx.xfl.filter.Filter;
+import hx.xfl.filter.GlowFilter;
 
 class DOMElementAssembler extends XFLBaseAssembler
                           implements IDOMElementAssembler
@@ -19,6 +23,8 @@ class DOMElementAssembler extends XFLBaseAssembler
         for (elementNode in data.elements()) {
             parse_matrix(elementNode, element);
             parse_transformPoint(elementNode, element);
+            parse_colorTransform(elementNode, element);
+            parse_filters(elementNode, element);
         }
 
         return element;
@@ -80,6 +86,79 @@ class DOMElementAssembler extends XFLBaseAssembler
 
             if (null != transformPoint_y) {
                 transformPoint.y = Std.parseFloat(transformPoint_y);
+            }
+        }
+    }
+
+    function parse_colorTransform(elementNode:Xml, element):Void 
+    {
+        var colorTransform = element.colorTransform;
+        var alphaMultiplier:String, alphaOffset:String,
+            blueMultiplier:String, blueOffset:String,
+            color:String,
+            greenMultiplier:String, greenOffset:String,
+            redMultiplier:String, redOffset:String;
+
+        if ("color" == elementNode.nodeName) {
+            alphaMultiplier = elementNode.firstElement().get('alphaMultiplier');
+            alphaOffset = elementNode.firstElement().get('alphaOffset');
+            blueMultiplier = elementNode.firstElement().get('blueMultiplier');
+            blueOffset = elementNode.firstElement().get('blueOffset');
+            color = elementNode.firstElement().get('color');
+            greenMultiplier = elementNode.firstElement().get('greenMultiplier');
+            greenOffset = elementNode.firstElement().get('greenOffset');
+            redMultiplier = elementNode.firstElement().get('redMultiplier');
+            redOffset = elementNode.firstElement().get('redOffset');
+
+            if (null != alphaMultiplier) {
+                colorTransform.alphaMultiplier = Std.parseFloat(alphaMultiplier);
+            }
+
+            if (null != alphaOffset) {
+                colorTransform.alphaOffset = Std.parseFloat(alphaOffset);
+            }
+            
+            if (null != blueMultiplier) {
+                colorTransform.blueMultiplier = Std.parseFloat(blueMultiplier);
+            }
+            
+            if (null != blueOffset) {
+                colorTransform.blueOffset = Std.parseFloat(blueOffset);
+            }
+            
+            if (null != color) {
+                colorTransform.color = Std.parseInt(color.substr(1));
+            }
+            
+            if (null != greenMultiplier) {
+                colorTransform.greenMultiplier = Std.parseFloat(greenMultiplier);
+            }
+            
+            if (null != greenOffset) {
+                colorTransform.greenOffset = Std.parseFloat(greenOffset);
+            }
+            
+            if (null != redMultiplier) {
+                colorTransform.redMultiplier = Std.parseFloat(redMultiplier);
+            }
+            
+            if (null != redOffset) {
+                colorTransform.redOffset = Std.parseFloat(redOffset);
+            }
+        }
+    }
+    
+    function parse_filters(elementNode:Xml, element):Void
+    {
+        var filters = element.filters;
+        for (e in elementNode.elements()) {
+            var f:Filter = null;
+            if (e.nodeName == "DropShadowFilter") f = new DropShadowFilter();
+            if (e.nodeName == "BlurFilter") f = new BlurFilter();
+            if (e.nodeName == "GlowFilter") f = new GlowFilter();
+            if (f != null) {
+                f.parse(e);
+                filters.push(f);
             }
         }
     }

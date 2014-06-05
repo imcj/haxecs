@@ -186,6 +186,8 @@ class MovieClipRenderer
                         mc = MovieClipFactory.create(item.timeline);
 
                     mc.transform.matrix = matrix.toFlashMatrix();
+                    mc.transform.colorTransform = instance.colorTransform.toFlashColorTransform();
+                    mc.filters = instance.flashFilters;
                     mc.alpha = alpha;
                     display_object = mc;
 
@@ -206,6 +208,8 @@ class MovieClipRenderer
 
                     mc = cast(display_object);
                     mc.transform.matrix = matrix.toFlashMatrix();
+                    mc.transform.colorTransform = instance.colorTransform.toFlashColorTransform();
+                    mc.filters = instance.flashFilters;
                     mc.alpha = alpha;
                     mc.mouseChildren = false;
                 } else {
@@ -219,6 +223,9 @@ class MovieClipRenderer
                 display_object = new ShapeInstance(cast(element, DOMShape));
                 display_object.transform.matrix = 
                     instance.matrix.toFlashMatrix();
+                display_object.transform.colorTransform = 
+                    instance.colorTransform.toFlashColorTransform();
+                display_object.filters = instance.flashFilters;
             } else {
                 throw "Not implements.";
             }
