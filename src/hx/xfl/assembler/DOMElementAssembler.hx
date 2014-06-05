@@ -97,7 +97,8 @@ class DOMElementAssembler extends XFLBaseAssembler
             blueMultiplier:String, blueOffset:String,
             color:String,
             greenMultiplier:String, greenOffset:String,
-            redMultiplier:String, redOffset:String;
+            redMultiplier:String, redOffset:String,
+            brightness:String;
 
         if ("color" == elementNode.nodeName) {
             alphaMultiplier = elementNode.firstElement().get('alphaMultiplier');
@@ -109,6 +110,7 @@ class DOMElementAssembler extends XFLBaseAssembler
             greenOffset = elementNode.firstElement().get('greenOffset');
             redMultiplier = elementNode.firstElement().get('redMultiplier');
             redOffset = elementNode.firstElement().get('redOffset');
+            brightness = elementNode.firstElement().get('brightness');
 
             if (null != alphaMultiplier) {
                 colorTransform.alphaMultiplier = Std.parseFloat(alphaMultiplier);
@@ -144,6 +146,12 @@ class DOMElementAssembler extends XFLBaseAssembler
             
             if (null != redOffset) {
                 colorTransform.redOffset = Std.parseFloat(redOffset);
+            }
+            
+            if (null != brightness) {
+                colorTransform.redOffset = Std.parseFloat(brightness) * 255;
+                colorTransform.greenOffset = Std.parseFloat(brightness) * 255;
+                colorTransform.blueOffset = Std.parseFloat(brightness) * 255;
             }
         }
     }
