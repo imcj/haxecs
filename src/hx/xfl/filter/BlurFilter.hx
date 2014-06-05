@@ -10,7 +10,7 @@ class BlurFilter extends Filter implements IFilter
     
     public function new()
     {
-        
+        super();
     }
     
     override private function get_filter():BitmapFilter
@@ -24,7 +24,7 @@ class BlurFilter extends Filter implements IFilter
     
     override public function clone():IFilter
     {
-        var filter:BlurFilter = new BlurFilter(id);
+        var filter:BlurFilter = new BlurFilter();
         filter.blurX = blurX;
         filter.blurY = blurY;
         filter.quality = quality;

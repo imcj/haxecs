@@ -18,7 +18,7 @@ class DropShadowFilter extends Filter implements IFilter
     
     public function new()
     {
-    
+        super();
     }
     
     override function get_filter():BitmapFilter
@@ -41,7 +41,7 @@ class DropShadowFilter extends Filter implements IFilter
     override public function clone():IFilter
     {
         var filter:DropShadowFilter = new DropShadowFilter();
-        filter.color = dropShadowColor;
+        filter.color = color;
         filter.blurX = blurX;
         filter.blurY = blurY;
         filter.angle = angle;

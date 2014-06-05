@@ -15,7 +15,7 @@ class GlowFilter extends Filter implements IFilter
     
     public function new()
     {
-        
+        super();
     }
     
     override private function get_filter():BitmapFilter
@@ -34,7 +34,7 @@ class GlowFilter extends Filter implements IFilter
     
     override public function clone():IFilter
     {
-        var filter:GlowFilter = new GlowFilter(id);
+        var filter:GlowFilter = new GlowFilter();
         filter.color = color;
         filter.alpha = alpha;
         filter.blurX = blurX;

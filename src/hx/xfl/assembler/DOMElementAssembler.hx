@@ -1,7 +1,11 @@
 package hx.xfl.assembler;
 
+import hx.xfl.filter.BlurFilter;
+import hx.xfl.filter.DropShadowFilter;
 import hx.geom.Matrix;
 import hx.xfl.DOMBitmapInstance;
+import hx.xfl.filter.Filter;
+import hx.xfl.filter.GlowFilter;
 
 class DOMElementAssembler extends XFLBaseAssembler
                           implements IDOMElementAssembler
@@ -20,6 +24,7 @@ class DOMElementAssembler extends XFLBaseAssembler
             parse_matrix(elementNode, element);
             parse_transformPoint(elementNode, element);
             parse_colorTransform(elementNode, element);
+            
         }
 
         return element;
@@ -139,6 +144,21 @@ class DOMElementAssembler extends XFLBaseAssembler
             
             if (null != redOffset) {
                 colorTransform.redOffset = Std.parseFloat(redOffset);
+            }
+        }
+    }
+    
+    function parse_filters(elementNode:Xml, element):Void
+    {
+        var filters = element.filters;
+        for (e in elementNode.elements()) {
+            var f:Filter = null;
+            if (e.nodeName == "DropShadowFilter") f = new DropShadowFilter();
+            if (e.nodeName == "BlurFilter") f = new BlurFilter();
+            if (e.nodeName == "GlowFilter") f = new GlowFilter();
+            if (f != null) {
+                f.parse(e);
+                filters.push(f);
             }
         }
     }

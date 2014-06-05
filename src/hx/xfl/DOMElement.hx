@@ -3,6 +3,7 @@ package hx.xfl;
 import hx.geom.ColorTransform;
 import hx.geom.Matrix;
 import hx.geom.Point;
+import hx.xfl.filter.Filter;
 
 class DOMElement implements IDOMElement
 {
@@ -17,6 +18,7 @@ class DOMElement implements IDOMElement
     public var top(default, default):Float;
     public var left(default, default):Float;
     public var colorTransform(default, default):ColorTransform;
+    public var filters(default, default):Array<Filter>;
 
     public function new()
     {

@@ -6,7 +6,7 @@ import hx.xfl.filter.IFilter;
 
 class Filter implements IFilter
 {
-    var filter(get, null):BitmapFilter;
+    public var filter(get, null):BitmapFilter;
     
     public function new()
     {
