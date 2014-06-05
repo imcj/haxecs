@@ -121,6 +121,7 @@ class MovieClipRenderer
 
                     mc.transform.matrix = matrix.toFlashMatrix();
                     mc.transform.colorTransform = instance.colorTransform.toFlashColorTransform();
+                    mc.filters = instance.flashFilters;
                     mc.alpha = alpha;
                     display_object = mc;
 

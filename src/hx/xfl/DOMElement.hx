@@ -1,5 +1,6 @@
 package hx.xfl;
 
+import flash.filters.BitmapFilter;
 import hx.geom.ColorTransform;
 import hx.geom.Matrix;
 import hx.geom.Point;
@@ -19,6 +20,8 @@ class DOMElement implements IDOMElement
     public var left(default, default):Float;
     public var colorTransform(default, default):ColorTransform;
     public var filters(default, default):Array<Filter>;
+    
+    public var flashFilters(get, null):Array<BitmapFilter>;
 
     public function new()
     {
@@ -32,5 +35,15 @@ class DOMElement implements IDOMElement
         height = 0;
         top = 0;
         left = 0;
+        filters = [];
+    }
+    
+    function get_flashFilters():Array<BitmapFilter>
+    {
+        var fs = [];
+        for (f in filters) {
+            fs.push(f.filter);
+        }
+        return fs;
     }
 }

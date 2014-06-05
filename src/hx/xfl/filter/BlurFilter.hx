@@ -8,7 +8,7 @@ class BlurFilter extends Filter implements IFilter
     public var blurY:Float;
     public var quality:Int;
     
-    public function new()
+    public function new(blurX:Float = 4, blurY:Float = 4, quality:Int = 1)
     {
         super();
     }

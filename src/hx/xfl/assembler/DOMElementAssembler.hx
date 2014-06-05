@@ -24,7 +24,7 @@ class DOMElementAssembler extends XFLBaseAssembler
             parse_matrix(elementNode, element);
             parse_transformPoint(elementNode, element);
             parse_colorTransform(elementNode, element);
-            
+            parse_filters(elementNode, element);
         }
 
         return element;

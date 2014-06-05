@@ -16,7 +16,7 @@ class DropShadowFilter extends Filter implements IFilter
     public var quality:Int;
     public var strength:Float;
     
-    public function new()
+    public function new(distance:Float = 4, angle:Float = 45, color:UInt = 0, alpha:Float = 1, blurX:Float = 4, blurY:Float = 4, strength:Float = 1, quality:Int = 1, inner:Bool = false, knockout:Bool = false, hideObject:Bool = false)
     {
         super();
     }
