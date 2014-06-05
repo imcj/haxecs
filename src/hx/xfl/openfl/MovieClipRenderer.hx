@@ -154,12 +154,7 @@ class MovieClipRenderer
                 display_object = new TextInstance(instance);
             } else if (Std.is(element, DOMShape)) {
                 var instance:DOMShape = cast(element);
-                display_object = new ShapeInstance(cast(element, DOMShape));
-                display_object.transform.matrix = 
-                    instance.matrix.toFlashMatrix();
-                display_object.transform.colorTransform = 
-                    instance.colorTransform.toFlashColorTransform();
-                display_object.filters = instance.flashFilters;
+                new ShapeInstance(cast(element, DOMShape), parent);
             } else {
                 throw "Not implements.";
             }
@@ -167,8 +162,10 @@ class MovieClipRenderer
             if (null != element.name && "" != element.name)
                 display_object.name = element.name;
 
-            parent.addChild(display_object);
-            layer.push(display_object);
+            if (display_object != null) {
+                parent.addChild(display_object);
+                layer.push(display_object);
+            }
         }
 
         return layer;

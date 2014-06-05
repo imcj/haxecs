@@ -1,19 +1,21 @@
 package hx.xfl.openfl;
 
 import flash.display.GradientType;
-import flash.display.Shape;
+import flash.display.Graphics;
+import flash.display.Sprite;
 import hx.xfl.DOMShape;
 import hx.xfl.DOMSymbolInstance;
 import hx.xfl.DOMSymbolItem;
 
-class ShapeInstance extends Shape
+class ShapeInstance
 {
     var dom:DOMShape;
+    var target:Sprite;
 
-    public function new(dom:DOMShape)
+    public function new(dom:DOMShape, target:Sprite)
     {
-        super();
         this.dom = dom;
+        this.target = target;
         var document = dom.frame.layer.timeLine.document;
 
         //绘制填充
@@ -22,26 +24,26 @@ class ShapeInstance extends Shape
             if (null != fill) {
                 switch (fill.type) {
                     case "SolidColor":
-                        this.graphics.beginFill(fill.color, fill.alpha);
+                        target.graphics.beginFill(fill.color, fill.alpha);
                     case "RadialGradient":
-                        this.graphics.beginGradientFill(GradientType.RADIAL, cast(fill.colors), fill.alphas, fill.ratios, fill.matrix.toFlashMatrix(), fill.spreadMethod, fill.interpolationMethod, fill.focalPointRatio);
+                        target.graphics.beginGradientFill(GradientType.RADIAL, cast(fill.colors), fill.alphas, fill.ratios, fill.matrix.toFlashMatrix(), fill.spreadMethod, fill.interpolationMethod, fill.focalPointRatio);
                     case "LinearGradient":
-                        this.graphics.beginGradientFill(GradientType.LINEAR, cast(fill.colors), fill.alphas, fill.ratios, fill.matrix.toFlashMatrix(), fill.spreadMethod, fill.interpolationMethod, fill.focalPointRatio);
+                        target.graphics.beginGradientFill(GradientType.LINEAR, cast(fill.colors), fill.alphas, fill.ratios, fill.matrix.toFlashMatrix(), fill.spreadMethod, fill.interpolationMethod, fill.focalPointRatio);
                     case "BitmapFill":
-                        this.graphics.beginBitmapFill(fill.bitmapData, fill.matrix.toFlashMatrix());
+                        target.graphics.beginBitmapFill(fill.bitmapData, fill.matrix.toFlashMatrix());
                 }
             }
             for (draw in edge.edges) {
                 switch (draw.type) {
                     case "moveTo":
-                        this.graphics.moveTo(draw.x, draw.y);
+                        target.graphics.moveTo(draw.x, draw.y);
                     case "lineTo":
-                        this.graphics.lineTo(draw.x, draw.y);
+                        target.graphics.lineTo(draw.x, draw.y);
                     case "curveTo":
-                        this.graphics.curveTo(draw.x, draw.y, draw.anchorX, draw.anchorY);
+                        target.graphics.curveTo(draw.x, draw.y, draw.anchorX, draw.anchorY);
                 }
             }
-            this.graphics.endFill();
+            target.graphics.endFill();
         }
 
         // 绘制线条
@@ -50,19 +52,19 @@ class ShapeInstance extends Shape
             if (null != stroke) {
                 switch (stroke.type) {
                     case "SolidStroke":
-                        this.graphics.lineStyle(stroke.weight, stroke.color);
+                        target.graphics.lineStyle(stroke.weight, stroke.color);
                 }
             }else {
-                this.graphics.lineStyle();
+                target.graphics.lineStyle();
             }
             for (draw in edge.edges) {
                 switch (draw.type) {
                     case "moveTo":
-                        this.graphics.moveTo(draw.x, draw.y);
+                        target.graphics.moveTo(draw.x, draw.y);
                     case "lineTo":
-                        this.graphics.lineTo(draw.x, draw.y);
+                        target.graphics.lineTo(draw.x, draw.y);
                     case "curveTo":
-                        this.graphics.curveTo(draw.x, draw.y, draw.anchorX, draw.anchorY);
+                        target.graphics.curveTo(draw.x, draw.y, draw.anchorX, draw.anchorY);
                 }
             }
         }
