@@ -80,6 +80,18 @@ class MotionObject
             colorTransform.blueOffset = bright / 100 * 255;
         }
         
+        if (ta != null) {
+            var r = Std.int(tc) >> 16;
+            var g = Std.int(tc) >> 8 & 0xFF;
+            var b = Std.int(tc) & 0xFF;
+            colorTransform.redMultiplier = r/255;
+            colorTransform.greenMultiplier = g/255;
+            colorTransform.blueMultiplier = b/255;
+            colorTransform.redOffset = ta/100*255;
+            colorTransform.greenOffset = ta/100*255;
+            colorTransform.blueOffset = ta/100*255;
+        }
+        
         return colorTransform;
     }
     
