@@ -62,8 +62,8 @@ class MotionObject
         
         var bright = motion("Brightness_Amount", currentFrame);
         
-        var tc = motionValue("Tint_Color", currentFrame);
-        var ta = motionValue("Tint_Amount", currentFrame);
+        var tc = motionColor("Tint_Color", currentFrame);
+        var ta = motion("Tint_Amount", currentFrame);
         
         if (rm != null) colorTransform.redMultiplier = rm/100;
         if (ro != null) colorTransform.redOffset = ro;
@@ -134,6 +134,38 @@ class MotionObject
             var d = keys[1].getFrameIndex() - keys[0].getFrameIndex();
             var p = domFrame.animation.strength / 100;
             return easeQuadPercent(t, b, c, d, p);
+        }
+        
+        return null;
+    }
+    
+    function motionColor(name:String, currentFrame:Int):Null<Int>
+    {
+        var animateTime = currentFrame-domFrame.index;
+        if (animateTime <= 0) return null;
+        var property = getProperty(name);
+        if (property == null) return null;
+        
+        var keys = property.getStarEnd(animateTime);
+        if (keys.length > 1) {
+            var c0 = Std.parseInt(keys[0].value);
+            var c1 = Std.parseInt(keys[1].value);
+            var r0 = c0 >> 16;
+            var g0 = c0 >> 8 & 0xFF;
+            var b0 = c0 & 0xFF;
+            var r1 = c1 >> 16;
+            var g1 = c1 >> 8 & 0xFF;
+            var b1 = c1 & 0xFF;
+            var t = animateTime-keys[0].getFrameIndex();
+            var d = keys[1].getFrameIndex() - keys[0].getFrameIndex();
+            var p = domFrame.animation.strength / 100;
+            var cr = r1 - r0;
+            var cg = g1 - g0;
+            var cb = b1 - b0;
+            var r = Std.int(easeQuadPercent(t, r0, cr, d, p))<<16;
+            var g = Std.int(easeQuadPercent(t, g0, cg, d, p))<<8;
+            var b = Std.int(easeQuadPercent(t, b0, cb, d, p));
+            return r | g | b;
         }
         
         return null;
