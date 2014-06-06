@@ -36,12 +36,14 @@ class DisplayObjectPool
 
     public function clear()
     {
-        container = null;
         if (null != previousFrame) {        
             for (c in previousFrame) {
-                container.removeChild(c.display);
+                if (null != c.display && null != container)
+                    container.removeChild(c.display);
             }
         }
+
+        container = null;
     }
 
     inline function reusable(query:IDOMElement):Combine
@@ -172,11 +174,19 @@ class MovieClipRenderer
 
         var display_object:DisplayObject = null;
         var mc:MovieClip;
+        var is_new:Bool;
 
         for (element in frame.getElementsIterator()) {
+            is_new = false;
             if (Std.is(element, DOMBitmapInstance)) {
                 var bitmap_instance = cast(element, DOMBitmapInstance);
-                display_object = createBitmapInstance(bitmap_instance, line);
+                display_object = pool.get(element);
+                if (null == display_object) {
+                    display_object = createBitmapInstance(bitmap_instance, line);
+                    is_new = true;
+                }
+
+                trace(bitmap_instance.libraryItem.name);
             } else if (Std.is(element, DOMSymbolInstance)) {
                 var instance:DOMSymbolInstance = cast(element);
 
@@ -210,6 +220,8 @@ class MovieClipRenderer
                 }
 
                 mc = cast(pool.get(element), MovieClip);
+                if (null == mc)
+                    is_new = true;
                 var linkageClassName = instance.libraryItem.linkageClassName;
                 if (null == mc && null != linkageClassName) {
                     classType = Type.resolveClass(linkageClassName);
@@ -248,15 +260,15 @@ class MovieClipRenderer
             } else if (Std.is(element, DOMText)) {
                 var instance:DOMText = cast(element, DOMText);
                 var text:TextInstance = cast(pool.get(element));
-                if (null == text)
+                if (null == text) {
                     display_object = new TextInstance(instance);
-                else {
+                    is_new = true;
+                } else {
                     text.render(cast(element));
                     display_object = text;
                 }
             } else if (Std.is(element, DOMShape)) {
                 ShapeInstance.draw(cast(element, DOMShape), parent);
-
             } else {
                 throw "Not implements.";
             }
@@ -270,7 +282,8 @@ class MovieClipRenderer
             });
 
             if (display_object != null) {
-                parent.addChild(display_object);
+                // if (is_new)
+                    parent.addChild(display_object);
                 layer.push(display_object);
             }
         }
