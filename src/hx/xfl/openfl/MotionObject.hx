@@ -60,6 +60,8 @@ class MotionObject
         var am = motion("AdvClr_A_Pct", currentFrame);
         var ao = motion("AdvClr_A_Offset", currentFrame);
         
+        var bright = motion("Brightness_Amount", currentFrame);
+        
         if (rm != null) colorTransform.redMultiplier = rm/100;
         if (ro != null) colorTransform.redOffset = ro;
         if (gm != null) colorTransform.greenMultiplier = gm/100;
@@ -68,6 +70,12 @@ class MotionObject
         if (bo != null) colorTransform.blueOffset = bo;
         if (am != null) colorTransform.alphaMultiplier = am/100;
         if (ao != null) colorTransform.alphaOffset = ao;
+        
+        if (bright != null) {
+            colorTransform.redOffset = bright / 100 * 255;
+            colorTransform.greenOffset = bright / 100 * 255;
+            colorTransform.blueOffset = bright / 100 * 255;
+        }
         
         return colorTransform;
     }
