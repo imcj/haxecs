@@ -81,6 +81,7 @@ class MovieClipRenderer
 
                 // 动画
                 var matrix = instance.matrix.clone();
+                var colorTransform = instance.colorTransform.clone();
                 if (frame.tweenType == "motion") {
                     var nextFrame = frame;
                     for (n in 0...domLayer.frames.length) {
@@ -98,6 +99,7 @@ class MovieClipRenderer
                     var prePosition = new Point(matrix.tx, matrix.ty);
                     var preTransform = matrix.transformPoint(instance.transformPoint);
                     matrix = motion.getCurrentMatrix(currentFrame);
+                    colorTransform = motion.getCurrentColorTransform(currentFrame);
                     //对形变中心引起的偏移做处理
                     var deltaPosition = new Point(matrix.tx - prePosition.x, matrix.ty - prePosition.y);
                     var nowTransform = matrix.transformPoint(instance.transformPoint);
@@ -118,7 +120,7 @@ class MovieClipRenderer
                         mc = MovieClipFactory.create(item.timeline);
 
                     mc.transform.matrix = matrix.toFlashMatrix();
-                    mc.transform.colorTransform = instance.colorTransform.toFlashColorTransform();
+                    mc.transform.colorTransform = colorTransform.toFlashColorTransform();
                     mc.filters = instance.flashFilters;
                     display_object = mc;
 
@@ -139,7 +141,7 @@ class MovieClipRenderer
 
                     mc = cast(display_object);
                     mc.transform.matrix = matrix.toFlashMatrix();
-                    mc.transform.colorTransform = instance.colorTransform.toFlashColorTransform();
+                    mc.transform.colorTransform = colorTransform.toFlashColorTransform();
                     mc.filters = instance.flashFilters;
                     mc.mouseChildren = false;
                 } else {
