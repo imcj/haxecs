@@ -8,7 +8,7 @@ using Lambda;
 
 // TODO
 // 整理注释
-class MovieClip extends Sprite
+class MovieClip extends Sprite implements IElement
 {
     public var currentFrame(get, null):Int;
     public var currentFrameLabel(get, null):String;
@@ -135,10 +135,9 @@ class MovieClip extends Sprite
     function gotoFrame()
     {
         Render.renderMovieClip(this);
-        executeFrameScript();
     }
 
-    inline function executeFrameScript():Void
+    public function executeFrameScript()
     {
         var scene_name = clearId(currentScene.name);
         var index = _currentFrame;

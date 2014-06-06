@@ -2,21 +2,24 @@ package hx.xfl.openfl;
 
 import flash.display.GradientType;
 import flash.display.Shape;
+
+import hx.xfl.openfl.display.IElement;
 import hx.xfl.DOMShape;
 import hx.xfl.DOMSymbolInstance;
 import hx.xfl.DOMSymbolItem;
 
-class ShapeInstance extends Shape
+class ShapeInstance extends Shape implements IElement
 {
-    var dom:DOMShape;
-
     public function new(dom:DOMShape)
     {
         super();
-        this.dom = dom;
-        var document = dom.frame.layer.timeLine.document;
+        render(dom);
+    }
 
+    public function render(dom:DOMShape)
+    {
         //绘制填充
+        graphics.clear();
         for (edge in dom.fillEdges1) {
             var fill = dom.fills.get(edge.fillStyle1);
             if (null != fill) {
@@ -67,5 +70,4 @@ class ShapeInstance extends Shape
             }
         }
     }
-    
 }

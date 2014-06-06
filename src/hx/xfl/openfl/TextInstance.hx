@@ -12,18 +12,35 @@ import hx.xfl.DOMSymbolItem;
 import hx.xfl.DOMTimeLine;
 import hx.xfl.DOMText;
 import hx.xfl.XFLDocument;
+import hx.xfl.openfl.display.IElement;
 import flash.text.TextFormatAlign;
 
-class TextInstance extends TextField
+class TextInstance extends TextField implements IElement
 {
-    public var dom:DOMText;
-
     public function new(dom:DOMText) 
     {
         super();
-        this.dom = dom;
-        var document = dom.frame.layer.timeLine.document;
+        render(dom);
+    }
 
+    function alignmentEnumToString(alignment)
+    {
+        switch (alignment) {
+            case "center":
+                return TextFormatAlign.CENTER;
+            case "justify":
+                return TextFormatAlign.JUSTIFY;
+            case "left":
+                return TextFormatAlign.LEFT;
+            case "right":
+                return TextFormatAlign.RIGHT;
+        }
+
+        return null;
+    }
+
+    public function render(dom:DOMText):Void
+    {
         // TODO
         // * 格式的完整支持
         // * 嵌入字体的支持
@@ -56,21 +73,5 @@ class TextInstance extends TextField
         var yAdd = dom.top+1;
         this.x += xAdd-1;
         this.y += yAdd-1;
-    }
-
-    function alignmentEnumToString(alignment)
-    {
-        switch (alignment) {
-            case "center":
-                return TextFormatAlign.CENTER;
-            case "justify":
-                return TextFormatAlign.JUSTIFY;
-            case "left":
-                return TextFormatAlign.LEFT;
-            case "right":
-                return TextFormatAlign.RIGHT;
-        }
-
-        return null;
     }
 }

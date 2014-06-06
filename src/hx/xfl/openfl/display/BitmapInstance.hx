@@ -4,7 +4,7 @@ import flash.display.Bitmap;
 import flash.display.BitmapData;
 import hx.xfl.DOMBitmapItem;
 
-class BitmapInstance extends Bitmap
+class BitmapInstance extends Bitmap implements IElement
 {
     public var libraryItem:DOMBitmapItem;
 
