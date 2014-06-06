@@ -1,5 +1,6 @@
 package hx.xfl.openfl;
 import flash.display.DisplayObject;
+import hx.geom.ColorTransform;
 import hx.geom.Matrix;
 import hx.xfl.DOMAnimationCore;
 import hx.xfl.DOMElement;
@@ -44,6 +45,31 @@ class MotionObject
         var alpha = motion("Alpha_Amount", currentFrame);
         if (alpha != null) return alpha/100;
         else return 1;
+    }
+    
+    public function getCurrentColorTransform(currentFrame:Int):ColorTransform
+    {
+        var colorTransform = target.colorTransform.clone();
+        
+        var rm = motion("AdvClr_R_Pct", currentFrame);
+        var ro = motion("AdvClr_R_Offset", currentFrame);
+        var gm = motion("AdvClr_G_Pct", currentFrame);
+        var go = motion("AdvClr_G_Offset", currentFrame);
+        var bm = motion("AdvClr_B_Pct", currentFrame);
+        var bo = motion("AdvClr_B_Offset", currentFrame);
+        var am = motion("AdvClr_A_Pct", currentFrame);
+        var ao = motion("AdvClr_A_Offset", currentFrame);
+        
+        if (rm != null) colorTransform.redMultiplier = rm/100;
+        if (ro != null) colorTransform.redOffset = ro;
+        if (gm != null) colorTransform.greenMultiplier = gm/100;
+        if (go != null) colorTransform.greenOffset = go;
+        if (bm != null) colorTransform.blueMultiplier = bm/100;
+        if (bo != null) colorTransform.blueOffset = bo;
+        if (am != null) colorTransform.alphaMultiplier = am/100;
+        if (ao != null) colorTransform.alphaOffset = ao;
+        
+        return colorTransform;
     }
     
     function motion(name:String, currentFrame:Int):Null<Float>
