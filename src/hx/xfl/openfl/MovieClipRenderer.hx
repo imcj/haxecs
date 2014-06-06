@@ -254,7 +254,7 @@ class MovieClipRenderer
 
                 display_object = mc;
                 mc.transform.matrix = matrix.toFlashMatrix();
-                mc.transform.colorTransform = instance.colorTransform.toFlashColorTransform();
+                mc.transform.colorTransform = colorTransform.toFlashColorTransform();
                 mc.filters = instance.flashFilters;
 
             } else if (Std.is(element, DOMText)) {
