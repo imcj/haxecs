@@ -62,6 +62,9 @@ class MotionObject
         
         var bright = motion("Brightness_Amount", currentFrame);
         
+        var tc = motionValue("Tint_Color", currentFrame);
+        var ta = motionValue("Tint_Amount", currentFrame);
+        
         if (rm != null) colorTransform.redMultiplier = rm/100;
         if (ro != null) colorTransform.redOffset = ro;
         if (gm != null) colorTransform.greenMultiplier = gm/100;
@@ -99,6 +102,26 @@ class MotionObject
             //var p1 = keys[0].next.y;
             //var p2 = keys[1].anchor.y;
             //return easeBezier(t, d, p0, p1, p2);
+        }
+        
+        return null;
+    }
+    
+    function motionValue(name:String, currentFrame:Int):Null<Float>
+    {
+        var animateTime = currentFrame-domFrame.index;
+        if (animateTime <= 0) return null;
+        var property = getProperty(name);
+        if (property == null) return null;
+        
+        var keys = property.getStarEnd(animateTime);
+        if (keys.length > 1) {
+            var t = animateTime-keys[0].getFrameIndex();
+            var b = Std.parseInt(keys[0].value);
+            var c = Std.parseInt(keys[1].value) - Std.parseInt(keys[0].value);
+            var d = keys[1].getFrameIndex() - keys[0].getFrameIndex();
+            var p = domFrame.animation.strength / 100;
+            return easeQuadPercent(t, b, c, d, p);
         }
         
         return null;

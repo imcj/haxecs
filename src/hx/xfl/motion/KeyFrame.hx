@@ -35,6 +35,7 @@ class KeyFrame
 
     function parsePoint(str:String):Point
     {
+        if (str == null) return new Point(0, 0);
         var arrStr = str.split(",");
         var px = Std.parseFloat(arrStr[0]);
         var py = Std.parseFloat(arrStr[1]);
