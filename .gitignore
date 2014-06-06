@@ -3,6 +3,9 @@ build/
 example/piratepig/as3
 example/piratepig/export
 example/piratepig/Assets/*.swf
+example/simplebutton/export
+example/simplebutton/Assets/RECOVER_simplebutton
+example/simplebutton/Assets/simplebutton/bin
 Makefile
 run.n
 report/*

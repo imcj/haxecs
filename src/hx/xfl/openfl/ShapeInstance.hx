@@ -7,6 +7,7 @@ import hx.xfl.DOMShape;
 import hx.xfl.DOMSymbolInstance;
 import hx.xfl.DOMSymbolItem;
 
+
 class ShapeInstance
 {
     static public function draw(dom:DOMShape, target:Sprite):Void 
@@ -14,6 +15,7 @@ class ShapeInstance
         var document = dom.frame.layer.timeLine.document;
 
         //绘制填充
+        target.graphics.clear();
         for (edge in dom.fillEdges1) {
             var fill = dom.fills.get(edge.fillStyle1);
             if (null != fill) {

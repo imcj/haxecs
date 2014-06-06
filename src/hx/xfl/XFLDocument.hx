@@ -7,6 +7,7 @@ import hx.xfl.setting.publish.DOMFlashProfiles;
 using StringTools;
 
 #if openfl
+import flash.display.*;
 import hx.xfl.openfl.Assets;
 import hx.xfl.openfl.display.MovieClip;
 import hx.xfl.openfl.MovieClipFactory;
@@ -197,6 +198,28 @@ class XFLDocument extends DOMDocument
         }
 
         return null;
+    }
+
+    public function getObject(name:String):DisplayObject
+    {
+        var symbol = getSymbol(name);
+        var linageClassAreEmpty = null == symbol.linkageClassName && "" == 
+            symbol.linkageClassName;
+
+        var mc:MovieClip = null;
+        if (!linageClassAreEmpty) {
+            var linkageClass = Type.resolveClass(symbol.linkageClassName);
+            if (null != linkageClass)
+                mc = Type.createInstance(linkageClass, []);
+        }
+
+        if (mc == null) {
+            mc = new MovieClip();
+        }
+
+        MovieClipFactory.create(getSymbol(name), mc);
+
+        return mc;
     }
     #end
 

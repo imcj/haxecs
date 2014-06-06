@@ -2,17 +2,97 @@ package hx.xfl.openfl;
 import flash.display.DisplayObject;
 import flash.display.PixelSnapping;
 import flash.display.Sprite;
+import flash.display.DisplayObjectContainer;
 import hx.geom.Point;
+import hx.xfl.IDOMElement;
 import hx.xfl.DOMBitmapInstance;
 import hx.xfl.DOMLayer;
 import hx.xfl.DOMTimeLine;
+import hx.xfl.openfl.display.IElement;
 import hx.xfl.openfl.display.BitmapInstance;
 import hx.xfl.openfl.display.MovieClip;
+
+typedef Combine = {
+    var display:DisplayObject;
+    var element:IDOMElement;
+};
+
+class DisplayObjectPool
+{
+    var container:DisplayObjectContainer;
+    var previousFrame:Array<Combine>;
+
+    public function new()
+    {
+    }
+
+    public function fill(
+        previousFrame:Array<Combine>,
+        container:DisplayObjectContainer)
+    {
+        this.previousFrame = previousFrame;
+        this.container = container;
+    }
+
+    public function clear()
+    {
+        container = null;
+        if (null != previousFrame) {        
+            for (c in previousFrame) {
+                container.removeChild(c.display);
+            }
+        }
+    }
+
+    inline function reusable(query:IDOMElement):Combine
+    {
+        var combine:Combine = null;
+        var element:IDOMElement;
+        if (null == previousFrame)
+            return null;
+
+        var size:Int = previousFrame.length;
+        var found:Combine = null;
+        for (i in 0...size) {
+            combine = previousFrame[i];
+            element = combine.element;
+            if (Std.is(element, DOMText) && Std.is(query, DOMText)) {
+                found = combine;
+                break;
+            } else if (Std.is(element, DOMShape) && Std.is(query, DOMShape)) {
+                found = combine;
+                break;
+            } else if (Std.is(element, DOMInstance) && 
+                Std.is(query, DOMInstance) &&
+                cast(query, DOMInstance).libraryItem.name ==
+                cast(element, DOMInstance).libraryItem.name) {
+                found = combine;
+                break;
+            }
+        }
+
+        if (null != found)
+            previousFrame.remove(found);
+        return found;
+    }
+
+    public function get(element:IDOMElement)
+    {
+        var found:Combine = reusable(element);
+        if (null == found)
+            return null;
+        return found.display;
+    }
+}
 
 class MovieClipRenderer
 {
     public var movieClip:MovieClip;
     public var timelines:Array<DOMTimeLine>;
+    var previousFrame:Array<Combine>;
+    var currentFrames:Array<Combine>;
+
+    var pool:DisplayObjectPool;
 
     public function new(movieClip:MovieClip, timeline:Dynamic)
     {
@@ -20,16 +100,36 @@ class MovieClipRenderer
         if (Std.is(timeline, DOMTimeLine)) this.timelines = [timeline];
         else if (Std.is(timeline, Array)) this.timelines = timeline;
         else throw "timeline 类型错误，需要是DOMTimeLine或者Array<DOMTimeLine>";
+
+        pool = new DisplayObjectPool();
+    }
+
+    function getLogger()
+    {
+        return logging.Logging.getLogger("MovieClipRenderer");
+    }
+
+    function callStack()
+    {
+        return haxe.CallStack.toString(haxe.CallStack.callStack());
     }
     
     public function render():Void 
     {
-        displayFrame(movieClip, movieClip.currentFrame-1);
+        currentFrames = [];
+        pool.fill(previousFrame, movieClip);
+        displayFrame(movieClip, movieClip.currentFrame - 1);
+        
+        if (null != pool)
+            pool.clear();
+
+        previousFrame = currentFrames;
+
+        movieClip.executeFrameScript();
     }
     
     function displayFrame(mv:MovieClip, frameIndex:Int):Void 
     {
-        mv.removeChildren();
         var domTimeLine = Render.getTimeline(timelines, mv.currentScene);
         if (domTimeLine == null) return;
         
@@ -40,7 +140,7 @@ class MovieClipRenderer
         for (domLayer in domTimeLine.getLayersIterator(false)) {
             if ("mask" == domLayer.layerType) {
                 maskDoms.set(numLayer, domLayer);
-            }else {
+            } else {
                 var layer = displayLayer(domLayer, mv, frameIndex, domTimeLine);
                 if (domLayer.parentLayerIndex >= 0) {
                     masklayers.push(layer);
@@ -62,9 +162,10 @@ class MovieClipRenderer
         }
     }
     
-    function displayLayer(domLayer:DOMLayer, parent:Sprite, currentFrame:Int, line:DOMTimeLine):Array<DisplayObject>
+    function displayLayer(domLayer:DOMLayer, parent:Sprite, currentFrame:Int,
+        line:DOMTimeLine):Array<DisplayObject>
     {
-        var className:Class<Dynamic>;
+        var classType:Class<Dynamic>;
         var layer:Array<DisplayObject> = [];
         var frame = domLayer.getFrameAt(currentFrame);
         if (frame == null) return null;
@@ -94,7 +195,7 @@ class MovieClipRenderer
                     var perAddMatrix = endMatrix.sub(starMatrix).div(frame.duration);
                     var deltaMatrix = perAddMatrix.multi(currentFrame-frame.index);
                     matrix = starMatrix.add(deltaMatrix);
-                }else if (frame.tweenType == "motion object") {
+                } else if (frame.tweenType == "motion object") {
                     var motion = new MotionObject(instance, frame);
                     var prePosition = new Point(matrix.tx, matrix.ty);
                     var preTransform = matrix.transformPoint(instance.transformPoint);
@@ -107,22 +208,22 @@ class MovieClipRenderer
                     var revise = deltaPosition.sub(deltaTransform);
                     matrix.translate(revise);
                 }
+
+                mc = cast(pool.get(element), MovieClip);
+                var linkageClassName = instance.libraryItem.linkageClassName;
+                if (null == mc && null != linkageClassName) {
+                    classType = Type.resolveClass(linkageClassName);
+                    mc = Type.createInstance(classType, []);
+                    MovieClipFactory.dispatchTimeline(mc, instance);
+                } 
                 
                 if ("movie clip" == instance.symbolType ||
                     "" == instance.symbolType ||
                     "graphic" == instance.symbolType) {
 
                     var item = cast(instance.libraryItem, DOMSymbolItem);
-                    if (null != instance.libraryItem.linkageClassName) {
-                        mc = Type.createInstance(Type.resolveClass(instance.libraryItem.linkageClassName), []);
-                        MovieClipFactory.dispatchTimeline(mc, item.timeline);
-                    } else
+                    if (null == mc)
                         mc = MovieClipFactory.create(item.timeline);
-
-                    mc.transform.matrix = matrix.toFlashMatrix();
-                    mc.transform.colorTransform = colorTransform.toFlashColorTransform();
-                    mc.filters = instance.flashFilters;
-                    display_object = mc;
 
                     if (instance.silent) {
                         mc.mouseEnabled = false;
@@ -132,33 +233,41 @@ class MovieClipRenderer
                         mc.mouseChildren = false;
                     }
                 } else if ("button" == instance.symbolType) {
-                    if (null != instance.libraryItem.linkageClassName) {
-                        className = Type.resolveClass(instance.libraryItem.linkageClassName);
-                        display_object = Type.createInstance(className, []);
-                        MovieClipFactory.dispatchTimeline(cast(display_object), instance);
-                    } else
-                        display_object = MovieClipFactory.createButton(instance);
-
-                    mc = cast(display_object);
-                    mc.transform.matrix = matrix.toFlashMatrix();
-                    mc.transform.colorTransform = colorTransform.toFlashColorTransform();
-                    mc.filters = instance.flashFilters;
+                    if (null == mc)
+                        mc = MovieClipFactory.createButton(instance);
                     mc.mouseChildren = false;
                 } else {
                     throw "Not implements";
                 }
+
+                display_object = mc;
+                mc.transform.matrix = matrix.toFlashMatrix();
+                mc.transform.colorTransform = instance.colorTransform.toFlashColorTransform();
+                mc.filters = instance.flashFilters;
+
             } else if (Std.is(element, DOMText)) {
                 var instance:DOMText = cast(element, DOMText);
-                display_object = new TextInstance(instance);
+                var text:TextInstance = cast(pool.get(element));
+                if (null == text)
+                    display_object = new TextInstance(instance);
+                else {
+                    text.render(cast(element));
+                    display_object = text;
+                }
             } else if (Std.is(element, DOMShape)) {
-                var instance:DOMShape = cast(element);
                 ShapeInstance.draw(cast(element, DOMShape), parent);
+
             } else {
                 throw "Not implements.";
             }
 
             if (null != element.name && "" != element.name)
                 display_object.name = element.name;
+
+            currentFrames.push({
+                element: element,
+                display: display_object,
+            });
 
             if (display_object != null) {
                 parent.addChild(display_object);
