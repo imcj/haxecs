@@ -182,7 +182,7 @@ class MovieClipRenderer
 
                 // 动画
                 var matrix = instance.matrix.clone();
-                var alpha = 1.0;
+                var colorTransform = instance.colorTransform.clone();
                 if (frame.tweenType == "motion") {
                     var nextFrame = frame;
                     for (n in 0...domLayer.frames.length) {
@@ -200,7 +200,7 @@ class MovieClipRenderer
                     var prePosition = new Point(matrix.tx, matrix.ty);
                     var preTransform = matrix.transformPoint(instance.transformPoint);
                     matrix = motion.getCurrentMatrix(currentFrame);
-                    alpha = motion.getCurrentAlpha(currentFrame);
+                    colorTransform = motion.getCurrentColorTransform(currentFrame);
                     //对形变中心引起的偏移做处理
                     var deltaPosition = new Point(matrix.tx - prePosition.x, matrix.ty - prePosition.y);
                     var nowTransform = matrix.transformPoint(instance.transformPoint);
@@ -244,7 +244,6 @@ class MovieClipRenderer
                 mc.transform.matrix = matrix.toFlashMatrix();
                 mc.transform.colorTransform = instance.colorTransform.toFlashColorTransform();
                 mc.filters = instance.flashFilters;
-                mc.alpha = alpha;
 
             } else if (Std.is(element, DOMText)) {
                 var instance:DOMText = cast(element, DOMText);
@@ -256,23 +255,8 @@ class MovieClipRenderer
                     display_object = text;
                 }
             } else if (Std.is(element, DOMShape)) {
-                var instance:DOMShape = cast(element);
-                var shape:ShapeInstance = cast(pool.get(element), ShapeInstance);
+                ShapeInstance.draw(cast(element, DOMShape), parent);
 
-                if (null == shape)
-                    display_object = new ShapeInstance(cast(element, DOMShape));
-                else {
-                    shape.render(cast(element));
-                    display_object = shape;
-                }
-
-
-
-                display_object.transform.matrix = 
-                    instance.matrix.toFlashMatrix();
-                display_object.transform.colorTransform = 
-                    instance.colorTransform.toFlashColorTransform();
-                display_object.filters = instance.flashFilters;
             } else {
                 throw "Not implements.";
             }
@@ -285,8 +269,10 @@ class MovieClipRenderer
                 display: display_object,
             });
 
-            parent.addChild(display_object);
-            layer.push(display_object);
+            if (display_object != null) {
+                parent.addChild(display_object);
+                layer.push(display_object);
+            }
         }
 
         return layer;

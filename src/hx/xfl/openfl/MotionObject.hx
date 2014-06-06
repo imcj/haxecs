@@ -1,5 +1,6 @@
 package hx.xfl.openfl;
 import flash.display.DisplayObject;
+import hx.geom.ColorTransform;
 import hx.geom.Matrix;
 import hx.xfl.DOMAnimationCore;
 import hx.xfl.DOMElement;
@@ -23,13 +24,13 @@ class MotionObject
     {
         var matrix = target.matrix.clone();
         
-        var x = motion(matrix, "Motion_X", currentFrame);
-        var y = motion(matrix, "Motion_Y", currentFrame);
-        var r = motion(matrix, "Rotation_Z", currentFrame);
-        var scx = motion(matrix, "Scale_X", currentFrame);
-        var scy = motion(matrix, "Scale_Y", currentFrame);
-        var skx = motion(matrix, "Skew_X", currentFrame);
-        var sky = motion(matrix, "Skew_X", currentFrame);
+        var x = motion("Motion_X", currentFrame);
+        var y = motion("Motion_Y", currentFrame);
+        var r = motion("Rotation_Z", currentFrame);
+        var scx = motion("Scale_X", currentFrame);
+        var scy = motion("Scale_Y", currentFrame);
+        var skx = motion("Skew_X", currentFrame);
+        var sky = motion("Skew_X", currentFrame);
         
         if (x != null) matrix.tx += x;
         if (y != null) matrix.ty += y;
@@ -41,12 +42,60 @@ class MotionObject
     
     public function getCurrentAlpha(currentFrame:Int):Float 
     {
-        var alpha = motion(null, "Alpha_Amount", currentFrame);
+        var alpha = motion("Alpha_Amount", currentFrame);
         if (alpha != null) return alpha/100;
         else return 1;
     }
     
-    function motion(matrix:Matrix, name:String, currentFrame:Int):Null<Float>
+    public function getCurrentColorTransform(currentFrame:Int):ColorTransform
+    {
+        var colorTransform = target.colorTransform.clone();
+        
+        var rm = motion("AdvClr_R_Pct", currentFrame);
+        var ro = motion("AdvClr_R_Offset", currentFrame);
+        var gm = motion("AdvClr_G_Pct", currentFrame);
+        var go = motion("AdvClr_G_Offset", currentFrame);
+        var bm = motion("AdvClr_B_Pct", currentFrame);
+        var bo = motion("AdvClr_B_Offset", currentFrame);
+        var am = motion("AdvClr_A_Pct", currentFrame);
+        var ao = motion("AdvClr_A_Offset", currentFrame);
+        
+        var bright = motion("Brightness_Amount", currentFrame);
+        
+        var tc = motionValue("Tint_Color", currentFrame);
+        var ta = motionValue("Tint_Amount", currentFrame);
+        
+        if (rm != null) colorTransform.redMultiplier = rm/100;
+        if (ro != null) colorTransform.redOffset = ro;
+        if (gm != null) colorTransform.greenMultiplier = gm/100;
+        if (go != null) colorTransform.greenOffset = go;
+        if (bm != null) colorTransform.blueMultiplier = bm/100;
+        if (bo != null) colorTransform.blueOffset = bo;
+        if (am != null) colorTransform.alphaMultiplier = am/100;
+        if (ao != null) colorTransform.alphaOffset = ao;
+        
+        if (bright != null) {
+            colorTransform.redOffset = bright / 100 * 255;
+            colorTransform.greenOffset = bright / 100 * 255;
+            colorTransform.blueOffset = bright / 100 * 255;
+        }
+        
+        if (ta != null) {
+            var r = Std.int(tc) >> 16;
+            var g = Std.int(tc) >> 8 & 0xFF;
+            var b = Std.int(tc) & 0xFF;
+            colorTransform.redMultiplier = r/255;
+            colorTransform.greenMultiplier = g/255;
+            colorTransform.blueMultiplier = b/255;
+            colorTransform.redOffset = ta/100*255;
+            colorTransform.greenOffset = ta/100*255;
+            colorTransform.blueOffset = ta/100*255;
+        }
+        
+        return colorTransform;
+    }
+    
+    function motion(name:String, currentFrame:Int):Null<Float>
     {
         var animateTime = currentFrame-domFrame.index;
         if (animateTime <= 0) return null;
@@ -65,6 +114,26 @@ class MotionObject
             //var p1 = keys[0].next.y;
             //var p2 = keys[1].anchor.y;
             //return easeBezier(t, d, p0, p1, p2);
+        }
+        
+        return null;
+    }
+    
+    function motionValue(name:String, currentFrame:Int):Null<Float>
+    {
+        var animateTime = currentFrame-domFrame.index;
+        if (animateTime <= 0) return null;
+        var property = getProperty(name);
+        if (property == null) return null;
+        
+        var keys = property.getStarEnd(animateTime);
+        if (keys.length > 1) {
+            var t = animateTime-keys[0].getFrameIndex();
+            var b = Std.parseInt(keys[0].value);
+            var c = Std.parseInt(keys[1].value) - Std.parseInt(keys[0].value);
+            var d = keys[1].getFrameIndex() - keys[0].getFrameIndex();
+            var p = domFrame.animation.strength / 100;
+            return easeQuadPercent(t, b, c, d, p);
         }
         
         return null;

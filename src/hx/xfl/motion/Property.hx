@@ -10,6 +10,7 @@ class Property
     public var visible:Int;
     public var TimeMapIndex:Int;
     public var keyFrames:Array<KeyFrame>;
+    public var value:Int;
 
     public function new() 
     {

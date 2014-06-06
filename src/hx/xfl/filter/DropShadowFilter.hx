@@ -19,6 +19,17 @@ class DropShadowFilter extends Filter implements IFilter
     public function new(distance:Float = 4, angle:Float = 45, color:UInt = 0, alpha:Float = 1, blurX:Float = 4, blurY:Float = 4, strength:Float = 1, quality:Int = 1, inner:Bool = false, knockout:Bool = false, hideObject:Bool = false)
     {
         super();
+        this.color = color;
+        this.alpha = alpha;
+        this.blurX = blurX;
+        this.blurY = blurY;
+        this.angle = angle;
+        this.distance = distance;
+        this.hideObject = hideObject;
+        this.inner = inner;
+        this.knockout = knockout;
+        this.quality = quality;
+        this.strength = strength;
     }
     
     override function get_filter():BitmapFilter
