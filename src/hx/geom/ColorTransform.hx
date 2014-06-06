@@ -51,6 +51,20 @@ class ColorTransform{
         return color;
     }
     
+    public function clone():ColorTransform
+    {
+        var c = new ColorTransform();
+        c.alphaMultiplier = alphaMultiplier;
+        c.alphaOffset = alphaOffset;
+        c.blueMultiplier = blueMultiplier;
+        c.color = color;
+        c.greenMultiplier = greenMultiplier;
+        c.greenOffset = greenOffset;
+        c.redMultiplier = redMultiplier;
+        c.redOffset = redOffset;
+        return c;
+    }
+    
     public function toFlashColorTransform():flash.geom.ColorTransform
     {
         return new flash.geom.ColorTransform(redMultiplier, greenMultiplier, blueMultiplier, alphaMultiplier, redOffset, greenOffset, blueOffset, alphaOffset);
