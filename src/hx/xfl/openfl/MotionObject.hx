@@ -81,15 +81,17 @@ class MotionObject
         }
         
         if (ta != null) {
-            var r = Std.int(tc) >> 16;
-            var g = Std.int(tc) >> 8 & 0xFF;
-            var b = Std.int(tc) & 0xFF;
+            var r = Std.int(tc) >> 24 & 0xFF;
+            var g = Std.int(tc) >> 16 & 0xFF;
+            var b = Std.int(tc) >> 8 & 0xFF;
+            var a = Std.int(tc) & 0xFF;
             colorTransform.redMultiplier = r/255;
             colorTransform.greenMultiplier = g/255;
             colorTransform.blueMultiplier = b/255;
             colorTransform.redOffset = ta/100*255;
             colorTransform.greenOffset = ta/100*255;
             colorTransform.blueOffset = ta/100*255;
+            colorTransform.alphaMultiplier = a/255;
         }
         
         return colorTransform;
@@ -150,22 +152,26 @@ class MotionObject
         if (keys.length > 1) {
             var c0 = Std.parseInt(keys[0].value);
             var c1 = Std.parseInt(keys[1].value);
-            var r0 = c0 >> 16;
-            var g0 = c0 >> 8 & 0xFF;
-            var b0 = c0 & 0xFF;
-            var r1 = c1 >> 16;
-            var g1 = c1 >> 8 & 0xFF;
-            var b1 = c1 & 0xFF;
+            var r0 = c0 >> 24 & 0xFF;
+            var g0 = c0 >> 16 & 0xFF;
+            var b0 = c0 >> 8 & 0xFF;
+            var a0 = c0 & 0xFF;
+            var r1 = c1 >> 24 & 0xFF;
+            var g1 = c1 >> 16 & 0xFF;
+            var b1 = c1 >> 8 & 0xFF;
+            var a1 = c1 & 0xFF;
             var t = animateTime-keys[0].getFrameIndex();
             var d = keys[1].getFrameIndex() - keys[0].getFrameIndex();
             var p = domFrame.animation.strength / 100;
             var cr = r1 - r0;
             var cg = g1 - g0;
             var cb = b1 - b0;
-            var r = Std.int(easeQuadPercent(t, r0, cr, d, p))<<16;
-            var g = Std.int(easeQuadPercent(t, g0, cg, d, p))<<8;
-            var b = Std.int(easeQuadPercent(t, b0, cb, d, p));
-            return r | g | b;
+            var ca = a1 - a0;
+            var r = Std.int(easeQuadPercent(t, r0, cr, d, p))<<24;
+            var g = Std.int(easeQuadPercent(t, g0, cg, d, p))<<16;
+            var b = Std.int(easeQuadPercent(t, b0, cb, d, p))<<8;
+            var a = Std.int(easeQuadPercent(t, a0, ca, d, p));
+            return r | g | b | a;
         }
         
         return null;
