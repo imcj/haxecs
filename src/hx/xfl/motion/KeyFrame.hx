@@ -10,6 +10,7 @@ class KeyFrame
     public var previous:Point;
     public var roving:Int;
     public var timevalue:Int;
+    public var value:String;
 
     public function new()
     {
