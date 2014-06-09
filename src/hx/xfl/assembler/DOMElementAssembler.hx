@@ -170,12 +170,12 @@ class DOMElementAssembler extends XFLBaseAssembler
                 var r = c >> 16;
                 var g = c >> 8 & 0xFF;
                 var b = c & 0xFF;
-                colorTransform.redMultiplier = r/255;
-                colorTransform.greenMultiplier = g/255;
-                colorTransform.blueMultiplier = b/255;
-                colorTransform.redOffset = tint*255;
-                colorTransform.greenOffset = tint*255;
-                colorTransform.blueOffset = tint*255;
+                colorTransform.redOffset = tint * r;
+                colorTransform.greenOffset = tint * g;
+                colorTransform.blueOffset = tint * b;
+                colorTransform.redMultiplier = 1 - tint;
+                colorTransform.greenMultiplier = 1 - tint;
+                colorTransform.blueMultiplier = 1 - tint;
             }
         }
     }
