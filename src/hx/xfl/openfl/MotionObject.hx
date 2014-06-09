@@ -75,23 +75,27 @@ class MotionObject
         if (ao != null) colorTransform.alphaOffset = ao;
         
         if (bright != null) {
-            colorTransform.redOffset = bright / 100 * 255;
-            colorTransform.greenOffset = bright / 100 * 255;
-            colorTransform.blueOffset = bright / 100 * 255;
+            if (bright > 0) {
+                colorTransform.redOffset = bright / 100 * 255;
+                colorTransform.greenOffset = bright / 100 * 255;
+                colorTransform.blueOffset = bright / 100 * 255;
+            }
+            bright = Math.abs(bright);
+            colorTransform.redMultiplier = 1 - bright / 100;
+            colorTransform.greenMultiplier = 1 - bright / 100;
+            colorTransform.blueMultiplier = 1 - bright / 100;
         }
         
         if (ta != null) {
             var r = Std.int(tc) >> 24 & 0xFF;
             var g = Std.int(tc) >> 16 & 0xFF;
             var b = Std.int(tc) >> 8 & 0xFF;
-            var a = Std.int(tc) & 0xFF;
-            colorTransform.redMultiplier = r/255;
-            colorTransform.greenMultiplier = g/255;
-            colorTransform.blueMultiplier = b/255;
-            colorTransform.redOffset = ta/100*255;
-            colorTransform.greenOffset = ta/100*255;
-            colorTransform.blueOffset = ta/100*255;
-            colorTransform.alphaMultiplier = a/255;
+            colorTransform.redOffset = ta*r/255;
+            colorTransform.greenOffset = ta*g/255;
+            colorTransform.blueOffset = ta*b/255;
+            colorTransform.redMultiplier = 1 - ta / 100;
+            colorTransform.greenMultiplier = 1 - ta / 100;
+            colorTransform.blueMultiplier = 1 - ta / 100;
         }
         
         return colorTransform;
