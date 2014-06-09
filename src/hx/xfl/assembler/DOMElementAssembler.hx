@@ -152,9 +152,16 @@ class DOMElementAssembler extends XFLBaseAssembler
             }
             
             if (null != brightness) {
-                colorTransform.redOffset = Std.parseFloat(brightness) * 255;
-                colorTransform.greenOffset = Std.parseFloat(brightness) * 255;
-                colorTransform.blueOffset = Std.parseFloat(brightness) * 255;
+                var b = Std.parseFloat(brightness);
+                if (b > 0) {
+                    colorTransform.redOffset = b * 255;
+                    colorTransform.greenOffset = b * 255;
+                    colorTransform.blueOffset = b * 255;
+                }
+                b = Math.abs(b);
+                colorTransform.redMultiplier = 1 - b;
+                colorTransform.greenMultiplier = 1 - b;
+                colorTransform.blueMultiplier = 1 - b;
             }
             
             if (null != tintMultiplier) {

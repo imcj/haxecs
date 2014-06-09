@@ -57,6 +57,7 @@ class ColorTransform{
         c.alphaMultiplier = alphaMultiplier;
         c.alphaOffset = alphaOffset;
         c.blueMultiplier = blueMultiplier;
+        c.blueOffset = blueOffset;
         c.color = color;
         c.greenMultiplier = greenMultiplier;
         c.greenOffset = greenOffset;
