@@ -20,10 +20,18 @@ class DOMLayerAssembler extends XFLBaseAssembler
             fillProperty(layer, element);
             layers.push(layer);
 
-            for (frame in frameAssembler.parse(element.firstElement())) {
+            var last:DOMFrame;
+            var frames = frameAssembler.parse(element.firstElement());
+            last = frames[frames.length - 1];
+            for (frame in frames) {
                 layer.addFrame(frame);
-                layer.totalFrames += frame.duration;
             }
+
+            if (null != last)
+                layer.totalFrames = last.index + last.duration;
+
+            if (frames.length == 1 && last.index = 0 && last.duration == 0)
+                layer.totalFrames = 1;
         }
 
         return layers;

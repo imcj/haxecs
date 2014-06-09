@@ -190,8 +190,6 @@ class XFLDocument extends DOMDocument
             for (timeline in getTimeLinesIterator())
                 timelines.push(timeline);
 
-            var renderer = new hx.xfl.openfl.MovieClipRenderer(mc, timelines);
-            // hx.xfl.openfl.Render.addRenderer(renderer);
             hx.xfl.openfl.MovieClipFactory.addtoRenderList(mc, timeLines);
 
             return mc;
