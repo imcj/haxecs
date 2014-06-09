@@ -74,6 +74,9 @@ class XFLDocumentAssembler extends XFLBaseAssembler
             #else
             text = document.assets.getText(file);
             #end
+
+            if (null == text || "" == text)
+                throw '$file is empty.';
             var symbolXml = Xml.parse(text).firstChild();
             symbolItem.name = symbolXml.get("name");
 

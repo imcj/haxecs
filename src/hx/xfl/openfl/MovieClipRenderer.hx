@@ -184,9 +184,10 @@ class MovieClipRenderer
                 if (null == display_object) {
                     display_object = createBitmapInstance(bitmap_instance, line);
                     is_new = true;
+                } else {
+                    display_object.transform.matrix = 
+                        bitmap_instance.matrix.toFlashMatrix();
                 }
-
-                trace(bitmap_instance.libraryItem.name);
             } else if (Std.is(element, DOMSymbolInstance)) {
                 var instance:DOMSymbolInstance = cast(element);
 
