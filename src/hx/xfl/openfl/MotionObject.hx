@@ -1,5 +1,6 @@
 package hx.xfl.openfl;
 import flash.display.DisplayObject;
+import flash.filters.BitmapFilter;
 import hx.geom.ColorTransform;
 import hx.geom.Matrix;
 import hx.xfl.DOMAnimationCore;
@@ -99,7 +100,7 @@ class MotionObject
         return colorTransform;
     }
     
-    function getCurrentFilters(currentFrame:Int):Array<Filter>
+    public function getCurrentFilters(currentFrame:Int):Array<BitmapFilter>
     {
         var fs = target.filters;
         var rfs = [];
@@ -109,13 +110,14 @@ class MotionObject
         var bq = motion("Blur_Quality", currentFrame);
         
         if (bx != null) {
-            var f = null;
+            var f:BlurFilter = null;
             for (i in fs) {
                 if (Std.is(i, BlurFilter)) f = cast(i);
             }
             if (bx != null) f.blurX = bx;
             if (by != null) f.blurY = by;
             if (bq != null) f.quality = Std.int(bq);
+            rfs.push(f.filter);
         }
         
         return rfs;
