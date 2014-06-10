@@ -5,6 +5,8 @@ import hx.geom.Matrix;
 import hx.xfl.DOMAnimationCore;
 import hx.xfl.DOMElement;
 import hx.xfl.DOMFrame;
+import hx.xfl.filter.BlurFilter;
+import hx.xfl.filter.Filter;
 import hx.xfl.motion.KeyFrame;
 import hx.xfl.motion.Property;
 import hx.xfl.motion.PropertyContainer;
@@ -95,6 +97,28 @@ class MotionObject
         }
         
         return colorTransform;
+    }
+    
+    function getCurrentFilters(currentFrame:Int):Array<Filter>
+    {
+        var fs = target.filters;
+        var rfs = [];
+        
+        var bx = motion("Blur_BlurX", currentFrame);
+        var by = motion("Blur_BlurY", currentFrame);
+        var bq = motion("Blur_Quality", currentFrame);
+        
+        if (bx != null) {
+            var f = null;
+            for (i in fs) {
+                if (Std.is(i, BlurFilter)) f = cast(i);
+            }
+            if (bx != null) f.blurX = bx;
+            if (by != null) f.blurY = by;
+            if (bq != null) f.quality = Std.int(bq);
+        }
+        
+        return rfs;
     }
     
     function motion(name:String, currentFrame:Int):Null<Float>
