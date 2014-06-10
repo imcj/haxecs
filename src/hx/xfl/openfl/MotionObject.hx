@@ -65,6 +65,8 @@ class MotionObject
         var tc = motionColor("Tint_Color", currentFrame);
         var ta = motion("Tint_Amount", currentFrame);
         
+        var aa = motion("Alpha_Amount", currentFrame);
+        
         if (rm != null) colorTransform.redMultiplier = rm/100;
         if (ro != null) colorTransform.redOffset = ro;
         if (gm != null) colorTransform.greenMultiplier = gm/100;
@@ -73,6 +75,7 @@ class MotionObject
         if (bo != null) colorTransform.blueOffset = bo;
         if (am != null) colorTransform.alphaMultiplier = am/100;
         if (ao != null) colorTransform.alphaOffset = ao;
+        if (aa != null) colorTransform.alphaMultiplier = aa/100;
         
         if (bright != null) {
             if (bright > 0) {
