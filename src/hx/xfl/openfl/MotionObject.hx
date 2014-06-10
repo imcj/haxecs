@@ -9,6 +9,7 @@ import hx.xfl.DOMFrame;
 import hx.xfl.filter.BlurFilter;
 import hx.xfl.filter.DropShadowFilter;
 import hx.xfl.filter.Filter;
+import hx.xfl.filter.GlowFilter;
 import hx.xfl.motion.KeyFrame;
 import hx.xfl.motion.Property;
 import hx.xfl.motion.PropertyContainer;
@@ -138,13 +139,39 @@ class MotionObject
             }
             if (dx != null) f.blurX = dx;
             if (dy != null) f.blurY = dy;
-            if (ds != null) f.strength = ds/100*255;
+            if (ds != null) f.strength = ds/100;
             if (da != null) f.angle = da * Math.PI / 180;
             if (dd != null) f.distance = dd;
             if (dc != null) f.color = dc>>8;
             if (dq != null) f.quality = dq;
             if (dk != null) f.knockout = dk == 0?false:true;
             if (dh != null) f.hideObject = dh == 0?false:true;
+            rfs.push(f.filter);
+        }
+        
+        var gx = motion("Glow_BlurX", currentFrame);
+        var gy = motion("Glow_BlurY", currentFrame);
+        var gs = motion("Glow_Strength", currentFrame);
+        var gc = motionColor("Glow_Color", currentFrame);
+        var gq = getValue("Glow_Quality");
+        var gk = getValue("Glow_Knockout");
+        var gi = getValue("Glow_InnerGlow");
+        
+        if (gx != null) {
+            var f:GlowFilter = null;
+            for (i in fs) {
+                if (Std.is(i, GlowFilter)) f = cast(i);
+            }
+            if (gx != null) f.blurX = gx;
+            if (gy != null) f.blurY = gy;
+            if (gs != null) f.strength = gs/100;
+            if (gc != null) {
+                f.color = gc >> 8;
+                f.alpha = (gc & 0xFF)/255;
+            }
+            if (gq != null) f.quality = gq;
+            if (gk != null) f.knockout = gk==0?false:true;
+            if (gi != null) f.inner = gi == 0?false:true;
             rfs.push(f.filter);
         }
         
