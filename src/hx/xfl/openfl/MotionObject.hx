@@ -40,13 +40,6 @@ class MotionObject
         return matrix;
     }
     
-    public function getCurrentAlpha(currentFrame:Int):Float 
-    {
-        var alpha = motion("Alpha_Amount", currentFrame);
-        if (alpha != null) return alpha/100;
-        else return 1;
-    }
-    
     public function getCurrentColorTransform(currentFrame:Int):ColorTransform
     {
         var colorTransform = target.colorTransform.clone();
