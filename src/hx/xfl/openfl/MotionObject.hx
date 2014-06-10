@@ -107,7 +107,7 @@ class MotionObject
         
         var bx = motion("Blur_BlurX", currentFrame);
         var by = motion("Blur_BlurY", currentFrame);
-        var bq = motion("Blur_Quality", currentFrame);
+        var bq = getValue("Blur_Quality");
         
         if (bx != null) {
             var f:BlurFilter = null;
@@ -121,6 +121,13 @@ class MotionObject
         }
         
         return rfs;
+    }
+    
+    function getValue(name:String):Null<Int> 
+    {
+        var property = getProperty(name);
+        if (property == null) return null;
+        return property.value;
     }
     
     function motion(name:String, currentFrame:Int):Null<Float>
