@@ -7,6 +7,7 @@ import hx.xfl.DOMAnimationCore;
 import hx.xfl.DOMElement;
 import hx.xfl.DOMFrame;
 import hx.xfl.filter.BlurFilter;
+import hx.xfl.filter.DropShadowFilter;
 import hx.xfl.filter.Filter;
 import hx.xfl.motion.KeyFrame;
 import hx.xfl.motion.Property;
@@ -117,6 +118,31 @@ class MotionObject
             if (bx != null) f.blurX = bx;
             if (by != null) f.blurY = by;
             if (bq != null) f.quality = Std.int(bq);
+            rfs.push(f.filter);
+        }
+        
+        var dx = motion("DropShadow_BlurX", currentFrame);
+        var dy = motion("DropShadow_BlurY", currentFrame);
+        var ds = motion("DropShadow_Strength", currentFrame);
+        var da = motion("DropShadow_Angle", currentFrame);
+        var dc = motionColor("DropShadow_Color", currentFrame);
+        var dq = getValue("DropShadow_InnerShadow");
+        var dk = getValue("DropShadow_Knockout");
+        var dh = getValue("DropShadow_HideObject");
+        
+        if (dx != null) {
+            var f:DropShadowFilter = null;
+            for (i in fs) {
+                if (Std.is(i, DropShadowFilter)) f = cast(i);
+            }
+            if (dx != null) f.blurX = dx;
+            if (dy != null) f.blurY = dy;
+            if (ds != null) f.strength = ds;
+            if (da != null) f.angle = da;
+            if (dc != null) f.color = dc;
+            if (dq != null) f.quality = dq;
+            if (dk != null) f.knockout = dk == 0?false:true;
+            if (dh != null) f.hideObject = dh == 0?false:true;
             rfs.push(f.filter);
         }
         
