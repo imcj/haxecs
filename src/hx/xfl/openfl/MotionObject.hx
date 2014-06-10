@@ -125,6 +125,7 @@ class MotionObject
         var dy = motion("DropShadow_BlurY", currentFrame);
         var ds = motion("DropShadow_Strength", currentFrame);
         var da = motion("DropShadow_Angle", currentFrame);
+        var dd = motion("DropShadow_Distance", currentFrame);
         var dc = motionColor("DropShadow_Color", currentFrame);
         var dq = getValue("DropShadow_InnerShadow");
         var dk = getValue("DropShadow_Knockout");
@@ -137,9 +138,10 @@ class MotionObject
             }
             if (dx != null) f.blurX = dx;
             if (dy != null) f.blurY = dy;
-            if (ds != null) f.strength = ds;
-            if (da != null) f.angle = da;
-            if (dc != null) f.color = dc;
+            if (ds != null) f.strength = ds/100*255;
+            if (da != null) f.angle = da * Math.PI / 180;
+            if (dd != null) f.distance = dd;
+            if (dc != null) f.color = dc>>8;
             if (dq != null) f.quality = dq;
             if (dk != null) f.knockout = dk == 0?false:true;
             if (dh != null) f.hideObject = dh == 0?false:true;
@@ -231,6 +233,8 @@ class MotionObject
             var b = Std.int(easeQuadPercent(t, b0, cb, d, p))<<8;
             var a = Std.int(easeQuadPercent(t, a0, ca, d, p));
             return r | g | b | a;
+        }else if(keys.length == 1){
+            return Std.parseInt(keys[0].value);
         }
         
         return null;
