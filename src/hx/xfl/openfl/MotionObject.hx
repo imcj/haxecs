@@ -90,9 +90,9 @@ class MotionObject
             var r = Std.int(tc) >> 24 & 0xFF;
             var g = Std.int(tc) >> 16 & 0xFF;
             var b = Std.int(tc) >> 8 & 0xFF;
-            colorTransform.redOffset = ta*r/255;
-            colorTransform.greenOffset = ta*g/255;
-            colorTransform.blueOffset = ta*b/255;
+            colorTransform.redOffset = ta/100 * r;
+            colorTransform.greenOffset = ta/100 * g;
+            colorTransform.blueOffset = ta/100 * b;
             colorTransform.redMultiplier = 1 - ta / 100;
             colorTransform.greenMultiplier = 1 - ta / 100;
             colorTransform.blueMultiplier = 1 - ta / 100;
