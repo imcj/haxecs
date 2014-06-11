@@ -1,6 +1,7 @@
 package hx.xfl.assembler;
 
 import hx.xfl.filter.BlurFilter;
+import hx.xfl.filter.ColorMatrixFilter;
 import hx.xfl.filter.DropShadowFilter;
 import hx.geom.Matrix;
 import hx.xfl.DOMBitmapInstance;
@@ -188,6 +189,7 @@ class DOMElementAssembler extends XFLBaseAssembler
             if (e.nodeName == "DropShadowFilter") f = new DropShadowFilter();
             if (e.nodeName == "BlurFilter") f = new BlurFilter();
             if (e.nodeName == "GlowFilter") f = new GlowFilter();
+            if (e.nodeName == "AdjustColorFilter") f = new ColorMatrixFilter();
             if (f != null) {
                 f.parse(e);
                 filters.push(f);
