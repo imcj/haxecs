@@ -30,7 +30,7 @@ class DOMLayerAssembler extends XFLBaseAssembler
             if (null != last)
                 layer.totalFrames = last.index + last.duration;
 
-            if (frames.length == 1 && last.index = 0 && last.duration == 0)
+            if (frames.length == 1 && last.index == 0 && last.duration == 0)
                 layer.totalFrames = 1;
         }
 
