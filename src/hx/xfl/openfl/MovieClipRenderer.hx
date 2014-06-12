@@ -46,7 +46,7 @@ class DisplayObjectPool
         container = null;
     }
 
-    inline function reusable(query:IDOMElement):Combine
+    function reusable(query:IDOMElement):Combine
     {
         var combine:Combine = null;
         var element:IDOMElement;
@@ -66,6 +66,7 @@ class DisplayObjectPool
                 break;
             } else if (Std.is(element, DOMInstance) && 
                 Std.is(query, DOMInstance) &&
+                cast(element, DOMInstance).libraryItem != null &&
                 cast(query, DOMInstance).libraryItem.name ==
                 cast(element, DOMInstance).libraryItem.name) {
                 found = combine;
