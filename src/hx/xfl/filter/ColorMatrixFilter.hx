@@ -39,9 +39,9 @@ class ColorMatrixFilter extends Filter
         matrix[0] = v/100 * 11;
         matrix[6] = v/100 * 11;
         matrix[12] = v/100 * 11;
-        matrix[4] = v/100 * 635;
-        matrix[9] = v/100 * 635;
-        matrix[14] = v/100 * 635;
+        matrix[4] = v/100 * -635;
+        matrix[9] = v/100 * -635;
+        matrix[14] = v/100 * -635;
         return v;
     }
     
@@ -61,7 +61,8 @@ class ColorMatrixFilter extends Filter
         super.parse(data);
         var bright = data.get("brightness");
         if (bright != null) brightness = Std.parseFloat(bright);
-        var contrast = data.get("contrast");
+        var c = data.get("contrast");
+        if (c != null) contrast = Std.parseFloat(c);
     }
     
     override public function clone():IFilter
