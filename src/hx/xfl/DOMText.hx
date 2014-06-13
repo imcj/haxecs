@@ -29,6 +29,7 @@ class DOMText extends DOMElement
     public var useDeviceFonts:Bool;
     public var variableName:String;
     public var type:String;
+    public var hasAccessibleData:Bool;
 
     var _textRuns:Array<DOMTextRun>;
     
