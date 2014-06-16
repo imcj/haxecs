@@ -5,6 +5,7 @@ import hx.xfl.assembler.DOMPublishSettingAssembler;
 import hx.xfl.setting.publish.DOMFlashProfiles;
 
 using StringTools;
+using Lambda;
 
 #if openfl
 import flash.display.*;
@@ -189,13 +190,10 @@ class XFLDocument extends DOMDocument
             var timelines:Array<DOMTimeLine> = [];
             for (timeline in getTimeLinesIterator())
                 timelines.push(timeline);
-
-            hx.xfl.openfl.MovieClipFactory.addtoRenderList(mc, timeLines);
-
-            return mc;
+            new hx.xfl.openfl.MovieClipRenderer(mc, timeLines);
         }
 
-        return null;
+        return return mc;;
     }
 
     public function getObject(name:String):DisplayObject

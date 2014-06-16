@@ -183,7 +183,7 @@ class MovieClipRenderer
                 var bitmap_instance = cast(element, DOMBitmapInstance);
                 display_object = pool.get(element);
                 if (null == display_object) {
-                    display_object = createBitmapInstance(bitmap_instance, line);
+                    display_object = MovieClipFactory.createBitmapInstance(bitmap_instance, line);
                     is_new = true;
                 } else {
                     display_object.transform.matrix = 
@@ -293,20 +293,5 @@ class MovieClipRenderer
         }
 
         return layer;
-    }
-    
-    function createBitmapInstance(bitmap_instance:DOMBitmapInstance, domTimeLine:DOMTimeLine)
-    {
-        var bitmapItem = cast(bitmap_instance.libraryItem, DOMBitmapItem);
-        var bitmap = new BitmapInstance(
-            bitmapItem,
-            domTimeLine.document.assets.getBitmapDataWithBitmapItem(bitmapItem),
-            PixelSnapping.AUTO, true);
-        bitmap.transform.matrix = bitmap_instance.matrix.toFlashMatrix();
-        
-        if (null != bitmap_instance.name)
-            bitmap.name = bitmap_instance.name;
-
-        return bitmap;
     }
 }

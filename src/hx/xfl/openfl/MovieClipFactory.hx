@@ -1,9 +1,12 @@
 package hx.xfl.openfl;
 
-import hx.xfl.DOMSymbolInstance;
-import hx.xfl.DOMTimeLine;
+import hx.xfl.*;
 import hx.xfl.openfl.display.MovieClip;
+import hx.xfl.openfl.display.BitmapInstance;
 import hx.xfl.openfl.display.SimpleButton;
+
+import flash.display.Bitmap;
+import flash.display.PixelSnapping;
 
 class MovieClipFactory
 {
@@ -48,6 +51,21 @@ class MovieClipFactory
 
         addtoRenderList(mc , lines);
         return mc;
+    }
+
+    static public function createBitmapInstance(bitmap_instance:DOMBitmapInstance, domTimeLine:DOMTimeLine)
+    {
+        var bitmapItem = cast(bitmap_instance.libraryItem, DOMBitmapItem);
+        var bitmap = new BitmapInstance(
+            bitmapItem,
+            domTimeLine.document.assets.getBitmapDataWithBitmapItem(bitmapItem),
+            PixelSnapping.AUTO, true);
+        bitmap.transform.matrix = bitmap_instance.matrix.toFlashMatrix();
+        
+        if (null != bitmap_instance.name)
+            bitmap.name = bitmap_instance.name;
+
+        return bitmap;
     }
 
     /**
