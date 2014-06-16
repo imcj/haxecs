@@ -1,10 +1,15 @@
 package hx.xfl.openfl;
 import flash.display.DisplayObject;
+import flash.filters.BitmapFilter;
 import hx.geom.ColorTransform;
 import hx.geom.Matrix;
 import hx.xfl.DOMAnimationCore;
 import hx.xfl.DOMElement;
 import hx.xfl.DOMFrame;
+import hx.xfl.filter.BlurFilter;
+import hx.xfl.filter.DropShadowFilter;
+import hx.xfl.filter.Filter;
+import hx.xfl.filter.GlowFilter;
 import hx.xfl.motion.KeyFrame;
 import hx.xfl.motion.Property;
 import hx.xfl.motion.PropertyContainer;
@@ -40,13 +45,6 @@ class MotionObject
         return matrix;
     }
     
-    public function getCurrentAlpha(currentFrame:Int):Float 
-    {
-        var alpha = motion("Alpha_Amount", currentFrame);
-        if (alpha != null) return alpha/100;
-        else return 1;
-    }
-    
     public function getCurrentColorTransform(currentFrame:Int):ColorTransform
     {
         var colorTransform = target.colorTransform.clone();
@@ -65,6 +63,8 @@ class MotionObject
         var tc = motionColor("Tint_Color", currentFrame);
         var ta = motion("Tint_Amount", currentFrame);
         
+        var aa = motion("Alpha_Amount", currentFrame);
+        
         if (rm != null) colorTransform.redMultiplier = rm/100;
         if (ro != null) colorTransform.redOffset = ro;
         if (gm != null) colorTransform.greenMultiplier = gm/100;
@@ -73,28 +73,116 @@ class MotionObject
         if (bo != null) colorTransform.blueOffset = bo;
         if (am != null) colorTransform.alphaMultiplier = am/100;
         if (ao != null) colorTransform.alphaOffset = ao;
+        if (aa != null) colorTransform.alphaMultiplier = aa/100;
         
         if (bright != null) {
-            colorTransform.redOffset = bright / 100 * 255;
-            colorTransform.greenOffset = bright / 100 * 255;
-            colorTransform.blueOffset = bright / 100 * 255;
+            if (bright > 0) {
+                colorTransform.redOffset = bright / 100 * 255;
+                colorTransform.greenOffset = bright / 100 * 255;
+                colorTransform.blueOffset = bright / 100 * 255;
+            }
+            bright = Math.abs(bright);
+            colorTransform.redMultiplier = 1 - bright / 100;
+            colorTransform.greenMultiplier = 1 - bright / 100;
+            colorTransform.blueMultiplier = 1 - bright / 100;
         }
         
         if (ta != null) {
             var r = Std.int(tc) >> 24 & 0xFF;
             var g = Std.int(tc) >> 16 & 0xFF;
             var b = Std.int(tc) >> 8 & 0xFF;
-            var a = Std.int(tc) & 0xFF;
-            colorTransform.redMultiplier = r/255;
-            colorTransform.greenMultiplier = g/255;
-            colorTransform.blueMultiplier = b/255;
-            colorTransform.redOffset = ta/100*255;
-            colorTransform.greenOffset = ta/100*255;
-            colorTransform.blueOffset = ta/100*255;
-            colorTransform.alphaMultiplier = a/255;
+            colorTransform.redOffset = ta/100 * r;
+            colorTransform.greenOffset = ta/100 * g;
+            colorTransform.blueOffset = ta/100 * b;
+            colorTransform.redMultiplier = 1 - ta / 100;
+            colorTransform.greenMultiplier = 1 - ta / 100;
+            colorTransform.blueMultiplier = 1 - ta / 100;
         }
         
         return colorTransform;
+    }
+    
+    public function getCurrentFilters(currentFrame:Int):Array<BitmapFilter>
+    {
+        var fs = target.filters;
+        var rfs = [];
+        
+        var bx = motion("Blur_BlurX", currentFrame);
+        var by = motion("Blur_BlurY", currentFrame);
+        var bq = getValue("Blur_Quality");
+        
+        if (bx != null) {
+            var f:BlurFilter = null;
+            for (i in fs) {
+                if (Std.is(i, BlurFilter)) f = cast(i);
+            }
+            if (bx != null) f.blurX = bx;
+            if (by != null) f.blurY = by;
+            if (bq != null) f.quality = Std.int(bq);
+            rfs.push(f.filter);
+        }
+        
+        var dx = motion("DropShadow_BlurX", currentFrame);
+        var dy = motion("DropShadow_BlurY", currentFrame);
+        var ds = motion("DropShadow_Strength", currentFrame);
+        var da = motion("DropShadow_Angle", currentFrame);
+        var dd = motion("DropShadow_Distance", currentFrame);
+        var dc = motionColor("DropShadow_Color", currentFrame);
+        var dq = getValue("DropShadow_InnerShadow");
+        var dk = getValue("DropShadow_Knockout");
+        var dh = getValue("DropShadow_HideObject");
+        
+        if (dx != null) {
+            var f:DropShadowFilter = null;
+            for (i in fs) {
+                if (Std.is(i, DropShadowFilter)) f = cast(i);
+            }
+            if (dx != null) f.blurX = dx;
+            if (dy != null) f.blurY = dy;
+            if (ds != null) f.strength = ds/100;
+            if (da != null) f.angle = da * Math.PI / 180;
+            if (dd != null) f.distance = dd;
+            if (dc != null) f.color = dc>>8;
+            if (dq != null) f.quality = dq;
+            if (dk != null) f.knockout = dk == 0?false:true;
+            if (dh != null) f.hideObject = dh == 0?false:true;
+            rfs.push(f.filter);
+        }
+        
+        var gx = motion("Glow_BlurX", currentFrame);
+        var gy = motion("Glow_BlurY", currentFrame);
+        var gs = motion("Glow_Strength", currentFrame);
+        var gc = motionColor("Glow_Color", currentFrame);
+        var gq = getValue("Glow_Quality");
+        var gk = getValue("Glow_Knockout");
+        var gi = getValue("Glow_InnerGlow");
+        
+        if (gx != null) {
+            var f:GlowFilter = null;
+            for (i in fs) {
+                if (Std.is(i, GlowFilter)) f = cast(i);
+            }
+            if (gx != null) f.blurX = gx;
+            if (gy != null) f.blurY = gy;
+            if (gs != null) f.strength = gs/100;
+            if (gc != null) {
+                f.color = gc >> 8;
+                f.alpha = (gc & 0xFF)/255;
+            }
+            if (gq != null) f.quality = gq;
+            if (gk != null) f.knockout = gk==0?false:true;
+            if (gi != null) f.inner = gi == 0?false:true;
+            rfs.push(f.filter);
+        }
+        
+        return rfs;
+    }
+    
+    function getValue(name:String):Null<Int> 
+    {
+        var property = getProperty(name);
+        if (property == null) return null;
+        return property.value;
     }
     
     function motion(name:String, currentFrame:Int):Null<Float>
@@ -172,6 +260,8 @@ class MotionObject
             var b = Std.int(easeQuadPercent(t, b0, cb, d, p))<<8;
             var a = Std.int(easeQuadPercent(t, a0, ca, d, p));
             return r | g | b | a;
+        }else if(keys.length == 1){
+            return Std.parseInt(keys[0].value);
         }
         
         return null;

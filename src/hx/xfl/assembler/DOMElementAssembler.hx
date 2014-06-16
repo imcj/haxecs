@@ -1,6 +1,7 @@
 package hx.xfl.assembler;
 
 import hx.xfl.filter.BlurFilter;
+import hx.xfl.filter.ColorMatrixFilter;
 import hx.xfl.filter.DropShadowFilter;
 import hx.geom.Matrix;
 import hx.xfl.DOMBitmapInstance;
@@ -152,9 +153,16 @@ class DOMElementAssembler extends XFLBaseAssembler
             }
             
             if (null != brightness) {
-                colorTransform.redOffset = Std.parseFloat(brightness) * 255;
-                colorTransform.greenOffset = Std.parseFloat(brightness) * 255;
-                colorTransform.blueOffset = Std.parseFloat(brightness) * 255;
+                var b = Std.parseFloat(brightness);
+                if (b > 0) {
+                    colorTransform.redOffset = b * 255;
+                    colorTransform.greenOffset = b * 255;
+                    colorTransform.blueOffset = b * 255;
+                }
+                b = Math.abs(b);
+                colorTransform.redMultiplier = 1 - b;
+                colorTransform.greenMultiplier = 1 - b;
+                colorTransform.blueMultiplier = 1 - b;
             }
             
             if (null != tintMultiplier) {
@@ -163,12 +171,12 @@ class DOMElementAssembler extends XFLBaseAssembler
                 var r = c >> 16;
                 var g = c >> 8 & 0xFF;
                 var b = c & 0xFF;
-                colorTransform.redMultiplier = r/255;
-                colorTransform.greenMultiplier = g/255;
-                colorTransform.blueMultiplier = b/255;
-                colorTransform.redOffset = tint*255;
-                colorTransform.greenOffset = tint*255;
-                colorTransform.blueOffset = tint*255;
+                colorTransform.redOffset = tint * r;
+                colorTransform.greenOffset = tint * g;
+                colorTransform.blueOffset = tint * b;
+                colorTransform.redMultiplier = 1 - tint;
+                colorTransform.greenMultiplier = 1 - tint;
+                colorTransform.blueMultiplier = 1 - tint;
             }
         }
     }
@@ -181,6 +189,7 @@ class DOMElementAssembler extends XFLBaseAssembler
             if (e.nodeName == "DropShadowFilter") f = new DropShadowFilter();
             if (e.nodeName == "BlurFilter") f = new BlurFilter();
             if (e.nodeName == "GlowFilter") f = new GlowFilter();
+            if (e.nodeName == "AdjustColorFilter") f = new ColorMatrixFilter();
             if (f != null) {
                 f.parse(e);
                 filters.push(f);
