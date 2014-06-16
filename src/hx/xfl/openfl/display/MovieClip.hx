@@ -19,6 +19,8 @@ class MovieClip extends Sprite implements IElement
     public var scenes(default, null):Array<Scene>;
     public var isLoop:Bool;
 
+    public var labels:Map<String, Map<String, Int>>;
+
     var scripts:Map<String, Map<Int, Bool>>;
     var methods:Map<Int, Array<Void->Void>>;
     var _currentFrame:Int;
@@ -228,13 +230,14 @@ class MovieClip extends Sprite implements IElement
 
     function getLabelIndex(label:String):Int
     {
-        var domTimeLine = Render.getTimeline(Render.getTimelines(this), currentScene);
-        for (domLayer in domTimeLine.getLayersIterator(false)) {
-            for (frame in domLayer.frames) {
-                if (frame.name == label) return frame.index;
-            }
-        }
-        return -1;
+        var labelsOfScene = labels.get(currentScene.name);
+        if (null == labelsOfScene)
+            return -1;
+
+        if (!labelsOfScene.exists(label))
+            return -1;
+
+        return labelsOfScene.get(label);
     }
     
     function get_currentFrame():Int 

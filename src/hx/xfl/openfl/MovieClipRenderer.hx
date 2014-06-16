@@ -105,6 +105,20 @@ class MovieClipRenderer
         else throw "timeline 类型错误，需要是DOMTimeLine或者Array<DOMTimeLine>";
 
         pool = new DisplayObjectPool();
+
+        var labels = new Map<String, Map<String, Int>>();
+        for (timeline in timelines) {
+            var labelOfScene = new Map<String, Int>();
+            labels.set(timeline.name, labelOfScene);
+            for (layer in timeline.getLayersIterator()) {
+                for (frame in layer.getFramesIterator()) {
+                    if (null != frame.name && "" != frame.name)
+                        labelOfScene.set(frame.name, frame.index);
+                }
+            }
+        }
+
+        movieClip.labels = labels;
     }
 
     function getLogger()
