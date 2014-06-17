@@ -11,7 +11,7 @@ using Lambda;
 import flash.display.*;
 import hx.xfl.openfl.Assets;
 import hx.xfl.openfl.display.MovieClip;
-import hx.xfl.openfl.MovieClipFactory;
+import hx.xfl.openfl.MovieClipRenderer;
 #end
 
 class XFLDocument extends DOMDocument
@@ -178,7 +178,7 @@ class XFLDocument extends DOMDocument
     public function get_root():MovieClip
     {
         if (null == _root) {
-            _root = MovieClipFactory.create(getTimeLinesIterator());
+            // TODO
         }
 
         return _root;
@@ -193,7 +193,7 @@ class XFLDocument extends DOMDocument
             new hx.xfl.openfl.MovieClipRenderer(mc, timeLines);
         }
 
-        return return mc;;
+        return mc;
     }
 
     public function getObject(name:String):DisplayObject
@@ -213,7 +213,7 @@ class XFLDocument extends DOMDocument
             mc = new MovieClip();
         }
 
-        MovieClipFactory.create(getSymbol(name), mc);
+        new MovieClipRenderer(mc, [cast(cast(getSymbol(name), DOMSymbolInstance).libraryItem, DOMSymbolItem).timeline]);
 
         return mc;
     }

@@ -6,7 +6,6 @@ import flash.text.TextField;
 import haxe.Timer;
 import flash.display.Sprite;
 import hx.xfl.openfl.display.MovieClip;
-import hx.xfl.openfl.MovieClipFactory;
 
 
 class Main extends Sprite

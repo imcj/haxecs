@@ -1,4 +1,6 @@
 package hx.xfl.openfl;
+
+import flash.events.Event;
 import flash.display.DisplayObject;
 import flash.display.PixelSnapping;
 import flash.display.Sprite;
@@ -10,7 +12,11 @@ import hx.xfl.DOMLayer;
 import hx.xfl.DOMTimeLine;
 import hx.xfl.openfl.display.IElement;
 import hx.xfl.openfl.display.BitmapInstance;
+import hx.xfl.openfl.display.SimpleButton;
 import hx.xfl.openfl.display.MovieClip;
+
+using Lambda;
+using logging.Tools;
 
 typedef Combine = {
     var display:DisplayObject;
@@ -92,18 +98,16 @@ class MovieClipRenderer
 {
     public var movieClip:MovieClip;
     public var timelines:Array<DOMTimeLine>;
+
+    var listening:Bool = false;
     var previousFrame:Array<Combine>;
     var currentFrames:Array<Combine>;
-
     var pool:DisplayObjectPool;
 
-    public function new(movieClip:MovieClip, timeline:Dynamic)
+    public function new(movieClip:MovieClip, timelines:Array<DOMTimeLine>)
     {
         this.movieClip = movieClip;
-        if (Std.is(timeline, DOMTimeLine)) this.timelines = [timeline];
-        else if (Std.is(timeline, Array)) this.timelines = timeline;
-        else throw "timeline 类型错误，需要是DOMTimeLine或者Array<DOMTimeLine>";
-
+        this.timelines = timelines;
         pool = new DisplayObjectPool();
 
         var labels = new Map<String, Map<String, Int>>();
@@ -118,17 +122,75 @@ class MovieClipRenderer
             }
         }
 
+        var names = timelines.map(function(timeline) {
+            return timeline.name;
+            });
+
+        debug("New renderer " + names.join(", "));
+
         movieClip.labels = labels;
+        movieClip.renderer = this;
+        movieClip.setScenes(getScenes());
+        movieClip.nextFrame();
+
+        if (movieClip.totalFrames > 1) {
+            movieClip.play();
+        }
     }
 
-    function getLogger()
+    function getScenes():Array<Scene>
     {
-        return logging.Logging.getLogger("MovieClipRenderer");
+        var scenes = [];
+        for (timeline in timelines) {
+            var s = new Scene();
+            var name = timeline.name;
+            var numFrames = 0;
+            var labels = [];
+            for (layer in timeline.layers) {
+                if (numFrames < layer.totalFrames)
+                    numFrames = layer.totalFrames;
+                for (f in layer.frames) {
+                    var name = f.name;
+                    if(name != null)
+                        labels.push(new FrameLabel(name,f.index));
+                }
+            }
+            s.setValue(name, numFrames, labels);
+            scenes.push(s);
+        }
+        return scenes;
     }
 
-    function callStack()
+    function addedToStage(e)
     {
-        return haxe.CallStack.toString(haxe.CallStack.callStack());
+        movieClip.play();
+    }
+
+    function handleEnterFrame(e)
+    {
+        if (movieClip.totalFrames == 1)
+            disableHandlerEnterFrame();
+
+        if (movieClip.parent != null) {
+            movieClip.nextFrame();
+        }
+    }
+
+    public function enableHandlerEnterFrame()
+    {
+        debug("enable handler enter frame");
+        helper.DynamicHelper.printCallStack(this);
+        if (listening)
+            return;
+        listening = true;
+        movieClip.addEventListener(Event.ENTER_FRAME, handleEnterFrame);
+    }
+
+    public function disableHandlerEnterFrame()
+    {
+        debug("disable handler enter frame");
+        listening = false;
+        movieClip.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
     }
     
     public function render():Void 
@@ -145,20 +207,29 @@ class MovieClipRenderer
         movieClip.executeFrameScript();
     }
     
+    function getCurrentTimeLine():DOMTimeLine
+    {
+        for (timeline in timelines)
+            if (timeline.name == movieClip.currentScene.name)
+                return timeline;
+
+        return null;
+    }
+
     function displayFrame(mv:MovieClip, frameIndex:Int):Void 
     {
-        var domTimeLine = Render.getTimeline(timelines, mv.currentScene);
-        if (domTimeLine == null) return;
+        var timeline = getCurrentTimeLine();
+        if (timeline == null) return;
         
         var maskDoms:Map<Int, DOMLayer> = new Map();
         var masklayers:Array<Array<DisplayObject>> = [];
         var maskNums = [];
         var numLayer = 0;
-        for (domLayer in domTimeLine.getLayersIterator(false)) {
+        for (domLayer in timeline.getLayersIterator(false)) {
             if ("mask" == domLayer.layerType) {
                 maskDoms.set(numLayer, domLayer);
             } else {
-                var layer = displayLayer(domLayer, mv, frameIndex, domTimeLine);
+                var layer = displayLayer(domLayer, mv, frameIndex, timeline);
                 if (domLayer.parentLayerIndex >= 0) {
                     masklayers.push(layer);
                     maskNums.push(domLayer.parentLayerIndex);
@@ -171,7 +242,7 @@ class MovieClipRenderer
             for (o in l) {
                 var dom = maskDoms.get(numLayer - 1 - maskNums[n]);
                 var mask = new Sprite();
-                displayLayer(dom, mask, frameIndex, domTimeLine);
+                displayLayer(dom, mask, frameIndex, timeline);
                 o.mask = mask;
                 mv.addChild(mask);
             }
@@ -190,6 +261,7 @@ class MovieClipRenderer
         var display_object:DisplayObject = null;
         var mc:MovieClip;
         var is_new:Bool;
+        var item:DOMSymbolItem;
 
         for (element in frame.getElementsIterator()) {
             is_new = false;
@@ -197,7 +269,7 @@ class MovieClipRenderer
                 var bitmap_instance = cast(element, DOMBitmapInstance);
                 display_object = pool.get(element);
                 if (null == display_object) {
-                    display_object = MovieClipFactory.createBitmapInstance(bitmap_instance, line);
+                    display_object = createBitmapInstance(bitmap_instance, line);
                     is_new = true;
                 } else {
                     display_object.transform.matrix = 
@@ -205,6 +277,7 @@ class MovieClipRenderer
                 }
             } else if (Std.is(element, DOMSymbolInstance)) {
                 var instance:DOMSymbolInstance = cast(element);
+                item = cast(instance.libraryItem, DOMSymbolItem);
 
                 // 动画
                 var matrix = instance.matrix.clone();
@@ -244,16 +317,12 @@ class MovieClipRenderer
                 if (null == mc && null != linkageClassName) {
                     classType = Type.resolveClass(linkageClassName);
                     mc = Type.createInstance(classType, []);
-                    MovieClipFactory.dispatchTimeline(mc, instance);
-                } 
+                } else
+                    mc = new MovieClip();
                 
                 if ("movie clip" == instance.symbolType ||
                     "" == instance.symbolType ||
                     "graphic" == instance.symbolType) {
-
-                    var item = cast(instance.libraryItem, DOMSymbolItem);
-                    if (null == mc)
-                        mc = MovieClipFactory.create(item.timeline);
 
                     if (instance.silent) {
                         mc.mouseEnabled = false;
@@ -263,13 +332,12 @@ class MovieClipRenderer
                         mc.mouseChildren = false;
                     }
                 } else if ("button" == instance.symbolType) {
-                    if (null == mc)
-                        mc = MovieClipFactory.createButton(instance);
                     mc.mouseChildren = false;
                 } else {
                     throw "Not implements";
                 }
 
+                new MovieClipRenderer(mc, [item.timeline]);
                 display_object = mc;
                 mc.transform.matrix = matrix.toFlashMatrix();
                 mc.transform.colorTransform = colorTransform.toFlashColorTransform();
@@ -307,5 +375,35 @@ class MovieClipRenderer
         }
 
         return layer;
+    }
+
+    public function createBitmapInstance(bitmap_instance:DOMBitmapInstance, 
+        domTimeLine:DOMTimeLine)
+    {
+        var bitmapItem = cast(bitmap_instance.libraryItem, DOMBitmapItem);
+        var bitmap = new BitmapInstance(
+            bitmapItem,
+            domTimeLine.document.assets.getBitmapDataWithBitmapItem(bitmapItem),
+            PixelSnapping.AUTO, true);
+        bitmap.transform.matrix = bitmap_instance.matrix.toFlashMatrix();
+        
+        if (null != bitmap_instance.name)
+            bitmap.name = bitmap_instance.name;
+
+        return bitmap;
+    }
+
+    /**
+     * 创建按钮
+     * @param symbol 按钮元件数据
+     * @return hx.xfl.openfl.display.SimpleButton
+     */
+    public function createButton(symbol:DOMSymbolInstance):SimpleButton
+    {
+        var document  = symbol.frame.layer.timeLine.document;
+        var lines = [document.getSymbol(symbol.libraryItem.name).timeline];
+        var button = new SimpleButton();
+        new MovieClipRenderer(button, lines);
+        return button;
     }
 }
