@@ -196,9 +196,11 @@ class XFLDocument extends DOMDocument
         return mc;
     }
 
-    public function getObject(name:String):DisplayObject
+    public function getObject(name:String):MovieClip
     {
         var symbol = getSymbol(name);
+        if (null == symbol)
+            throw 'not symbol $name.';
         var linageClassAreEmpty = null == symbol.linkageClassName && "" == 
             symbol.linkageClassName;
 
@@ -213,7 +215,8 @@ class XFLDocument extends DOMDocument
             mc = new MovieClip();
         }
 
-        new MovieClipRenderer(mc, [cast(cast(getSymbol(name), DOMSymbolInstance).libraryItem, DOMSymbolItem).timeline]);
+        // new MovieClipRenderer(mc, [cast(cast(getSymbol(name), DOMSymbolInstance).libraryItem, DOMSymbolItem).timeline]);
+        new MovieClipRenderer(mc, [getSymbol(name).timeline]);
 
         return mc;
     }

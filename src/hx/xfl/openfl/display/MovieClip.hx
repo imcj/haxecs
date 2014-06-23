@@ -104,7 +104,6 @@ class MovieClip extends Sprite implements IElement
 
     public function stop():Void 
     {
-        debug("MovieClip stop");
         if (null != renderer)
             renderer.disableHandlerEnterFrame();
     }

@@ -178,8 +178,6 @@ class MovieClipRenderer
 
     public function enableHandlerEnterFrame()
     {
-        debug("enable handler enter frame");
-        helper.DynamicHelper.printCallStack(this);
         if (listening)
             return;
         listening = true;
@@ -188,7 +186,6 @@ class MovieClipRenderer
 
     public function disableHandlerEnterFrame()
     {
-        debug("disable handler enter frame");
         listening = false;
         movieClip.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
     }
@@ -317,12 +314,13 @@ class MovieClipRenderer
                 if (null == mc && null != linkageClassName) {
                     classType = Type.resolveClass(linkageClassName);
                     mc = Type.createInstance(classType, []);
-                } else
-                    mc = new MovieClip();
+                }
                 
                 if ("movie clip" == instance.symbolType ||
                     "" == instance.symbolType ||
                     "graphic" == instance.symbolType) {
+                    if (is_new)
+                        mc = new MovieClip();
 
                     if (instance.silent) {
                         mc.mouseEnabled = false;
@@ -332,6 +330,8 @@ class MovieClipRenderer
                         mc.mouseChildren = false;
                     }
                 } else if ("button" == instance.symbolType) {
+                    if (is_new)
+                        mc = new SimpleButton();
                     mc.mouseChildren = false;
                 } else {
                     throw "Not implements";
@@ -391,19 +391,5 @@ class MovieClipRenderer
             bitmap.name = bitmap_instance.name;
 
         return bitmap;
-    }
-
-    /**
-     * 创建按钮
-     * @param symbol 按钮元件数据
-     * @return hx.xfl.openfl.display.SimpleButton
-     */
-    public function createButton(symbol:DOMSymbolInstance):SimpleButton
-    {
-        var document  = symbol.frame.layer.timeLine.document;
-        var lines = [document.getSymbol(symbol.libraryItem.name).timeline];
-        var button = new SimpleButton();
-        new MovieClipRenderer(button, lines);
-        return button;
     }
 }
