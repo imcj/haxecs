@@ -6,7 +6,6 @@ import flash.text.TextField;
 import haxe.Timer;
 import flash.display.Sprite;
 import hx.xfl.openfl.display.MovieClip;
-import hx.xfl.openfl.MovieClipFactory;
 
 
 class Main extends Sprite
@@ -16,10 +15,11 @@ class Main extends Sprite
     public function new()
     {
         super();
-        trace("hello");
+
         var document = hx.xfl.XFLDocument.open("assets/MovieClip");
-        trace(document);
-        mv = MovieClipFactory.create(document.timeLines);
+
+        mv = new MovieClip();
+        document.root(mv);
         addChild(mv);
 
         bulidButton("下一帧", 0, nextFrame);

@@ -1,7 +1,6 @@
 package;
 
 
-import hx.xfl.openfl.MovieClipFactory;
 import flash.display.Sprite;
 
 

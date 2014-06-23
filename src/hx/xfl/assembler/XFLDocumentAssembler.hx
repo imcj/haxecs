@@ -3,6 +3,8 @@ package hx.xfl.assembler;
 import hx.xfl.XFLDocument;
 import hx.xfl.DOMFolderItem;
 
+using logging.Tools;
+
 class XFLDocumentAssembler extends XFLBaseAssembler
 {
     public var assemblerTimeLine:DOMTimeLineAssembler;
@@ -127,6 +129,7 @@ class XFLDocumentAssembler extends XFLBaseAssembler
 
     public function parse(data:Xml, path:String):XFLDocument
     {
+        debug('开始分析XML文件 DOMDocument.xml.');
         fillProperty(document, data.firstChild());
         document.dir = path;
 

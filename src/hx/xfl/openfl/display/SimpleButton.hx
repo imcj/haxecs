@@ -2,7 +2,6 @@ package hx.xfl.openfl.display;
 
 import flash.events.Event;
 import flash.events.MouseEvent;
-import hx.xfl.openfl.MovieClipFactory;
 import hx.xfl.openfl.display.MovieClip;
 
 class SimpleButton extends MovieClip

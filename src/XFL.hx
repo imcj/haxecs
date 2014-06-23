@@ -3,7 +3,6 @@ package ;
 import flash.Lib;
 import hx.xfl.openfl.display.FPS;
 import hx.xfl.openfl.display.MovieClip;
-import hx.xfl.openfl.MovieClipFactory;
 import hx.xfl.XFLDocument;
 
 class XFL extends MovieClip
@@ -16,7 +15,7 @@ class XFL extends MovieClip
     {
         super();
         var d = XFLDocument.open(path);
-        MovieClipFactory.dispatchTimeline(this, d.timeLines);
+        new hx.xfl.openfl.MovieClipRenderer(this, d.timeLines);
     }
     
     /**

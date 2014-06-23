@@ -5,12 +5,13 @@ import hx.xfl.assembler.DOMPublishSettingAssembler;
 import hx.xfl.setting.publish.DOMFlashProfiles;
 
 using StringTools;
+using Lambda;
 
 #if openfl
 import flash.display.*;
 import hx.xfl.openfl.Assets;
 import hx.xfl.openfl.display.MovieClip;
-import hx.xfl.openfl.MovieClipFactory;
+import hx.xfl.openfl.MovieClipRenderer;
 #end
 
 class XFLDocument extends DOMDocument
@@ -177,7 +178,7 @@ class XFLDocument extends DOMDocument
     public function get_root():MovieClip
     {
         if (null == _root) {
-            _root = MovieClipFactory.create(getTimeLinesIterator());
+            // TODO
         }
 
         return _root;
@@ -189,18 +190,17 @@ class XFLDocument extends DOMDocument
             var timelines:Array<DOMTimeLine> = [];
             for (timeline in getTimeLinesIterator())
                 timelines.push(timeline);
-
-            hx.xfl.openfl.MovieClipFactory.addtoRenderList(mc, timeLines);
-
-            return mc;
+            new hx.xfl.openfl.MovieClipRenderer(mc, timeLines);
         }
 
-        return null;
+        return mc;
     }
 
-    public function getObject(name:String):DisplayObject
+    public function getObject(name:String):MovieClip
     {
         var symbol = getSymbol(name);
+        if (null == symbol)
+            throw 'not symbol $name.';
         var linageClassAreEmpty = null == symbol.linkageClassName && "" == 
             symbol.linkageClassName;
 
@@ -215,7 +215,8 @@ class XFLDocument extends DOMDocument
             mc = new MovieClip();
         }
 
-        MovieClipFactory.create(getSymbol(name), mc);
+        // new MovieClipRenderer(mc, [cast(cast(getSymbol(name), DOMSymbolInstance).libraryItem, DOMSymbolItem).timeline]);
+        new MovieClipRenderer(mc, [getSymbol(name).timeline]);
 
         return mc;
     }
