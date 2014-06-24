@@ -314,6 +314,7 @@ class MovieClipRenderer
                 if (null == mc && null != linkageClassName) {
                     classType = Type.resolveClass(linkageClassName);
                     mc = Type.createInstance(classType, []);
+                    is_new = false;
                 }
                 
                 if ("movie clip" == instance.symbolType ||
