@@ -35,7 +35,6 @@ class MovieClip extends Sprite implements IElement
         currentScene = null;
         scenes = [];
 
-        this.totalFrames = 0;
         scripts = new Map();
         methods = new Map();
     }
@@ -91,6 +90,7 @@ class MovieClip extends Sprite implements IElement
     {
         scenes = sceneArr;
         currentScene = scenes[0];
+
         for (s in scenes) {
             totalFrames += s.numFrames;
         }
@@ -110,12 +110,11 @@ class MovieClip extends Sprite implements IElement
 
     public function nextFrame():Void 
     {
-        if (_currentFrame < currentScene.numFrames-1) {
-            _currentFrame = _currentFrame + 1;
+        if (_currentFrame < currentScene.numFrames) {
             gotoFrame();
-        } else
-            if(scenes.indexOf(currentScene) < scenes.length - 1 || isLoop)
-                nextScene();
+            _currentFrame = _currentFrame + 1;
+        } else if(scenes.indexOf(currentScene) < scenes.length - 1 || isLoop)
+            nextScene();
     }
 
     public function prevFrame():Void 
@@ -136,10 +135,10 @@ class MovieClip extends Sprite implements IElement
             renderer.render();
     }
 
-    public function executeFrameScript()
+    public function executeFrameScript(frame:Int)
     {
         var scene_name = clearId(currentScene.name);
-        var index = _currentFrame;
+        var index = frame;
 
         var indexes = scripts.get(scene_name);
         if (null != indexes) {
@@ -149,7 +148,7 @@ class MovieClip extends Sprite implements IElement
                     null);
         }
 
-        var frame_scripts = methods.get(_currentFrame);
+        var frame_scripts = methods.get(index);
         if (null != frame_scripts) {
             for (script in frame_scripts)
                 script();
