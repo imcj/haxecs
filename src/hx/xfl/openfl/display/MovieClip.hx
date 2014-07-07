@@ -98,14 +98,16 @@ class MovieClip extends Sprite implements IElement
 
     public function play():Void 
     {
-        if (null != renderer)
-            renderer.enableHandlerEnterFrame();
+        if (null != renderer) {
+            renderer.play();
+        }
     }
 
     public function stop():Void 
     {
-        if (null != renderer)
-            renderer.disableHandlerEnterFrame();
+        if (null != renderer) {
+            renderer.stop();
+        }
     }
 
     public function nextFrame():Void 

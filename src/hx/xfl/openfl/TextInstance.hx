@@ -5,6 +5,8 @@ import flash.display.Sprite;
 import flash.text.TextField;
 import flash.text.TextFormat;
 import flash.text.TextFieldType;
+import flash.text.FontType;
+import flash.text.TextFormatAlign;
 import flash.geom.Matrix;
 import hx.xfl.assembler.DOMTimeLineAssembler;
 import hx.xfl.DOMSymbolInstance;
@@ -13,13 +15,18 @@ import hx.xfl.DOMTimeLine;
 import hx.xfl.DOMText;
 import hx.xfl.XFLDocument;
 import hx.xfl.openfl.display.IElement;
-import flash.text.TextFormatAlign;
+import hx.xfl.openfl.FontManager;
+
+using logging.Tools;
 
 class TextInstance extends TextField implements IElement
 {
+    var fontManager:FontManager;
+
     public function new(dom:DOMText) 
     {
         super();
+        fontManager = FontManager.shared;
         render(dom);
     }
 
@@ -44,18 +51,25 @@ class TextInstance extends TextField implements IElement
         // TODO
         // * 格式的完整支持
         // * 嵌入字体的支持
+        // * 粗体 Helvetica-Bold
         var attr = dom.getTextRunAt(0).textAttrs;
         var alignment = alignmentEnumToString(attr.alignment);
-        defaultTextFormat = new TextFormat(attr.face, attr.size, attr.fillColor,
+        var font = fontManager.get(attr.face);
+        var font_name:String = "";
+        if (null == font) {
+            error('not font ${attr.face}');
+        } else
+            font_name = font.fontName;
+
+        embedFonts = font.fontType != DEVICE;
+        defaultTextFormat = new TextFormat(font_name, attr.size, attr.fillColor,
             attr.bold, attr.italic, null/* underline*/, attr.url, attr.target,
             alignment);
-            // attr.align, attr.)
 
         text   = dom.getTextRunAt(0).characters;
         width  = dom.width;
         height = dom.height;
-        height += 10;
-        selectable = dom.isSelectable;
+        height += 5;
 
         //处理文本域类型
         switch (dom.type) {
@@ -63,15 +77,11 @@ class TextInstance extends TextField implements IElement
                 type = INPUT;
             default:
                 type = DYNAMIC;
+                selectable = false;
         }
 
         var matrix = dom.matrix.toFlashMatrix();
         matrix.ty -= 6;
         this.transform.matrix = matrix;
-
-        var xAdd = dom.left+1;
-        var yAdd = dom.top+1;
-        this.x += xAdd-1;
-        this.y += yAdd-1;
     }
 }

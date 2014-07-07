@@ -120,10 +120,17 @@ class XFLDocumentAssembler extends XFLBaseAssembler
     public function parseFont(document:XFLDocument, data:Xml):Void 
     {
         var fontItem = new DOMFontItem();
-        fillProperty(fontItem, data, ["sourceLastImported"]);
-        var font = document.assets.getFont("assets/font/" + fontItem.font.toUpperCase() + ".TTF");
+        fillProperty(fontItem, data, ["soeurceLastImported"]);
+
+        /**
+         * FIXME 更好的字体支持
+         *
+        var font = document.assets.getFont("assets/font/" + fontItem.font +
+            ".ttf");
         if (font != null)fontItem.fontName = font.fontName;
-        else throw("字体文件"+fontItem.font.toUpperCase()+".TTF缺失，请拷贝字体到asstes/font文件夹下");
+        else throw("字体文件" + fontItem.font.toUpperCase() + 
+            ".TTF缺失，请拷贝字体到asstes/font文件夹下");
+        */
         document.addFont(fontItem);
     }
 

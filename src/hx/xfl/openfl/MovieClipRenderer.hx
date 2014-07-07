@@ -100,10 +100,11 @@ class MovieClipRenderer
     public var movieClip:MovieClip;
     public var timelines:Array<DOMTimeLine>;
 
-    var listening:Bool = false;
     var previousFrame:Array<Combine>;
     var currentFrames:Array<Combine>;
     var pool:DisplayObjectPool;
+    var _playing:Bool = true;
+    var _listener:Bool;
 
     public function new(movieClip:MovieClip, timelines:Array<DOMTimeLine>)
     {
@@ -134,10 +135,13 @@ class MovieClipRenderer
         movieClip.renderer = this;
         movieClip.setScenes(getScenes());
 
-        if (movieClip.totalFrames > 1) {
+        // if (movieClip.totalFrames > 1) {
+            
+        // } else
+        movieClip.nextFrame();
+        if (movieClip.totalFrames > 1 && _playing) {
             movieClip.play();
-        } else
-            movieClip.nextFrame();
+        }
     }
 
     function getScenes():Array<Scene>
@@ -171,25 +175,27 @@ class MovieClipRenderer
     function handleEnterFrame(e)
     {
         if (movieClip.totalFrames == 1)
-            disableHandlerEnterFrame();
+            movieClip.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
 
         if (movieClip.parent != null) {
             movieClip.nextFrame();
         }
     }
 
-    public function enableHandlerEnterFrame()
+    public function stop()
     {
-        if (listening)
-            return;
-        listening = true;
-        movieClip.addEventListener(Event.ENTER_FRAME, handleEnterFrame);
+        _playing = false;
+        if (_listener)
+            movieClip.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
+        _listener = false;
     }
 
-    public function disableHandlerEnterFrame()
+    public function play()
     {
-        listening = false;
-        movieClip.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
+        if (!_listener)
+            movieClip.addEventListener(Event.ENTER_FRAME, handleEnterFrame);
+        _listener = true;
+        _playing = true;
     }
     
     public function render():Void 
