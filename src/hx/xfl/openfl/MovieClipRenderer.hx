@@ -90,6 +90,7 @@ class DisplayObjectPool
         var found:Combine = reusable(element);
         if (null == found)
             return null;
+
         return found.display;
     }
 }
@@ -99,10 +100,11 @@ class MovieClipRenderer
     public var movieClip:MovieClip;
     public var timelines:Array<DOMTimeLine>;
 
-    var listening:Bool = false;
     var previousFrame:Array<Combine>;
     var currentFrames:Array<Combine>;
     var pool:DisplayObjectPool;
+    var _playing:Bool = true;
+    var _listener:Bool;
 
     public function new(movieClip:MovieClip, timelines:Array<DOMTimeLine>)
     {
@@ -126,14 +128,18 @@ class MovieClipRenderer
             return timeline.name;
             });
 
-        debug("New renderer " + names.join(", "));
-
+        // debug("New renderer " + names.join(", "));
+        // if (null == movieClip)
+            // debug(haxe.CallStack.toString(haxe.CallStack.callStack()));
         movieClip.labels = labels;
         movieClip.renderer = this;
         movieClip.setScenes(getScenes());
-        movieClip.nextFrame();
 
-        if (movieClip.totalFrames > 1) {
+        // if (movieClip.totalFrames > 1) {
+            
+        // } else
+        movieClip.nextFrame();
+        if (movieClip.totalFrames > 1 && _playing) {
             movieClip.play();
         }
     }
@@ -169,39 +175,42 @@ class MovieClipRenderer
     function handleEnterFrame(e)
     {
         if (movieClip.totalFrames == 1)
-            disableHandlerEnterFrame();
+            movieClip.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
 
         if (movieClip.parent != null) {
             movieClip.nextFrame();
         }
     }
 
-    public function enableHandlerEnterFrame()
+    public function stop()
     {
-        if (listening)
-            return;
-        listening = true;
-        movieClip.addEventListener(Event.ENTER_FRAME, handleEnterFrame);
+        _playing = false;
+        if (_listener)
+            movieClip.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
+        _listener = false;
     }
 
-    public function disableHandlerEnterFrame()
+    public function play()
     {
-        listening = false;
-        movieClip.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
+        if (!_listener)
+            movieClip.addEventListener(Event.ENTER_FRAME, handleEnterFrame);
+        _listener = true;
+        _playing = true;
     }
     
     public function render():Void 
     {
         currentFrames = [];
         pool.fill(previousFrame, movieClip);
-        displayFrame(movieClip, movieClip.currentFrame - 1);
+        var innerFrameIndex = movieClip.currentFrame - 1;
+        displayFrame(movieClip, innerFrameIndex);
         
         if (null != pool)
             pool.clear();
 
         previousFrame = currentFrames;
 
-        movieClip.executeFrameScript();
+        movieClip.executeFrameScript(innerFrameIndex);
     }
     
     function getCurrentTimeLine():DOMTimeLine
@@ -259,6 +268,8 @@ class MovieClipRenderer
         var mc:MovieClip;
         var is_new:Bool;
         var item:DOMSymbolItem;
+        var linkageClassName:String;
+        var export:Bool = false;
 
         for (element in frame.getElementsIterator()) {
             is_new = false;
@@ -308,41 +319,45 @@ class MovieClipRenderer
                 }
 
                 mc = cast(pool.get(element), MovieClip);
-                if (null == mc)
-                    is_new = true;
-                var linkageClassName = instance.libraryItem.linkageClassName;
-                if (null == mc && null != linkageClassName) {
-                    classType = Type.resolveClass(linkageClassName);
-                    mc = Type.createInstance(classType, []);
-                    is_new = false;
-                }
-                
-                if ("movie clip" == instance.symbolType ||
-                    "" == instance.symbolType ||
-                    "graphic" == instance.symbolType) {
-                    if (is_new)
-                        mc = new MovieClip();
+                if (null == mc) {
+                    linkageClassName = instance.libraryItem.linkageClassName;
+                    export = null != linkageClassName && "" != linkageClassName;
 
-                    if (instance.silent) {
-                        mc.mouseEnabled = false;
-                        mc.mouseChildren = false;
+                    if (export) {
+                        classType = Type.resolveClass(linkageClassName);
+                        if (null == classType)
+                            throw 'linkage class $linkageClassName not import.';
+                        mc = Type.createInstance(classType, []);
                     }
-                    if (instance.forceSimple) {
-                        mc.mouseChildren = false;
-                    }
-                } else if ("button" == instance.symbolType) {
-                    if (is_new)
-                        mc = new SimpleButton();
-                    mc.mouseChildren = false;
-                } else {
-                    throw "Not implements";
-                }
 
-                new MovieClipRenderer(mc, [item.timeline]);
-                display_object = mc;
+                    if ("movie clip" == instance.symbolType ||
+                        "" == instance.symbolType ||
+                        "graphic" == instance.symbolType) {
+                        if (!export)
+                            mc = new MovieClip();
+
+                        if (instance.silent) {
+                            mc.mouseEnabled = false;
+                            mc.mouseChildren = false;
+                        }
+                        if (instance.forceSimple) {
+                            mc.mouseChildren = false;
+                        }
+                    } else if ("button" == instance.symbolType) {
+                        if (!export)
+                            mc = new SimpleButton();
+                        mc.mouseChildren = false;
+                    } else {
+                        throw "Not implements";
+                    }
+
+                    new MovieClipRenderer(mc, [item.timeline]);
+                    
+                }
                 mc.transform.matrix = matrix.toFlashMatrix();
                 mc.transform.colorTransform = colorTransform.toFlashColorTransform();
                 mc.filters = filters;
+                display_object = mc;
 
             } else if (Std.is(element, DOMText)) {
                 var instance:DOMText = cast(element, DOMText);
@@ -359,6 +374,9 @@ class MovieClipRenderer
             } else {
                 throw "Not implements.";
             }
+
+            if (null == display_object)
+                throw '${element.name} null';
 
             if (null != element.name && "" != element.name)
                 display_object.name = element.name;
