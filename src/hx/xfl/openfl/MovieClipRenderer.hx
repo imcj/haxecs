@@ -375,8 +375,8 @@ class MovieClipRenderer
                 throw "Not implements.";
             }
 
-            if (null == display_object)
-                throw '${element.name} null';
+            //if (null == display_object)
+                //throw '${element.name} null';
 
             if (null != element.name && "" != element.name)
                 display_object.name = element.name;

@@ -120,7 +120,7 @@ class XFLDocumentAssembler extends XFLBaseAssembler
     public function parseFont(document:XFLDocument, data:Xml):Void 
     {
         var fontItem = new DOMFontItem();
-        fillProperty(fontItem, data, ["soeurceLastImported"]);
+        fillProperty(fontItem, data, ["sourceLastImported"]);
 
         /**
          * FIXME 更好的字体支持
