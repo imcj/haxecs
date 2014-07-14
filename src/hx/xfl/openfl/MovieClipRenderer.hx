@@ -230,7 +230,9 @@ class MovieClipRenderer
         var maskDoms:Map<Int, DOMLayer> = new Map();
         var guideDoms:Map<Int, DOMLayer> = new Map();
         var masklayers:Array<Array<DisplayObject>> = [];
+        var guidelayers:Array<Array<DisplayObject>> = [];
         var maskNums = [];
+        var guideNums = [];
         var numLayer = 0;
         for (domLayer in timeline.getLayersIterator(false)) {
             if ("mask" == domLayer.layerType) {
@@ -238,10 +240,17 @@ class MovieClipRenderer
             }else if ("guide" == domLayer.layerType) {
                 guideDoms.set(numLayer, domLayer);
             } else {
-                var layer = displayLayer(domLayer, mv, frameIndex, timeline);
                 if (domLayer.parentLayerIndex >= 0) {
-                    masklayers.push(layer);
-                    maskNums.push(domLayer.parentLayerIndex);
+                    if (maskDoms.exists(domLayer.parentLayerIndex)) {
+                        var layer = displayLayer(domLayer, mv, frameIndex, timeline);
+                        masklayers.push(layer);
+                        maskNums.push(domLayer.parentLayerIndex);
+                    }
+                    if (guideDoms.exists(domLayer.parentLayerIndex)) {
+                        
+                    }
+                }else {
+                    displayLayer(domLayer, mv, frameIndex, timeline);
                 }
             }
             numLayer++;
