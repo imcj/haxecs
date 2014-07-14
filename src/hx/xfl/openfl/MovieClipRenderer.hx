@@ -228,12 +228,15 @@ class MovieClipRenderer
         if (timeline == null) return;
         
         var maskDoms:Map<Int, DOMLayer> = new Map();
+        var guideDoms:Map<Int, DOMLayer> = new Map();
         var masklayers:Array<Array<DisplayObject>> = [];
         var maskNums = [];
         var numLayer = 0;
         for (domLayer in timeline.getLayersIterator(false)) {
             if ("mask" == domLayer.layerType) {
                 maskDoms.set(numLayer, domLayer);
+            }else if ("guide" == domLayer.layerType) {
+                guideDoms.set(numLayer, domLayer);
             } else {
                 var layer = displayLayer(domLayer, mv, frameIndex, timeline);
                 if (domLayer.parentLayerIndex >= 0) {
