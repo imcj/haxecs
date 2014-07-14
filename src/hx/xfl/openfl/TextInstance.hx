@@ -59,6 +59,8 @@ class TextInstance extends TextField implements IElement
         #else
         var font = fontManager.get("assets/font/" + attr.face + ".ttf");
         #end
+        if (font == null) font = fontManager.get(attr.face);
+        
         var font_name:String = "";
         if (null == font) {
             error('not font ${attr.face}');
