@@ -54,7 +54,11 @@ class TextInstance extends TextField implements IElement
         // * 粗体 Helvetica-Bold
         var attr = dom.getTextRunAt(0).textAttrs;
         var alignment = alignmentEnumToString(attr.alignment);
-        var font = fontManager.get(attr.face);
+        #if flash
+        var font = fontManager.get("assets/font/" + attr.face);
+        #else
+        var font = fontManager.get("assets/font/" + attr.face + ".ttf");
+        #end
         var font_name:String = "";
         if (null == font) {
             error('not font ${attr.face}');
