@@ -247,7 +247,7 @@ class MovieClipRenderer
                         maskNums.push(domLayer.parentLayerIndex);
                     }
                     if (guideDoms.exists(domLayer.parentLayerIndex)) {
-                        
+                        //添加引导动画处理
                     }
                 }else {
                     displayLayer(domLayer, mv, frameIndex, timeline);
@@ -330,7 +330,7 @@ class MovieClipRenderer
                     matrix.translate(revise);
                 }
 
-                mc = cast(pool.get(element), MovieClip);
+                mc = cast(pool.get(element));
                 if (null == mc) {
                     linkageClassName = instance.libraryItem.linkageClassName;
                     export = null != linkageClassName && "" != linkageClassName;
