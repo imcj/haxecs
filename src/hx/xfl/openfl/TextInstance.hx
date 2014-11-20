@@ -57,7 +57,9 @@ class TextInstance extends TextField implements IElement
         #if flash
         var font = fontManager.get("assets/font/" + attr.face);
         #else
-        var font = fontManager.get("assets/font/" + attr.face + ".ttf");
+		//TODO
+		// * 修复字体路径问题
+        var font = fontManager.get("font/" + attr.face + ".ttf");
         #end
         if (font == null) font = fontManager.get(attr.face);
         
@@ -67,7 +69,9 @@ class TextInstance extends TextField implements IElement
         } else
             font_name = font.fontName;
 
-        embedFonts = font.fontType != DEVICE;
+		//TODO
+		// * 优化这里字体处理
+        if(font.fontType != null)embedFonts = font.fontType != DEVICE;
         defaultTextFormat = new TextFormat(font_name, attr.size, attr.fillColor,
             attr.bold, attr.italic, null/* underline*/, attr.url, attr.target,
             alignment);
